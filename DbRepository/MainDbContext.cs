@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CommonClasses.DbClasses;
 
-namespace DbRepository
+namespace DbLayer
 {
     public class MainDbContext: DbContext
     {

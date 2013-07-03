@@ -72,7 +72,7 @@ namespace ServiceProxy
 
         private string GetFullReqUrl(string operation, string parameters, bool sendToken = true)
         {
-            var result = AppConfiguration.AasServiceUrl + operation +
+            var result = AppConfiguration.RestServiceUrl + operation +
                          (sendToken ? "/" + (AuthToken ?? "_") : string.Empty);
             if (string.IsNullOrEmpty(parameters)) return result;
             if (!parameters.StartsWith("?")) result = result + "/";
@@ -98,7 +98,7 @@ namespace ServiceProxy
             if (request == null) return default(TReturn);
 
             request.Method = "POST";
-            request.ContentType = "text/json";
+            request.ContentType = "application/json";
             string json = JsonHelper.JsonSerializer(param);
             byte[] data = Encoding.UTF8.GetBytes(json);
             Stream stream = request.GetRequestStream();

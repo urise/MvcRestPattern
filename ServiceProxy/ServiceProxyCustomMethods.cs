@@ -13,7 +13,6 @@ namespace ServiceProxy
 
         public LoginResult Logon(LogonArg arg)
         {
-            Delay();
             return SendPostRequest<LoginResult, LogonArg>("logon", arg, false);
         }
 

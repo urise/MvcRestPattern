@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="DbInterfaces\IUserDb.cs" />
     <Compile Include="Enums\ResultTypeEnum.cs" />
+    <Compile Include="MiscInterfaces\IEncryptor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

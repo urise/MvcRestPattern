@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Managers\AuthTokens.cs" />
     <Compile Include="Managers\CommonManager.cs" />
     <Compile Include="Managers\IDbManager.cs" />
     <Compile Include="Managers\LoginManager.cs" />

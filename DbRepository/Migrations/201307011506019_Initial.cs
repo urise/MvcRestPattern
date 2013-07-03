@@ -1,4 +1,4 @@
-namespace DbRepository.Migrations
+namespace DbLayer.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;

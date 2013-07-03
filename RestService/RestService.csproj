@@ -40,6 +40,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.2.0.1.2\lib\net45\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -73,6 +76,7 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -81,13 +85,17 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BusinessLayer\BusinessLayer.csproj">
+      <Project>{00e7b1c7-453b-4f02-be3f-655907c40c49}</Project>
+      <Name>BusinessLayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CommonClasses\CommonClasses.csproj">
       <Project>{44723a6a-7ee6-49bc-9d95-35c10178c99e}</Project>
       <Name>CommonClasses</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DbRepository\DbRepository.csproj">
+    <ProjectReference Include="..\DbRepository\DbLayer.csproj">
       <Project>{ae1f60d5-8fa2-408d-aa56-dcb73905298c}</Project>
-      <Name>DbRepository</Name>
+      <Name>DbLayer</Name>
     </ProjectReference>
     <ProjectReference Include="..\Interfaces\Interfaces.csproj">
       <Project>{8b749648-286d-4490-98e6-7c57fdcc1fc2}</Project>
@@ -105,9 +113,9 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>False</AutoAssignPort>
+          <DevelopmentServerPort>55666</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:40202/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

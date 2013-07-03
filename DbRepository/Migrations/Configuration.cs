@@ -1,18 +1,18 @@
-namespace DbRepository.Migrations
+namespace DbLayer.Migrations
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<DbRepository.MainDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<DbLayer.MainDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(DbRepository.MainDbContext context)
+        protected override void Seed(DbLayer.MainDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 

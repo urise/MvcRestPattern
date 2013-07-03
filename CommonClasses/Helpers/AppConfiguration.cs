@@ -34,9 +34,9 @@ namespace CommonClasses.Helpers
             get { return Boolean.Parse(ConfigurationManager.AppSettings["ShowPayrollsAtStartup"]); }
         }
 
-        public static string AasServiceUrl
+        public static string RestServiceUrl
         {
-            get { return ConfigurationManager.AppSettings["AasServiceUrl"]; }
+            get { return ConfigurationManager.AppSettings["RestServiceUrl"]; }
         }
 
         public static AuthenticationType AuthenticationMethod

@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces", "Interfaces\In
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceProxy", "ServiceProxy\ServiceProxy.csproj", "{29D027E7-C6D9-4BF8-B766-8EE7D26F34C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbRepository", "DbRepository\DbRepository.csproj", "{AE1F60D5-8FA2-408D-AA56-DCB73905298C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbLayer", "DbRepository\DbLayer.csproj", "{AE1F60D5-8FA2-408D-AA56-DCB73905298C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestService", "RestService\RestService.csproj", "{B66A7757-BE8F-480E-A8EE-39633F6AECF4}"
 EndProject

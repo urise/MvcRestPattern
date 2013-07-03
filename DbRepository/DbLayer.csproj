@@ -7,7 +7,7 @@
     <ProjectGuid>{AE1F60D5-8FA2-408D-AA56-DCB73905298C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DbRepository</RootNamespace>
+    <RootNamespace>DbLayer</RootNamespace>
     <AssemblyName>DbRepository</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FilteredContext.cs" />
     <Compile Include="MainDbContext.cs" />
     <Compile Include="Migrations\201307011506019_Initial.cs" />
     <Compile Include="Migrations\201307011506019_Initial.Designer.cs">
@@ -51,6 +52,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\DbRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CommonClasses\CommonClasses.csproj">
@@ -71,6 +73,7 @@
       <DependentUpon>201307011506019_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -34,6 +34,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -45,13 +46,19 @@
     <Compile Include="Constants.cs" />
     <Compile Include="DbClasses\User.cs" />
     <Compile Include="DbRepositoryInterface\IDbRepository.cs" />
+    <Compile Include="Helpers\AdHelper.cs" />
     <Compile Include="Helpers\AppConfiguration.cs" />
+    <Compile Include="Helpers\ConversionHelper.cs" />
     <Compile Include="Helpers\CryptHelper.cs" />
+    <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\JsonHelper.cs" />
     <Compile Include="Helpers\MenuLink.cs" />
     <Compile Include="Helpers\RandomHelper.cs" />
+    <Compile Include="Helpers\TripleDesProvider.cs" />
+    <Compile Include="InfoClasses\AuthInfo.cs" />
     <Compile Include="InfoClasses\UserCompanyView.cs" />
     <Compile Include="Messages.cs" />
+    <Compile Include="MethodArguments\CompanyArg.cs" />
     <Compile Include="MethodArguments\LogonArg.cs" />
     <Compile Include="MethodResults\BaseResult.cs" />
     <Compile Include="MethodResults\LoginResult.cs" />

@@ -18,6 +18,7 @@ namespace RestService
 
         [OperationContract]
         [WebInvoke(Method = "POST",
+            RequestFormat = WebMessageFormat.Json,
             ResponseFormat = WebMessageFormat.Json,
             UriTemplate = "logon")]
         LoginResult Logon(LogonArg arg);
