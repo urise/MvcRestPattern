@@ -4,6 +4,7 @@ using CommonClasses.MethodArguments;
 using CommonClasses.MethodResults;
 using CommonClasses.Models;
 using Interfaces.Enums;
+using CommonClasses.DbClasses;
 
 namespace ServiceProxy
 {
@@ -16,17 +17,23 @@ namespace ServiceProxy
             return SendPostRequest<LoginResult, LogonArg>("logon", arg, false);
         }
 
-        //public LoginResult LogonToCompany(CompanyArg arg)
-        //{
-        //    Delay();
-        //    return SendPostRequest<LoginResult, CompanyArg>("logonToCompany", arg);
-        //}
+        public LoginResult LogonToCompany(int instanceId)
+        {
+            Delay();
+            return SendPostRequest<LoginResult, int>("logonToInstance", instanceId);
+        }
 
-        //public BaseResult Logout()
-        //{
-        //    Delay();
-        //    return SendGetRequest<BaseResult>("logout");
-        //}
+        public BaseResult Logout()
+        {
+            Delay();
+            return SendGetRequest<BaseResult>("logout");
+        }
+
+        public MethodResult<IList<Instance>> GetUserInstances()
+        {
+            Delay();
+            return SendGetRequest<MethodResult<IList<Instance>>>("getUserInstances");
+        }
 
         #endregion
     }

@@ -36,6 +36,23 @@ namespace DbLayer.Repositories
             get { return _authInfo == null ? 0 : _authInfo.UserId; }
         }
 
+        public void SetInstanceId(int instanceId)
+        {
+            if (_instanceId != 0)
+                throw new Exception("Cannot set instance id for DbRepository if it's already defined");
+            _authInfo.InstanceId = instanceId;
+            _instanceId = instanceId;
+            _context.SetInstanceId(instanceId);
+        }
+
+        public void SetAuthInfo(AuthInfo authInfo)
+        {
+            if (_authInfo != null)
+                throw new Exception("Cannot set auth info for DbRepository if it's already defined");
+            _authInfo = authInfo;
+            _instanceId = authInfo.InstanceId;
+            _context.SetInstanceId(authInfo.InstanceId);
+        }
         #endregion
 
         #region Constructors
@@ -127,6 +144,11 @@ namespace DbLayer.Repositories
                             select instance).AsEnumerable().OrderBy(i=>i.InstanceName).ToList();
         }
 
+        public Instance GetInstanceById(int id)
+        {
+            return Context.Instances.FirstOrDefault(i=>i.InstanceId == id);
+        }
+
         //TODO:
         public int SaveUser(IUser user)
         { return 0; }
@@ -138,10 +160,8 @@ namespace DbLayer.Repositories
 
         public UserAccess GetUserAccess(int userId)
         { return null; }
-        public Instance GetInstanceById(int id)
-        { return null; }
+
         public void DeleteTemporaryCode(int temporaryCodeId) { }
-        public void SetAuthInfo(AuthInfo authInfo) { }
         #endregion
     }
 }

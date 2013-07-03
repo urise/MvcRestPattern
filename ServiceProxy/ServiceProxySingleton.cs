@@ -22,7 +22,7 @@ namespace ServiceProxy
             get
             {
                 if (HttpContext.Current == null) return 1; // for console test application
-                return (int)(HttpContext.Current.Session[Constants.SESSION_COMPANY_ID]);
+                return (int)(HttpContext.Current.Session[Constants.SESSION_INSTANCE_ID]);
             }
         }
 

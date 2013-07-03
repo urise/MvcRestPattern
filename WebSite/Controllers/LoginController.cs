@@ -24,7 +24,7 @@ namespace WebSite.Controllers
         {
             if (SessionHelper.IsAthorized())
             {
-                if (SessionHelper.IsCompanySelected())
+                if (SessionHelper.IsInstanceSelected())
                 {
                     TempData["FinanceKey"] = null;
                     var returnUrl = TempData["ReturnUrl"] != null ? TempData["ReturnUrl"].ToString() : "";
@@ -32,12 +32,11 @@ namespace WebSite.Controllers
                     {
                         return Redirect(returnUrl);
                     }
-                    return SessionHelper.IsFinanceKeyEntered ?
-                             RedirectToAction("PayRolls", "PayRolls") : RedirectToAction("ListEmployees", "Employee");
+                    return RedirectToAction("PayRolls", "PayRolls");
                 }
-                if (Session[Constants.SESSION_LAST_LOGGED_COMPANY] != null)
-                    TempData["LastCompany"] = Session[Constants.SESSION_LAST_LOGGED_COMPANY];
-                //SelectUserCompanies();
+                if (SessionHelper.LastUsedInstanceId != null)
+                    TempData["LastInstance"] = SessionHelper.LastUsedInstanceId;
+                SelectUserInstances();
                 return View();
             }
 
@@ -47,14 +46,14 @@ namespace WebSite.Controllers
             return View();
         }
 
-        //private void SelectUserCompanies()
-        //{
-        //    var companiesResult = ServiceProxySingleton.Instance.GetUserCompanies();
-        //    if (companiesResult.IsNotLoggedIn()) SessionHelper.ClearSession();
-        //    if (companiesResult.IsSuccess())
-        //        ViewBag.UserCompanies = companiesResult.AttachedObject;
-        //    else TempData["LoginErrors"] = companiesResult.ErrorMessage;
-        //}
+        private void SelectUserInstances()
+        {
+            var result = ServiceProxySingleton.Instance.GetUserInstances();
+            if (result.IsNotLoggedIn()) SessionHelper.ClearSession();
+            if (result.IsSuccess())
+                ViewBag.UserCompanies = result.AttachedObject;
+            else TempData["LoginErrors"] = result.ErrorMessage;
+        }
 
         private bool IsValidUrlToRedirect(string returnUrl)
         {
@@ -84,11 +83,11 @@ namespace WebSite.Controllers
                 if (loginResult.IsSuccess())
                 {
                     Session.RemoveAll();
-                    Session[Constants.SESSION_COMPANY_ID] = loginResult.InstanceId;
-                    Session[Constants.SESSION_VIEW_COMPANY_NAME] = GetViewCompanyName(loginResult.InstanceName);
+                    Session[Constants.SESSION_INSTANCE_ID] = loginResult.InstanceId;
+                    SessionHelper.CompanyName = GetViewCompanyName(loginResult.InstanceName);
                     Session[Constants.SESSION_AUTH_INFO] = loginResult.Token;
-                    Session[Constants.SESSION_USER_NAME] = model.Login;
-                    Session[Constants.SESSION_LAST_LOGGED_COMPANY] = loginResult.LastUsedInstanceId;
+                    SessionHelper.UserName = model.Login;
+                    SessionHelper.LastUsedInstanceId = loginResult.LastUsedInstanceId;
                     Session[Constants.SESSION_FORCED_LOGOUT] = null;
                     SessionHelper.Permissions = loginResult.Access;
                     TempData["FinanceKey"] = model.FinanceKey;
@@ -111,8 +110,8 @@ namespace WebSite.Controllers
 
         //    if (loginResult.IsError()) return Json(loginResult);
 
-        //    Session[Constants.SESSION_COMPANY_ID] = loginResult.CompanyId;
-        //    Session[Constants.SESSION_VIEW_COMPANY_NAME] = GetViewCompanyName(loginResult.CompanyName);
+        //    Session[Constants.SESSION_INSTANCE_ID] = loginResult.CompanyId;
+        //    Session[Constants.SESSION_VIEW_INSTANCE_NAME] = GetViewCompanyName(loginResult.CompanyName);
         //    SessionHelper.IsFinanceKeyEntered = loginResult.FinanceKeyIsEntered;
         //    SessionHelper.CompanyHasKey = loginResult.CompanyHasKey;
         //    Session[Constants.SESSION_LAST_LOGGED_COMPANY] = loginResult.CompanyId;

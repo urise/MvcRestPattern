@@ -21,7 +21,7 @@ namespace DbLayer
             _context = new MainDbContext();
         }
 
-        public void SetCompanyId(int companyId)
+        public void SetInstanceId(int companyId)
         {
             _instanceId = companyId;
         }

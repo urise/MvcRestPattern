@@ -14,7 +14,7 @@ namespace CommonClasses.DbRepositoryInterface
 {
     public interface IDbRepository: IDisposable
     {
-        //void SetInstanceId(int instanceId);
+        void SetInstanceId(int instanceId);
         void SetAuthInfo(AuthInfo authInfo);
         //IDbTransaction BeginTransaction();
 

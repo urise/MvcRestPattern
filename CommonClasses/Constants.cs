@@ -46,23 +46,15 @@ namespace CommonClasses
         public const string DevToken = "_devtoken_";
 
         #region Session keys
-        public const string SESSION_PERIODS = "SessionPeriods";
-        public const string SESSION_IS_KEY_ENTERED = "FinanceKeyIsEntered";
         public const string SESSION_AUTH_INFO = "AuthToken";
         public const string SESSION_PERMISSIONS = "Permissions";
-        public const string SESSION_COMPANY_ID = "CompanyId";
-        public const string SESSION_VIEW_COMPANY_NAME = "CompanyName";
-        public const string SESSION_COMPANY_HAS_KEY = "CompanyHasKey";
+        public const string SESSION_INSTANCE_ID = "InstanceId";
+        public const string SESSION_VIEW_INSTANCE_NAME = "InstanceName";
         public const string SESSION_USER_NAME = "UserName";
         public const string SESSION_FORCED_LOGOUT = "ForcedOut";
-        public const string SESSION_LAST_LOGGED_COMPANY = "LastLoggedCompany";
-        public const string SESSION_TRANSACTION_TYPES = "TransactionTypes";
-        public const string SESSION_TRANSACTION_TYPES_VIEW = "TransactionTypesView";
-        public const string SESSION_STORED_ALL_POSITIONS = "StoredAllPositions";
-        public const string SESSION_COMPANY_USERS = "CompanyUsers";
-        public const string SESSION_COMPANY_ROLES = "CompanyRoles";
-        public const string SESSION_CURRENCY_CLASSES = "CurrencyClasses";
-        public const string SESSION_REPORT_FILE = "GeneratedReport";
+        public const string SESSION_LAST_LOGGED_INSTANCE = "LastLoggedInstance";
+        public const string SESSION_INSTANCE_USERS = "InstanceUsers";
+        public const string SESSION_INSTANCE_ROLES = "InstanceRoles";
         #endregion 
 
         #region Predefined

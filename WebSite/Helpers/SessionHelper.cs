@@ -9,17 +9,44 @@ namespace WebSite.Helpers
 {
     public static class SessionHelper
     {
-        public static bool IsFinanceKeyEntered
+        public static string UserName
         {
             get
             {
                 var session = HttpContext.Current.Session;
-                return session[Constants.SESSION_IS_KEY_ENTERED] != null && (bool) session[Constants.SESSION_IS_KEY_ENTERED];
+                var login = session[Constants.SESSION_USER_NAME];
+                return (session != null && login != null) ? login.ToString() : null;
             }
             set
             {
+                HttpContext.Current.Session[Constants.SESSION_USER_NAME] = value;
+            }
+        }
+
+        public static string CompanyName
+        {
+            get
+            {
                 var session = HttpContext.Current.Session;
-                session[Constants.SESSION_IS_KEY_ENTERED] = value;
+                var companyName = session[Constants.SESSION_VIEW_INSTANCE_NAME];
+                return (session != null && companyName != null) ? companyName.ToString() : null;
+            }
+            set
+            {
+                HttpContext.Current.Session[Constants.SESSION_VIEW_INSTANCE_NAME] = value;
+            }
+        }
+
+        public static int? LastUsedInstanceId
+        {
+            get 
+            {
+                var session = HttpContext.Current.Session;
+                return session == null ? null : (int?)session[Constants.SESSION_LAST_LOGGED_INSTANCE];
+            }
+            set 
+            {
+                HttpContext.Current.Session[Constants.SESSION_LAST_LOGGED_INSTANCE] = value;
             }
         }
 
@@ -29,24 +56,10 @@ namespace WebSite.Helpers
             return session != null && session[Constants.SESSION_AUTH_INFO] != null;
         }
 
-        public static bool IsCompanySelected()
+        public static bool IsInstanceSelected()
         {
             var session = HttpContext.Current.Session;
-            return session != null && session[Constants.SESSION_COMPANY_ID] != null && (int)session[Constants.SESSION_COMPANY_ID] != 0;
-        }
-
-        public static string UserName()
-        {
-            var session = HttpContext.Current.Session;
-            var login = session[Constants.SESSION_USER_NAME];
-            return (session != null && login != null) ? login.ToString() : null;
-        }
-
-        public static string CompanyName()
-        {
-            var session = HttpContext.Current.Session;
-            var companyName = session[Constants.SESSION_VIEW_COMPANY_NAME];
-            return (session != null && companyName != null) ? companyName.ToString() : null;
+            return session != null && session[Constants.SESSION_INSTANCE_ID] != null && (int)session[Constants.SESSION_INSTANCE_ID] != 0;
         }
 
         public static ActionResult ClearSession(string errorMessage = null)
@@ -65,42 +78,10 @@ namespace WebSite.Helpers
             var session = HttpContext.Current.Session;
             if (session != null)
             {
-                session[Constants.SESSION_COMPANY_ID] = null;
-                session[Constants.SESSION_VIEW_COMPANY_NAME] = null;
-                session[Constants.SESSION_PERIODS] = null;
-                session[Constants.SESSION_TRANSACTION_TYPES] = null;
-                session[Constants.SESSION_TRANSACTION_TYPES_VIEW] = null;
-                session[Constants.SESSION_STORED_ALL_POSITIONS] = null;
-                session[Constants.SESSION_COMPANY_USERS] = null;
-                session[Constants.SESSION_COMPANY_ROLES] = null;
-            }
-        }
-
-        public static void ClearPeriodsFromSession()
-        {
-            var session = HttpContext.Current.Session;
-            if (session != null)
-            {
-                session[Constants.SESSION_PERIODS] = null;
-            }
-        }
-
-        public static void ClearPositionsFromSession()
-        {
-            var session = HttpContext.Current.Session;
-            if (session != null)
-            {
-                session[Constants.SESSION_STORED_ALL_POSITIONS] = null;
-            }
-        }
-
-        public static void ClearTransactionTypesFromSession()
-        {
-            var session = HttpContext.Current.Session;
-            if (session != null)
-            {
-                session[Constants.SESSION_TRANSACTION_TYPES] = null;
-                session[Constants.SESSION_TRANSACTION_TYPES_VIEW] = null;
+                session[Constants.SESSION_INSTANCE_ID] = null;
+                session[Constants.SESSION_VIEW_INSTANCE_NAME] = null;
+                session[Constants.SESSION_INSTANCE_USERS] = null;
+                session[Constants.SESSION_INSTANCE_ROLES] = null;
             }
         }
 
@@ -109,8 +90,8 @@ namespace WebSite.Helpers
             var session = HttpContext.Current.Session;
             if (session != null)
             {
-                session[Constants.SESSION_COMPANY_USERS] = null;
-                session[Constants.SESSION_COMPANY_ROLES] = null;
+                session[Constants.SESSION_INSTANCE_USERS] = null;
+                session[Constants.SESSION_INSTANCE_ROLES] = null;
             }
         }
 
@@ -125,20 +106,6 @@ namespace WebSite.Helpers
             {
                 var session = HttpContext.Current.Session;
                 session[Constants.SESSION_PERMISSIONS] = value;
-            }
-        }
-
-        public static bool CompanyHasKey
-        {
-            get
-            {
-                var session = HttpContext.Current.Session;
-                return session != null && (bool)session[Constants.SESSION_COMPANY_HAS_KEY];
-            }
-            set
-            {
-                var session = HttpContext.Current.Session;
-                session[Constants.SESSION_COMPANY_HAS_KEY] = value;
             }
         }
     }

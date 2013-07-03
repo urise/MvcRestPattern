@@ -64,9 +64,9 @@
         //}
         
         @Html.ValidationSummary(true)
-        var lastCompany = @TempData["LastCompany"];
+        var lastInstance = @TempData["LastInstance"];
         
-        <div id="inputs" data-lastcompany="@lastCompany">
+        <div id="inputs" data-lastcompany="@lastInstance">
             <div class="add-btn-holder">
                 <select id="companiesSelector">
                     @if (companies != null)
@@ -105,11 +105,11 @@
                     $("#companiesSelector, #FinanceKey").attr('disabled', 'disabled');
                 }
                 
-                var dataForLastCompany = $("#inputs").data("lastcompany");
-                if (dataForLastCompany > 0) {
+                var dataForLastInstance = $("#inputs").data("lastInstance");
+                if (dataForLastInstance > 0) {
                     if (localStorage) {
-                        localStorage.setItem('lastAssCompany', dataForLastCompany);
-                        selectedCompanyInPropDown = dataForLastCompany;
+                        localStorage.setItem('lastAssCompany', dataForLastInstance);
+                        selectedCompanyInPropDown = dataForLastInstance;
                     }
                 } else {
                     if (localStorage && localStorage.getItem('lastAssCompany')) selectedCompanyInPropDown = localStorage.getItem('lastAssCompany');
@@ -151,7 +151,7 @@
                     var data = { CompanyName: companyName, CompanyIdForTransactionTypes: $("#CompanyIdForTransactionTypes").val(), CompanyIdForDuties: $("#CompanyIdForDuties").val() };
                     window.ajaxCallSingleton('@Url.Action("AddCompany")', 'Post', data, function (r) {
 
-                            $("#inputs").data("lastcompany", r.NewId);
+                            $("#inputs").data("lastInstance", r.NewId);
                             $("#companiesSelector").prepend('<option class="" selected value="' + r.NewId + '">' + companyName + '</option>');
                             $("#companiesSelector, #FinanceKey, #goToCompany").removeClass('disabled').removeAttr('disabled');
                             closeNewCompanyForm();
