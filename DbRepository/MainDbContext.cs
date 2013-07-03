@@ -13,5 +13,7 @@ namespace DbLayer
         public MainDbContext(): base("Name=MainDbContext") {}
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Instance> Instances { get; set; }
+        public DbSet<UserInstance> UserInstances { get; set; }
     }
 }

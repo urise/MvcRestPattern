@@ -50,6 +50,14 @@
     <Compile Include="Migrations\201307011506019_Initial.Designer.cs">
       <DependentUpon>201307011506019_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201307031003260_Instance.cs" />
+    <Compile Include="Migrations\201307031003260_Instance.Designer.cs">
+      <DependentUpon>201307031003260_Instance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201307031010582_UserInstance.cs" />
+    <Compile Include="Migrations\201307031010582_UserInstance.Designer.cs">
+      <DependentUpon>201307031010582_UserInstance.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\DbRepository.cs" />
@@ -71,6 +79,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201307011506019_Initial.resx">
       <DependentUpon>201307011506019_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201307031003260_Instance.resx">
+      <DependentUpon>201307031003260_Instance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201307031010582_UserInstance.resx">
+      <DependentUpon>201307031010582_UserInstance.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

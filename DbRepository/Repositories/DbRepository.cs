@@ -76,7 +76,7 @@ namespace DbLayer.Repositories
             return null;
         }
 
-        public int GetLastUsedCompanyId(int userId)
+        public int GetLastUsedInstanceId(int userId)
         {
             return 0;
             //var lastRecord = Context.UserCompanyUsages.Where(ucu => ucu.UserId == userId).OrderBy(ucu => ucu.Date).AsEnumerable().LastOrDefault();

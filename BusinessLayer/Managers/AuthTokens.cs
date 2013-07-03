@@ -87,7 +87,7 @@ namespace BusinessLayer.Authentication
             var token = string.Empty;
             foreach (var info in _dict)
             {
-                if (info.Value.UserId == userId && info.Value.CompanyId == companyId)
+                if (info.Value.UserId == userId && info.Value.InstanceId == companyId)
                 {
                     token = info.Key;
                     break;

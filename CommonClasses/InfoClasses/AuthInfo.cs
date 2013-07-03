@@ -12,7 +12,7 @@ namespace CommonClasses.InfoClasses
     public class AuthInfo: IEncryptor
     {
         public int UserId { get; set; }
-        public int CompanyId { get; set; }
+        public int InstanceId { get; set; }
         public DateTime LastActiveDate { get; set; }
         public bool FinanceKeyIsEntered { get; set; } //can't be readonly as we need to set finance key on change key form
         public bool FinanceKeyIsNeeded { get; set; }
@@ -23,8 +23,8 @@ namespace CommonClasses.InfoClasses
         public string Token { get; set; }
         public int LinkedCompanyId
         {
-            get { return CompanyId; }
-            set { CompanyId = value; }
+            get { return InstanceId; }
+            set { InstanceId = value; }
         }
 
         public AuthInfo()
@@ -35,7 +35,7 @@ namespace CommonClasses.InfoClasses
         public AuthInfo(int userId, int companyId, bool financeKeyIsEntered, bool financeKeyIsNeeded)
         {
             UserId = userId;
-            CompanyId = companyId;
+            InstanceId = companyId;
             FinanceKeyIsEntered = financeKeyIsEntered;
             FinanceKeyIsNeeded = financeKeyIsNeeded;
         }

@@ -8,7 +8,7 @@ namespace CommonClasses.MethodArguments
         public string PasswordHash { get; set; }
         public string Salt { get; set; }
         public string FinanceKey { get; set; }
-        public int DefaultCompanyId { get; set; }
+        public int DefaultInstanceId { get; set; }
         
         public LogonArg()
         {
@@ -20,7 +20,7 @@ namespace CommonClasses.MethodArguments
             PasswordHash = passwordHash;
             Salt = salt;
             FinanceKey = financeKey;
-            DefaultCompanyId = AppConfiguration.DefaultCompanyId;
+            DefaultInstanceId = AppConfiguration.DefaultCompanyId;
         }
     }
 }

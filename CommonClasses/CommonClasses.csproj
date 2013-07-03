@@ -44,7 +44,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
+    <Compile Include="DbClasses\Instance.cs" />
     <Compile Include="DbClasses\User.cs" />
+    <Compile Include="DbClasses\UserInstance.cs" />
     <Compile Include="DbRepositoryInterface\IDbRepository.cs" />
     <Compile Include="Helpers\AdHelper.cs" />
     <Compile Include="Helpers\AppConfiguration.cs" />

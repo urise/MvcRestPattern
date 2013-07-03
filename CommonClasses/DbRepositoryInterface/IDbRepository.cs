@@ -12,6 +12,6 @@ namespace CommonClasses.DbRepositoryInterface
     {
         User GetAndAuthenticateUser(LogonArg arg);
         User GetUserByLogin(string login);
-        int GetLastUsedCompanyId(int userId);
+        int GetLastUsedInstanceId(int userId);
     }
 }
