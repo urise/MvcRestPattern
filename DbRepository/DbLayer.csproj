@@ -58,6 +58,10 @@
     <Compile Include="Migrations\201307031010582_UserInstance.Designer.cs">
       <DependentUpon>201307031010582_UserInstance.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201307031236221_UpdateMaxLength.cs" />
+    <Compile Include="Migrations\201307031236221_UpdateMaxLength.Designer.cs">
+      <DependentUpon>201307031236221_UpdateMaxLength.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\DbRepository.cs" />
@@ -85,6 +89,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201307031010582_UserInstance.resx">
       <DependentUpon>201307031010582_UserInstance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201307031236221_UpdateMaxLength.resx">
+      <DependentUpon>201307031236221_UpdateMaxLength.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
