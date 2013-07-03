@@ -9,19 +9,16 @@ using Interfaces.MiscInterfaces;
 
 namespace CommonClasses.InfoClasses
 {
-    public class AuthInfo: IEncryptor
+    public class AuthInfo
     {
         public int UserId { get; set; }
         public int InstanceId { get; set; }
         public DateTime LastActiveDate { get; set; }
-        public bool FinanceKeyIsEntered { get; set; } //can't be readonly as we need to set finance key on change key form
-        public bool FinanceKeyIsNeeded { get; set; }
         public UserAccess UserAccess { get; set; }
-        private TripleDesProvider _tripleDesProvider;
 
         public int AuthTokenId { get; set; }
         public string Token { get; set; }
-        public int LinkedCompanyId
+        public int LinkedInstanceId
         {
             get { return InstanceId; }
             set { InstanceId = value; }
@@ -32,80 +29,16 @@ namespace CommonClasses.InfoClasses
             UserAccess = new UserAccess();
         }
 
-        public AuthInfo(int userId, int companyId, bool financeKeyIsEntered, bool financeKeyIsNeeded)
+        public AuthInfo(int userId, int companyId)
         {
             UserId = userId;
             InstanceId = companyId;
-            FinanceKeyIsEntered = financeKeyIsEntered;
-            FinanceKeyIsNeeded = financeKeyIsNeeded;
-        }
-
-        public void SetFinanceKey(string financeKey)
-        {
-            if (FinanceKeyIsEntered && FinanceKeyIsNeeded)
-                _tripleDesProvider = new TripleDesProvider(financeKey);
-        }
-
-        public void ReSetFinanceKey(string financeKey)
-        {
-            if(string.IsNullOrEmpty(financeKey))
-            {
-                FinanceKeyIsNeeded = false;
-                FinanceKeyIsEntered = false;
-                return;
-            }
-            FinanceKeyIsNeeded = true;
-            FinanceKeyIsEntered = true;
-            _tripleDesProvider = new TripleDesProvider(financeKey);
-        }
-
-        public string EncryptDecimal(decimal value)
-        {
-            if (FinanceKeyIsNeeded)
-            {
-                if (!FinanceKeyIsEntered)
-                    throw new Exception(Messages.WrongFinanceKey);
-                return _tripleDesProvider.Encrypt(value.ToString());
-            }
-            return value.ToString(CultureInfo.InvariantCulture);
-        }
-
-        public decimal DecryptDecimal(string str)
-        {
-            if (FinanceKeyIsNeeded)
-            {
-                if (!FinanceKeyIsEntered)
-                    return 0;
-                return decimal.Parse(_tripleDesProvider.Decrypt(str));
-            }
-            return str.ToDecimal();
-        }
-
-        public string Decrypt(string str)
-        {
-            if (FinanceKeyIsNeeded)
-            {
-                if (!FinanceKeyIsEntered)
-                    return string.Empty;
-                return _tripleDesProvider.Decrypt(str);
-            }
-            return str;
         }
 
         public bool AccessGranted(System.Reflection.MethodBase method)
         {
-            Attribute[] attributes = Attribute.GetCustomAttributes(method).Where(r => r is AccessTier).ToArray();
-            if (attributes.Length == 0) return true;
-
-            foreach(var attr in attributes)
-            {
-                var accessTier = (AccessTier)attr;
-                if (UserAccess.IsGranted(accessTier.Component, accessTier.Level))
-                {
-                    return true;
-                }
-            }
-            return false;
+            var attributes = Attribute.GetCustomAttributes(method).Where(r => r is AccessTier).ToArray();
+            return attributes.Length == 0 || attributes.Cast<AccessTier>().Any(accessTier => UserAccess.IsGranted(accessTier.Component, accessTier.Level));
         }
     }
 }

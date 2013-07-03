@@ -8,6 +8,8 @@ using CommonClasses.DbRepositoryInterface;
 using CommonClasses.Helpers;
 using CommonClasses.InfoClasses;
 using CommonClasses.MethodArguments;
+using Interfaces.DbInterfaces;
+using CommonClasses.Roles;
 
 namespace DbLayer.Repositories
 {
@@ -78,11 +80,68 @@ namespace DbLayer.Repositories
 
         public int GetLastUsedInstanceId(int userId)
         {
-            return 0;
-            //var lastRecord = Context.UserCompanyUsages.Where(ucu => ucu.UserId == userId).OrderBy(ucu => ucu.Date).AsEnumerable().LastOrDefault();
-            //return lastRecord == null ? 0 : lastRecord.UsedCompanyId;
+            var lastRecord = Context.InstanceUsages.Where(ucu => ucu.UserId == userId).OrderBy(ucu => ucu.LoginDate).AsEnumerable().LastOrDefault();
+            return lastRecord == null ? 0 : lastRecord.InstanceId;
         }
 
+        public bool CheckIfUserLinkedToInstance(int userId, int instanceId)
+        {
+            return Context.UserInstances.Any(x => x.UserId == userId && x.InstanceId == instanceId);
+        }
+
+        public bool LoginIsNotUnique(string login)
+        {
+            return Context.Users.Any(u => u.Login.ToLower() == login.ToLower());
+        }
+
+        public bool EmailIsNotUnique(string email, int userId = 0)
+        {
+            return Context.Users.Any(u => u.Email == email && u.UserId != userId);
+        }
+
+        public User GetUserByKey(string key)
+        {
+            return Context.Users.FirstOrDefault(u => u.RegistrationCode == key);
+        }
+
+        public User GetUserByEmail(string email)
+        {
+            return Context.Users.FirstOrDefault(u => u.Email == email);
+        }
+
+        public string GetUserNameByCode(string code)
+        {
+            return Context.TemporaryCodes.Where(x => x.Code == code).Select(x => x.User.Login).FirstOrDefault();
+        }
+
+        public TemporaryCode GetTemporaryCodeByUserId(int userId)
+        {
+            return Context.TemporaryCodes.FirstOrDefault(x => x.UserId == userId);
+        }
+
+        public IList<Instance> GetUserInstances(int userId)
+        {
+            return (from instance in Context.Instances
+                       join userInstances in Context.UserInstances.Where(u=>u.UserId == userId) 
+                        on instance.InstanceId equals userInstances.InstanceId
+                            select instance).AsEnumerable().OrderBy(i=>i.InstanceName).ToList();
+        }
+
+        //TODO:
+        public int SaveUser(IUser user)
+        { return 0; }
+        public int SaveInstanceUsage(InstanceUsage instanceUsage)
+        { return 0; }
+        public int SaveTemporaryCode(TemporaryCode temporaryCode)
+        { return 0; }
+
+
+        public UserAccess GetUserAccess(int userId)
+        { return null; }
+        public Instance GetInstanceById(int id)
+        { return null; }
+        public void DeleteTemporaryCode(int temporaryCodeId) { }
+        public void SetAuthInfo(AuthInfo authInfo) { }
         #endregion
     }
 }

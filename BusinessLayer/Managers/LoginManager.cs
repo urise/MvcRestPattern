@@ -12,6 +12,8 @@ using CommonClasses.InfoClasses;
 using CommonClasses.MethodArguments;
 using CommonClasses.MethodResults;
 using Interfaces.Enums;
+using CommonClasses.Models;
+using Interfaces.DbInterfaces;
 
 namespace BusinessLayer.Managers
 {
@@ -66,22 +68,22 @@ namespace BusinessLayer.Managers
 
         public LoginResult LogonToInstance(string token, int instanceId)
         {
-            /*var authInfo = AuthTokens.Instance.GetAuth(token);
+            var authInfo = AuthTokens.Instance.GetAuth(token);
             if (authInfo == null)
             {
                 return new LoginResult { ResultType = ResultTypeEnum.NotLoggedIn };
             }
 
-            if (!Db.CheckIfUserLinkedToCompany(authInfo.UserId, instanceId))
+            if (!Db.CheckIfUserLinkedToInstance(authInfo.UserId, instanceId))
             {
                 authInfo.InstanceId = 0;
-                return new LoginResult { ErrorMessage = Messages.UserCompanyDoesntMatch };
+                return new LoginResult { ErrorMessage = Messages.UserInstanceDoesntMatch };
             }
 
             var instance = Db.GetInstanceById(instanceId);
-            if (company == null)
+            if (instance == null)
             {
-                return new LoginResult { ErrorMessage = Messages.CompanyNotFound };
+                return new LoginResult { ErrorMessage = Messages.InstanceNotFound };
             }
 
             authInfo.InstanceId = instanceId;
@@ -96,27 +98,26 @@ namespace BusinessLayer.Managers
                 InstanceId = instanceId,
                 InstanceName = instance.InstanceName,
                 Access = authInfo.UserAccess
-            };*/
-            return null;
+            };
         }
-        /*
+       
         private void LogUsageToDb(int userId, int companyId)
         {
-            var usageLog = new UserCompanyUsage { Date = DateTime.Now, UsedCompanyId = companyId, UserId = userId };
-            Db.SaveUserCompanyUsage(usageLog);
+            var usageLog = new InstanceUsage { LoginDate = DateTime.Now, InstanceId = companyId, UserId = userId };
+            Db.SaveInstanceUsage(usageLog);
         }
 
-        public MethodResult<IList<UserCompanyView>> GetUserCompanies(string token)
+        public MethodResult<IList<Instance>> GetUserInstances(string token)
         {
             var authInfo = AuthTokens.Instance.GetAuth(token);
             if (authInfo == null)
             {
-                return new MethodResult<IList<UserCompanyView>> { ResultType = ResultTypeEnum.NotLoggedIn };
+                return new MethodResult<IList<Instance>> { ResultType = ResultTypeEnum.NotLoggedIn };
             }
 
-            return new MethodResult<IList<UserCompanyView>>(Db.GetUserCompanyViews(authInfo.UserId));
+            return new MethodResult<IList<Instance>>(Db.GetUserInstances(authInfo.UserId));
         }
-         *  */
+         
         #endregion
 
         #region Logout
@@ -131,7 +132,7 @@ namespace BusinessLayer.Managers
         }
         #endregion
 
-        /*
+        
         #region RegisterUser
         public MethodResult<string> RegisterUser(RegisterUser user)
         {
@@ -160,6 +161,7 @@ namespace BusinessLayer.Managers
         }
         #endregion
 
+        #region Change/Forgot Password
         public BaseResult ChangePassword(UserPassword userPassword)
         {
             var user = Db.GetAndAuthenticateUser(
@@ -203,8 +205,8 @@ namespace BusinessLayer.Managers
             if (string.IsNullOrEmpty(nameOrEmail))
                 return new MethodResult<PasswordMailInfo> { ResultType = ResultTypeEnum.Error };
 
-            IUserDb user;
-            if (arg.NameOrEmail.Contains("@"))
+            IUser user;
+            if (nameOrEmail.Contains("@"))
             {
                 user = Db.GetUserByEmail(nameOrEmail);
                 if (user == null) return new MethodResult<PasswordMailInfo> { ErrorMessage = Messages.UserNotFoundByEmail };
@@ -227,7 +229,7 @@ namespace BusinessLayer.Managers
 
             var info = new PasswordMailInfo
             {
-                UserName = user.UserFIO ?? user.Login,
+                UserName = user.UserFio ?? user.Login,
                 Email = user.Email,
                 Code = newCode.Code
             };
@@ -246,6 +248,6 @@ namespace BusinessLayer.Managers
         }
 
         #endregion
-         * */
+        
     }
 }

@@ -87,8 +87,6 @@ namespace WebSite.Controllers
                     Session[Constants.SESSION_COMPANY_ID] = loginResult.InstanceId;
                     Session[Constants.SESSION_VIEW_COMPANY_NAME] = GetViewCompanyName(loginResult.InstanceName);
                     Session[Constants.SESSION_AUTH_INFO] = loginResult.Token;
-                    SessionHelper.IsFinanceKeyEntered = loginResult.FinanceKeyIsEntered;
-                    SessionHelper.CompanyHasKey = loginResult.CompanyHasKey;
                     Session[Constants.SESSION_USER_NAME] = model.Login;
                     Session[Constants.SESSION_LAST_LOGGED_COMPANY] = loginResult.LastUsedInstanceId;
                     Session[Constants.SESSION_FORCED_LOGOUT] = null;

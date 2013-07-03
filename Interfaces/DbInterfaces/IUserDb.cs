@@ -5,13 +5,13 @@ using System;
 
 namespace Interfaces.DbInterfaces
 {
-	public interface IUserDb
+	public interface IUser
 	{
 		int UserId { get; set; }
 		string Login { get; set; }
 		string Password { get; set; }
 		string Email { get; set; }
-		string UserFIO { get; set; }
+		string UserFio { get; set; }
 		string RegistrationCode { get; set; }
 		bool IsActive { get; set; }
 	}

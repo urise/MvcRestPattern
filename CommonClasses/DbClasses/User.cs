@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Interfaces.DbInterfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CommonClasses.DbClasses
 {
-    public class User
+    public class User : IUser
     {
         public int UserId { get; set; }
         [Required, MaxLength(128)]

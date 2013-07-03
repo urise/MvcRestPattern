@@ -44,6 +44,25 @@ namespace DbLayer
             get { return _context.Users; }
         }
 
+        public IQueryable<Instance> Instances
+        {
+            get { return _context.Instances; }
+        }
+
+        public IQueryable<UserInstance> UserInstances
+        {
+            get { return _context.UserInstances; }
+        }
+
+        public IQueryable<InstanceUsage> InstanceUsages
+        {
+            get { return _context.InstanceUsages; }
+        }
+
+        public IQueryable<TemporaryCode> TemporaryCodes
+        {
+            get { return _context.TemporaryCodes; }
+        }
         #endregion
     }
 }

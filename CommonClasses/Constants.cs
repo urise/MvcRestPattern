@@ -44,9 +44,6 @@ namespace CommonClasses
     public static class Constants
     {
         public const string DevToken = "_devtoken_";
-        #region Transaction type names
-        public const string TransactionTypeCommonTax = "Компенсация единого налога";
-        #endregion
 
         #region Session keys
         public const string SESSION_PERIODS = "SessionPeriods";
@@ -68,17 +65,7 @@ namespace CommonClasses
         public const string SESSION_REPORT_FILE = "GeneratedReport";
         #endregion 
 
-        #region Predefined formula
-        public const string TIME_VALUE = "[TimeValue]";
-        public const string SALARY_PER_HOUR = "[SalaryPerHour]";
-        public const string SALARY_PER_DAY = "[SalaryPerDay]";
-        public const string SALARY_VALUE = "[SalaryValue]";
-        public const string DAYS_IN_PERIOD = "[DaysInPeriod]";
-        public const string PERIOD_TIME = "[PeriodTime]";
-        public const string WORKED_TIME = "[WorkedTime]";
-        public const string DAYS_IN_NEXT_PERIOD = "[DaysInNextPeriod]";
-
-        public static readonly List<string> VariablesDependOnPeriodDays = new List<string> { SALARY_PER_DAY, SALARY_PER_HOUR, DAYS_IN_PERIOD, WORKED_TIME };
+        #region Predefined
         public static readonly List<int> ComponentsForGuest = new List<int>
         {
             (int)AccessComponent.Payrolls,
@@ -94,5 +81,11 @@ namespace CommonClasses
         };
 
         #endregion
+    }
+
+
+    public static class RegexExpressions
+    {
+        public const string EmailRegex = @"[A-Za-z\d]+([-+.'][A-Za-z\d]+)*@[A-Za-z\d]+([-.][A-Za-z\d]+)*\.[A-Za-z\d]+([-.][A-Za-z\d]+)*";
     }
 }

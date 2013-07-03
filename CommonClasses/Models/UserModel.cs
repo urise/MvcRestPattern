@@ -3,14 +3,14 @@ using Interfaces.DbInterfaces;
 
 namespace CommonClasses.Models
 {
-    public class UserModel : IUserDb
+    public class UserModel : IUser
     {
         public int UserId { get; set; }
-        
-        [Required(ErrorMessage = "Введите логин")]
+
+        [Required(ErrorMessage = Messages.LoginRequired)]
         public string Login { get; set; }
 
-        [Required(ErrorMessage = "Введите пароль")]
+        [Required(ErrorMessage = Messages.PasswordRequired)]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
@@ -18,23 +18,23 @@ namespace CommonClasses.Models
         public string FinanceKey { get; set; }
 
         public string Email { get; set; }
-        public string UserFIO { get; set; }
+        public string UserFio { get; set; }
         public string RegistrationCode { get; set; }
         public bool IsActive { get; set; }
 
         public bool KeepLoggedIn { get; set; }
 
-        public UserModel(IUserDb userDb)
+        public UserModel(IUser userDb)
         {
             UserId = userDb.UserId;
             Login = userDb.Login;
             Password = userDb.Password;
             Email = userDb.Email;
-            UserFIO = userDb.UserFIO;
+            UserFio = userDb.UserFio;
             IsActive = userDb.IsActive;
             RegistrationCode = userDb.RegistrationCode;
         }
 
-        public UserModel(){}
+        public UserModel() { }
     }
 }
