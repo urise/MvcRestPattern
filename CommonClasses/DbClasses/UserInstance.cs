@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CommonClasses.DbClasses
 {
-    public class UserInstance : MappingClass
+    public class UserInstance : IMapping
     {
         public int UserInstanceId { get; set; }
         public int UserId { get; set; }
@@ -14,5 +14,14 @@ namespace CommonClasses.DbClasses
 
         public virtual User User { get; set; }
         public virtual Instance Instance { get; set; }
+
+        #region IMapping properties
+
+        public int PrimaryKeyValue
+        {
+            get { return UserInstanceId; }
+        }
+
+        #endregion
     }
 }

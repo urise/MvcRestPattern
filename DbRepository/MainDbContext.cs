@@ -43,7 +43,7 @@ namespace DbLayer
             }
         }
 
-        public DbSet<T> GetDbSet<T>() where T : class
+        public DbSet<T> GetDbSet<T>() where T: class, IMapping
         {
             object result;
             if (!Dict.TryGetValue(typeof(T), out result))

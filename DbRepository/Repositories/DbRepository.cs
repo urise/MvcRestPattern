@@ -85,7 +85,7 @@ namespace DbLayer.Repositories
 
         #region Save
 
-        public int Save<T>(T obj) where T : MappingClass
+        public int Save<T>(T obj) where T : class, IMapping
         {
             int id = obj.PrimaryKeyValue;
             if (id == 0)

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CommonClasses.DbClasses
 {
-    public class User : MappingClass
+    public class User : IMapping
     {
         public int UserId { get; set; }
         [Required, MaxLength(128)]
@@ -21,5 +21,14 @@ namespace CommonClasses.DbClasses
         [MaxLength(10)]
         public string RegistrationCode { get; set; }
         public bool IsActive { get; set; }
+
+        #region IMapping properties
+
+        public int PrimaryKeyValue
+        {
+            get { return UserId; }
+        }
+
+        #endregion
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CommonClasses.DbClasses
 {
-    public class TemporaryCode : MappingClass
+    public class TemporaryCode : IMapping
     {
         public int TemporaryCodeId { get; set; }
         public int UserId { get; set; }
@@ -16,5 +16,14 @@ namespace CommonClasses.DbClasses
         public DateTime ExpireDate { get; set; }
 
         public virtual User User { get; set; }
+
+        #region IMapping properties
+
+        public int PrimaryKeyValue
+        {
+            get { return TemporaryCodeId; }
+        }
+
+        #endregion
     }
 }
