@@ -87,6 +87,10 @@ namespace DbLayer.Repositories
 
         public int Save<T>(T obj) where T : class, IMapping
         {
+            if (obj is IConstraintedByInstanceId && (obj as IConstraintedByInstanceId).InstanceId != InstanceId)
+            {
+                throw new Exception("Save: wrong InstanceId for object type " + obj.GetType().Name + ".");
+            }
             int id = obj.PrimaryKeyValue;
             if (id == 0)
             {

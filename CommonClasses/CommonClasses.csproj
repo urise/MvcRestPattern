@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
+    <Compile Include="DbClasses\IConstraintedByInstanceId.cs" />
     <Compile Include="DbClasses\Instance.cs" />
     <Compile Include="DbClasses\InstanceUsage.cs" />
     <Compile Include="DbClasses\IMapping.cs" />
