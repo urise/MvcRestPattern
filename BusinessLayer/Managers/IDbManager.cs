@@ -9,6 +9,6 @@ namespace BusinessLayer.Managers
 {
     public interface IDbManager
     {
-        IDbRepository Db { get; }
+        IDbRepository Db { get; set; }
     }
 }

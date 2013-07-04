@@ -106,15 +106,9 @@ namespace BusinessLayer.Managers
             Db.SaveInstanceUsage(usageLog);
         }
 
-        public MethodResult<IList<Instance>> GetUserInstances(string token)
+        public MethodResult<IList<Instance>> GetUserInstances()
         {
-            var authInfo = AuthTokens.Instance.GetAuth(token);
-            if (authInfo == null)
-            {
-                return new MethodResult<IList<Instance>> { ResultType = ResultTypeEnum.NotLoggedIn };
-            }
-
-            return new MethodResult<IList<Instance>>(Db.GetUserInstances(authInfo.UserId));
+            return new MethodResult<IList<Instance>>(Db.GetUserInstances(Db.UserId));
         }
          
         #endregion
@@ -142,7 +136,7 @@ namespace BusinessLayer.Managers
             registerUser.RegistrationCode = RandomHelper.GetRandomString(10);
             var user = new User();
             ReflectionHelper.CopyTheSameProperties(registerUser, user);
-            Db.Save<User>(user);
+            Db.Save(user);
             return new MethodResult<string>(user.RegistrationCode);
         }
 
@@ -157,7 +151,7 @@ namespace BusinessLayer.Managers
             user.IsActive = true;
             user.RegistrationCode = null;
 
-            Db.Save<User>(user);
+            Db.Save(user);
             return new BaseResult();
         }
         #endregion
@@ -178,7 +172,7 @@ namespace BusinessLayer.Managers
                 return new BaseResult { ErrorMessage = Messages.NewPasswordIsNotDifferentFromTheOld };
 
             user.Password = userPassword.Password;
-            Db.Save<User>(user);
+            Db.Save(user);
             return new BaseResult();
         }
 
@@ -197,7 +191,7 @@ namespace BusinessLayer.Managers
             Db.DeleteTemporaryCode(temporaryCode.TemporaryCodeId);
 
             user.Password = userPassword.Password;
-            Db.Save<User>(user);
+            Db.Save(user);
             return new BaseResult();
         }
 

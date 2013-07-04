@@ -1,5 +1,6 @@
 ﻿@using CommonClasses
-@model CommonClasses.Models.RegisterUser
+@using CommonClasses.Models
+@model RegisterUser
 
 @{
     ViewBag.Title = "Форма регистрации";
@@ -27,8 +28,8 @@
             @Html.ValidationMessageFor(model => model.ConfirmPassword)
             @Html.TextBoxFor(model => model.Email,  new { placeholder = "Электронная почта" })
             @Html.ValidationMessageFor(model => model.Email)
-            @Html.TextBoxFor(model => model.UserFIO,  new { placeholder = "ФИО" })
-            @Html.ValidationMessageFor(model => model.UserFIO)
+            @Html.TextBoxFor(model => model.UserFio,  new { placeholder = "ФИО" })
+            @Html.ValidationMessageFor(model => model.UserFio)
         </fieldset>
         <fieldset id="actions">
             <input type="submit" id="submit" value="Регистрация" />
@@ -41,8 +42,8 @@
 <script type="text/javascript">
     $(document).ready(function () {
         var login = '@Url.Action("LogOn", "Login")';
-        var result = '@ViewBag.Succes';
-        if (result) alert('@Service.RegisterSuccess', function () { window.location.href = login; });
+        var result = '@ViewBag.Success';
+        if (result) alert('@Messages.RegisterSuccess', function () { window.location.href = login; });
         $('body').on('click', '#cancel', function (e) {
             e.preventDefault();
             window.location.href = login;

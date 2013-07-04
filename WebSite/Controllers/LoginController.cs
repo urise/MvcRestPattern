@@ -8,6 +8,7 @@ using CommonClasses;
 //using CommonClasses.Models;
 //using ServiceProxy;
 using CommonClasses.Helpers;
+using CommonClasses.InfoClasses;
 using CommonClasses.MethodArguments;
 using CommonClasses.MethodResults;
 using CommonClasses.Models;
@@ -32,7 +33,7 @@ namespace WebSite.Controllers
                     {
                         return Redirect(returnUrl);
                     }
-                    return RedirectToAction("PayRolls", "PayRolls");
+                    return RedirectToAction("Home", "Home");
                 }
                 if (SessionHelper.LastUsedInstanceId != null)
                     TempData["LastInstance"] = SessionHelper.LastUsedInstanceId;
@@ -139,74 +140,74 @@ namespace WebSite.Controllers
 
         //#endregion
 
-        //#region LogOff
+        #region LogOff
 
-        //public ActionResult LogOff()
-        //{
-        //    var logoutResult = ServiceProxySingleton.Instance.Logout();
-        //    if (logoutResult != null)
-        //    {
-        //        if (logoutResult.IsSuccess())
-        //        {
-        //            Session.Clear();
-        //        }
-        //        else
-        //            ModelState.AddModelError("", logoutResult.ErrorMessage);
-        //    }
+        public ActionResult LogOff()
+        {
+            var logoutResult = ServiceProxySingleton.Instance.Logout();
+            if (logoutResult != null)
+            {
+                if (logoutResult.IsSuccess())
+                {
+                    Session.Clear();
+                }
+                else
+                    ModelState.AddModelError("", logoutResult.ErrorMessage);
+            }
             
-        //    return RedirectToAction("LogOn", "Login");
-        //}
+            return RedirectToAction("LogOn", "Login");
+        }
 
-        //#endregion
+        #endregion
 
-        //#region Register
+        #region Register
 
-        //public ActionResult Register()
-        //{
-        //    return View();
-        //}
+        public ActionResult Register()
+        {
+            return View();
+        }
 
-        //[HttpPost]
-        //public ActionResult Register(RegisterUser user)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        user.Password = CryptHelper.GetSha512Base64Hash(user.Login.ToLower() + user.Password);
-        //        var result = ServiceProxySingleton.Instance.RegisterUser(user);
-        //        if (result.IsError())
-        //            ModelState.AddModelError("", result.ErrorMessage);
-        //        else
-        //        {
-        //            user.RegistrationCode = result.AttachedObject;
-        //            var helper = new EmailController("ConfirmEmail", user);
-        //            helper.SendConfirmEmail();
-        //            ViewBag.Succes = true;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        var errors =
-        //            ModelState.Values.SelectMany(v => v.Errors).Select(x => x.ErrorMessage).Distinct().ToArray();
-        //        foreach (var e in errors)
-        //            ModelState.AddModelError("", Service.ErrorMsgToRussian(e));
-        //    }
-        //    return View(user);
-        //}
+        [HttpPost]
+        public ActionResult Register(RegisterUser user)
+        {
+            if (ModelState.IsValid)
+            {
+                user.Password = CryptHelper.GetSha512Base64Hash(user.Login.ToLower() + user.Password);
+                var result = ServiceProxySingleton.Instance.RegisterUser(user);
+                if (result.IsError())
+                    ModelState.AddModelError("", result.ErrorMessage);
+                else
+                {
+                    user.RegistrationCode = result.AttachedObject;
+                    var helper = new EmailController("ConfirmEmail", new PasswordMailInfo {UserName = user.UserFio ?? user.Login, Email = user.Email, Code = user.RegistrationCode});
+                    helper.SendConfirmEmail();
+                    ViewBag.Success = true;
+                }
+            }
+            else
+            {
+                var errors =
+                    ModelState.Values.SelectMany(v => v.Errors).Select(x => x.ErrorMessage).Distinct().ToArray();
+                foreach (var e in errors)
+                    ModelState.AddModelError("", e);
+            }
+            return View(user);
+        }
 
-        //public ActionResult RegisterConfirm(string key)
-        //{
-        //    if (!string.IsNullOrEmpty(key))
-        //    {
-        //        var result = ServiceProxySingleton.Instance.ConfirmUserKey(key);
-        //        if (result.IsSuccess())
-        //            TempData["SuccessMessage"] = Service.ConfirmMailSuccess;
-        //        else
-        //            TempData["LoginErrors"] = Service.ConfirmMailError;
-        //    }
-        //    return RedirectToAction("LogOn", "Login");
-        //}
+        public ActionResult RegisterConfirm(string key)
+        {
+            if (!string.IsNullOrEmpty(key))
+            {
+                var result = ServiceProxySingleton.Instance.ConfirmUserKey(key);
+                if (result.IsSuccess())
+                    TempData["SuccessMessage"] = Messages.ConfirmMailSuccess;
+                else
+                    TempData["LoginErrors"] = Messages.ConfirmMailError;
+            }
+            return RedirectToAction("LogOn", "Login");
+        }
 
-        //#endregion
+        #endregion
 
         //#region ChangePassword
         

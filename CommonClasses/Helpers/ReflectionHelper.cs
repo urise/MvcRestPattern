@@ -98,14 +98,14 @@ namespace CommonClasses.Helpers
         public static void CopyTheSameProperties(object src, object dest)
         {
             PropertyInfo[] propertyInfos = src.GetType().GetProperties();
-            var destProperties = dest.GetType().GetProperties().ToDictionary(p=>p.Name, p=>p.PropertyType);
+            var destProperties = dest.GetType().GetProperties().ToDictionary(p=>p.Name, p=>p);
 
-            foreach (PropertyInfo propertyInfo in propertyInfos.Where(p => destProperties.Keys.Contains(p.Name) && destProperties[p.Name] == p.PropertyType))
+            foreach (PropertyInfo propertyInfo in propertyInfos.Where(p => destProperties.Keys.Contains(p.Name) && destProperties[p.Name].PropertyType == p.PropertyType))
             {
                 if (!propertyInfo.PropertyType.IsValueType && propertyInfo.PropertyType != typeof(string)) continue;
                 try
                 {
-                    propertyInfo.SetValue(dest, propertyInfo.GetValue(src, null), null);
+                    destProperties[propertyInfo.Name].SetValue(dest, propertyInfo.GetValue(src, null), null);
                 }
                 catch (Exception)
                 {

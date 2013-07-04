@@ -20,6 +20,6 @@ namespace BusinessLayer.Managers
 
         #endregion
 
-        public IDbRepository Db { get; protected set; }
+        public IDbRepository Db { get; set; }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
 
 namespace CommonClasses.Models
 {
@@ -15,7 +14,7 @@ namespace CommonClasses.Models
 
         [DataType(DataType.Password)]
         [Required(ErrorMessage = Messages.ConfirmPasswordRequired)]
-        [System.Web.Mvc.Compare("Password", ErrorMessage = Messages.ConfirmPasswordDonNotMatch)]
+        [Compare("Password", ErrorMessage = Messages.ConfirmPasswordDoNotMatch)]
         public string ConfirmPassword { get; set; }
 
         [Required]

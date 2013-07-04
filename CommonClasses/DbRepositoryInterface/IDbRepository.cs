@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CommonClasses.DbClasses;
 using CommonClasses.InfoClasses;
 using CommonClasses.MethodArguments;
@@ -13,6 +9,9 @@ namespace CommonClasses.DbRepositoryInterface
 {
     public interface IDbRepository: IDisposable
     {
+        int InstanceId { get; }
+        int UserId { get; }
+
         void SetInstanceId(int instanceId);
         void SetAuthInfo(AuthInfo authInfo);
         //IDbTransaction BeginTransaction();

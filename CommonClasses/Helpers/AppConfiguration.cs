@@ -77,5 +77,13 @@ namespace CommonClasses.Helpers
                 return passTtl;
             }
         }
+
+        public static string AdminEmailAddress
+        {
+            get
+            {
+                 return ConfigurationManager.AppSettings["AdminEmailAddress"];
+            }
+        }
     }
 }

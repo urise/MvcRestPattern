@@ -63,6 +63,14 @@ namespace DbLayer.Repositories
             _releaseContext = true;
         }
 
+        public DbRepository(AuthInfo authInfo)
+        {
+            _authInfo = authInfo;
+            _instanceId = authInfo.InstanceId;
+            _context = new FilteredContext(authInfo.InstanceId);
+            _releaseContext = true;
+        }
+
         #endregion
 
         #region IDisposable Members

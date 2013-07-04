@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
+﻿using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Web;
-using System.Text;
+using CommonClasses.DbClasses;
+using CommonClasses.InfoClasses;
 using CommonClasses.MethodArguments;
 using CommonClasses.MethodResults;
+using CommonClasses.Models;
 
 namespace RestService
 {
@@ -18,10 +17,63 @@ namespace RestService
 
         [OperationContract]
         [WebInvoke(Method = "POST",
-            RequestFormat = WebMessageFormat.Json,
             ResponseFormat = WebMessageFormat.Json,
             UriTemplate = "logon")]
         LoginResult Logon(LogonArg arg);
+
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "logout/{token}")]
+        BaseResult Logout(string token);
+
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "getUserInstances/{token}")]
+        MethodResult<IList<Instance>> GetUserInstances(string token);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "logonToInstance/{token}")]
+        LoginResult LogonToInstance(string token, int instanceId);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "registerUser")]
+        MethodResult<string> RegisterUser(RegisterUser user);
+
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "confirmUserKey/{key}")]
+        BaseResult ConfirmUserKey(string key);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "changePassword/{token}")]
+        BaseResult ChangePassword(string token, UserPassword userPassword);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "forgotPassword")]
+        BaseResult ForgotPassword(UserPassword userPassword);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "createTemporaryCode")]
+        MethodResult<PasswordMailInfo> CreateTemporaryCode(string nameOrEmail);
+
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "getUserPasswordByCode/{code}")]
+        MethodResult<UserPassword> GetUserPasswordByCode(string code);
 
         #endregion
     }

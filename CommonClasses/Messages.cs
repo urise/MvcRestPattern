@@ -7,7 +7,7 @@
 
         public const string LoginAlreadyUsed = "Такой логин уже зарегистрирован в системе";
         public const string EmailAlreadyUsed = "Такой электронный адрес уже зарегистрирован в системе";
-        public const string ConfirmPasswordDonNotMatch = "Ошибка при подтверждении пароля";
+        public const string ConfirmPasswordDoNotMatch = "Ошибка при подтверждении пароля";
         public const string EmailRequired = "Введите электронный адрес";
         public const string LoginRequired = "Введите логин";
         public const string PasswordRequired = "Введите пароль";
@@ -32,5 +32,10 @@
         //        public const string UserCompanyAlreadyExist = "Указанный пользователь уже связан с данной компанией";
 
         public const string InstanceNotFound = "Компания не найдена.";
+
+        public const string RegisterSuccess = "Регистрация прошла успешно. На ваш электронный адрес отослано письмо для подтверждения регистрации.";
+        public const string ConfirmMailSuccess = "Регистрация подтверждена";
+        public const string ConfirmMailError = "Ошибка подтверждения регистрации";
+        public const string ChangePasswordSuccess = "Пароль успешно изменен";
     }
 }
