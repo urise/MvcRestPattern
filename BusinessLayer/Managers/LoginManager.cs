@@ -13,7 +13,6 @@ using CommonClasses.MethodArguments;
 using CommonClasses.MethodResults;
 using Interfaces.Enums;
 using CommonClasses.Models;
-using Interfaces.DbInterfaces;
 
 namespace BusinessLayer.Managers
 {
@@ -134,14 +133,16 @@ namespace BusinessLayer.Managers
 
         
         #region RegisterUser
-        public MethodResult<string> RegisterUser(RegisterUser user)
+        public MethodResult<string> RegisterUser(RegisterUser registerUser)
         {
-            if (Db.LoginIsNotUnique(user.Login))
+            if (Db.LoginIsNotUnique(registerUser.Login))
                 return new MethodResult<string> { ErrorMessage = Messages.LoginAlreadyUsed };
-            if (Db.EmailIsNotUnique(user.Email))
+            if (Db.EmailIsNotUnique(registerUser.Email))
                 return new MethodResult<string> { ErrorMessage = Messages.EmailAlreadyUsed };
-            user.RegistrationCode = RandomHelper.GetRandomString(10);
-            Db.SaveUser(user);
+            registerUser.RegistrationCode = RandomHelper.GetRandomString(10);
+            var user = new User();
+            ReflectionHelper.CopyTheSameProperties(registerUser, user);
+            Db.Save<User>(user);
             return new MethodResult<string>(user.RegistrationCode);
         }
 
@@ -156,7 +157,7 @@ namespace BusinessLayer.Managers
             user.IsActive = true;
             user.RegistrationCode = null;
 
-            Db.SaveUser(user);
+            Db.Save<User>(user);
             return new BaseResult();
         }
         #endregion
@@ -177,7 +178,7 @@ namespace BusinessLayer.Managers
                 return new BaseResult { ErrorMessage = Messages.NewPasswordIsNotDifferentFromTheOld };
 
             user.Password = userPassword.Password;
-            Db.SaveUser(user);
+            Db.Save<User>(user);
             return new BaseResult();
         }
 
@@ -196,7 +197,7 @@ namespace BusinessLayer.Managers
             Db.DeleteTemporaryCode(temporaryCode.TemporaryCodeId);
 
             user.Password = userPassword.Password;
-            Db.SaveUser(user);
+            Db.Save<User>(user);
             return new BaseResult();
         }
 
@@ -205,7 +206,7 @@ namespace BusinessLayer.Managers
             if (string.IsNullOrEmpty(nameOrEmail))
                 return new MethodResult<PasswordMailInfo> { ResultType = ResultTypeEnum.Error };
 
-            IUser user;
+            User user;
             if (nameOrEmail.Contains("@"))
             {
                 user = Db.GetUserByEmail(nameOrEmail);

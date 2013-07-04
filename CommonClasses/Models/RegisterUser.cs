@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
-using Interfaces.DbInterfaces;
 
 namespace CommonClasses.Models
 {
-    public class RegisterUser : IUser
+    public class RegisterUser
     {
         public int UserId { get; set; }
 
@@ -26,19 +25,5 @@ namespace CommonClasses.Models
         public string Email { get; set; }
         public string UserFio { get; set; }
         public string RegistrationCode { get; set; }
-        public bool IsActive { get; set; }
-
-        public RegisterUser(IUser userDb)
-        {
-            UserId = userDb.UserId;
-            Login = userDb.Login;
-            Password = userDb.Password;
-            Email = userDb.Email;
-            UserFio = userDb.UserFio;
-            IsActive = userDb.IsActive;
-            RegistrationCode = userDb.RegistrationCode;
-        }
-
-        public RegisterUser() { }
     }
 }

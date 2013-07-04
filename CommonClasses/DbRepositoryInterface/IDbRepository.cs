@@ -8,7 +8,6 @@ using CommonClasses.DbClasses;
 using CommonClasses.InfoClasses;
 using CommonClasses.MethodArguments;
 using CommonClasses.Roles;
-using Interfaces.DbInterfaces;
 
 namespace CommonClasses.DbRepositoryInterface
 {
@@ -19,7 +18,6 @@ namespace CommonClasses.DbRepositoryInterface
         //IDbTransaction BeginTransaction();
 
         int Save<T>(T obj) where T : class;
-        int SaveUser(IUser user);
         int SaveInstanceUsage(InstanceUsage instanceUsage);
         int SaveTemporaryCode(TemporaryCode temporaryCode);
 

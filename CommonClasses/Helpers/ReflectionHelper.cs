@@ -8,7 +8,6 @@ using System.Linq.Expressions;
 using System.Reflection;
 using CommonClasses.DbClasses;
 using CommonClasses.InfoClasses;
-using Interfaces.DbInterfaces;
 using Interfaces.MiscInterfaces;
 
 #endregion
@@ -89,7 +88,26 @@ namespace CommonClasses.Helpers
                 {
                     propertyInfo.SetValue(dest, propertyInfo.GetValue(src, null), null);
                 }
-                catch (Exception ex)
+                catch (Exception)
+                {
+
+                }
+            }
+        }
+
+        public static void CopyTheSameProperties(object src, object dest)
+        {
+            PropertyInfo[] propertyInfos = src.GetType().GetProperties();
+            var destProperties = dest.GetType().GetProperties().ToDictionary(p=>p.Name, p=>p.PropertyType);
+
+            foreach (PropertyInfo propertyInfo in propertyInfos.Where(p => destProperties.Keys.Contains(p.Name) && destProperties[p.Name] == p.PropertyType))
+            {
+                if (!propertyInfo.PropertyType.IsValueType && propertyInfo.PropertyType != typeof(string)) continue;
+                try
+                {
+                    propertyInfo.SetValue(dest, propertyInfo.GetValue(src, null), null);
+                }
+                catch (Exception)
                 {
 
                 }

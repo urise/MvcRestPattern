@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Interfaces.DbInterfaces;
 
 namespace CommonClasses.Models
 {
-    public class UserModel : IUser
+    public class UserModel
     {
         public int UserId { get; set; }
 
@@ -20,18 +19,5 @@ namespace CommonClasses.Models
         public bool IsActive { get; set; }
 
         public bool KeepLoggedIn { get; set; }
-
-        public UserModel(IUser userDb)
-        {
-            UserId = userDb.UserId;
-            Login = userDb.Login;
-            Password = userDb.Password;
-            Email = userDb.Email;
-            UserFio = userDb.UserFio;
-            IsActive = userDb.IsActive;
-            RegistrationCode = userDb.RegistrationCode;
-        }
-
-        public UserModel() { }
     }
 }

@@ -9,7 +9,6 @@ using System.Web;
 using CommonClasses;
 using CommonClasses.Helpers;
 using CommonClasses.MethodResults;
-using Interfaces.DbInterfaces;
 
 namespace ServiceProxy
 {

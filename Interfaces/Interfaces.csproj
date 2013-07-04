@@ -39,7 +39,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DbInterfaces\IUserDb.cs" />
     <Compile Include="Enums\ResultTypeEnum.cs" />
     <Compile Include="MiscInterfaces\IEncryptor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

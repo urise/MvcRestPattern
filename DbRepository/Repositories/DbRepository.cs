@@ -8,7 +8,6 @@ using CommonClasses.DbRepositoryInterface;
 using CommonClasses.Helpers;
 using CommonClasses.InfoClasses;
 using CommonClasses.MethodArguments;
-using Interfaces.DbInterfaces;
 using CommonClasses.Roles;
 
 namespace DbLayer.Repositories
@@ -172,8 +171,6 @@ namespace DbLayer.Repositories
         }
 
         //TODO:
-        public int SaveUser(IUser user)
-        { return 0; }
         public int SaveInstanceUsage(InstanceUsage instanceUsage)
         { return 0; }
         public int SaveTemporaryCode(TemporaryCode temporaryCode)
