@@ -60,6 +60,7 @@
     <Compile Include="Helpers\JsonHelper.cs" />
     <Compile Include="Helpers\MenuLink.cs" />
     <Compile Include="Helpers\RandomHelper.cs" />
+    <Compile Include="Helpers\ReflectionHelper.cs" />
     <Compile Include="Helpers\TripleDesProvider.cs" />
     <Compile Include="InfoClasses\AuthInfo.cs" />
     <Compile Include="InfoClasses\PasswordMailInfo.cs" />

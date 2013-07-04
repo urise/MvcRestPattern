@@ -18,6 +18,7 @@ namespace CommonClasses.DbRepositoryInterface
         void SetAuthInfo(AuthInfo authInfo);
         //IDbTransaction BeginTransaction();
 
+        int Save<T>(T obj) where T : class;
         int SaveUser(IUser user);
         int SaveInstanceUsage(InstanceUsage instanceUsage);
         int SaveTemporaryCode(TemporaryCode temporaryCode);

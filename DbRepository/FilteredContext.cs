@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CommonClasses.DbClasses;
+using System.Linq.Expressions;
 
 namespace DbLayer
 {
@@ -63,6 +65,30 @@ namespace DbLayer
         {
             get { return _context.TemporaryCodes; }
         }
+        #endregion
+
+        #region Other Methods
+
+        public void Add<T>(T record) where T: class
+        {
+            _context.GetDbSet<T>().Add(record);
+        }
+
+        public T GetById<T>(int id) where T : class
+        {
+            var param = Expression.Parameter(typeof(T), "e");
+            var predicate =
+                Expression.Lambda<Func<T, bool>>(Expression.Equal(Expression.Property(param, typeof(T).Name + "Id"),
+                                                                  Expression.Constant(id)), param);
+            var dbSet = _context.GetDbSet<T>();
+            return dbSet.SingleOrDefault(predicate);
+        }
+
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
+        }
+
         #endregion
     }
 }

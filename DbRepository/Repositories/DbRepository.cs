@@ -76,6 +76,28 @@ namespace DbLayer.Repositories
 
         #endregion
 
+        #region Save
+
+        public int Save<T>(T obj) where T : class
+        {
+            string pkName = typeof(T).Name + "Id";
+            var pkProperty = obj.GetType().GetProperty(pkName);
+            int id = (int)pkProperty.GetValue(obj);
+            if (id == 0)
+            {
+                _context.Add(obj);
+            }
+            else
+            {
+                var record = _context.GetById<T>(id);
+                ReflectionHelper.CopyAllProperties(obj, record);
+            }
+            _context.SaveChanges();
+            return (int)pkProperty.GetValue(obj);
+        }
+
+        #endregion
+
         #region Login
 
         public User GetUserByLogin(string login)
