@@ -56,7 +56,7 @@ namespace RestService
 
         private T RunLoginManagerMethod<T>(Func<LoginManager, T> func) where T : BaseResult, new()
         {
-            using (var db = new DbRepository(null))
+            using (var db = new DbRepository((int?)null))
             {
                 try
                 {

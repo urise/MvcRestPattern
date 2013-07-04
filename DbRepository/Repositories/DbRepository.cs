@@ -138,7 +138,7 @@ namespace DbLayer.Repositories
             }
             else
             {
-                LogToDb(UserId, "CurrencyClasses", obj.PrimaryKeyValue, "U", diffXml, transactionNumber);
+                LogToDb(UserId, obj.GetType().Name, obj.PrimaryKeyValue, "U", diffXml, transactionNumber);
             }
             return obj.PrimaryKeyValue;
         }
@@ -205,10 +205,10 @@ namespace DbLayer.Repositories
             return Context.TemporaryCodes.FirstOrDefault(x => x.UserId == userId);
         }
 
-        public IList<Instance> GetUserInstances(int userId)
+        public IList<Instance> GetUserInstances()
         {
             return (from instance in Context.Instances
-                       join userInstances in Context.UserInstances.Where(u=>u.UserId == userId) 
+                       join userInstances in Context.UserInstances.Where(u=>u.UserId == UserId) 
                         on instance.InstanceId equals userInstances.InstanceId
                             select instance).AsEnumerable().OrderBy(i=>i.InstanceName).ToList();
         }

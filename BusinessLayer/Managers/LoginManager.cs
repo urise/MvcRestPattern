@@ -108,7 +108,7 @@ namespace BusinessLayer.Managers
 
         public MethodResult<IList<Instance>> GetUserInstances()
         {
-            return new MethodResult<IList<Instance>>(Db.GetUserInstances(Db.UserId));
+            return new MethodResult<IList<Instance>>(Db.GetUserInstances());
         }
          
         #endregion

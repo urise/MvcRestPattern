@@ -9,9 +9,6 @@ namespace CommonClasses.DbRepositoryInterface
 {
     public interface IDbRepository: IDisposable
     {
-        int InstanceId { get; }
-        int UserId { get; }
-
         void SetInstanceId(int instanceId);
         void SetAuthInfo(AuthInfo authInfo);
         //IDbTransaction BeginTransaction();
@@ -32,7 +29,7 @@ namespace CommonClasses.DbRepositoryInterface
         bool CheckIfUserLinkedToInstance(int userId, int instanceId);
         UserAccess GetUserAccess(int userId);
         Instance GetInstanceById(int id);
-        IList<Instance> GetUserInstances(int userId);
+        IList<Instance> GetUserInstances();
 
         bool LoginIsNotUnique(string login);
         bool EmailIsNotUnique(string email, int userId = 0);
