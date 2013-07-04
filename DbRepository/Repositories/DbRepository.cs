@@ -85,11 +85,9 @@ namespace DbLayer.Repositories
 
         #region Save
 
-        public int Save<T>(T obj) where T : class
+        public int Save<T>(T obj) where T : MappingClass
         {
-            string pkName = typeof(T).Name + "Id";
-            var pkProperty = obj.GetType().GetProperty(pkName);
-            int id = (int)pkProperty.GetValue(obj);
+            int id = obj.PrimaryKeyValue;
             if (id == 0)
             {
                 _context.Add(obj);
@@ -100,7 +98,7 @@ namespace DbLayer.Repositories
                 ReflectionHelper.CopyAllProperties(obj, record);
             }
             _context.SaveChanges();
-            return (int)pkProperty.GetValue(obj);
+            return obj.PrimaryKeyValue;
         }
 
         #endregion

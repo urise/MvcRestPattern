@@ -69,12 +69,12 @@ namespace DbLayer
 
         #region Other Methods
 
-        public void Add<T>(T record) where T: class
+        public void Add<T>(T record) where T: MappingClass
         {
             _context.GetDbSet<T>().Add(record);
         }
 
-        public T GetById<T>(int id) where T : class
+        public T GetById<T>(int id) where T : MappingClass
         {
             var param = Expression.Parameter(typeof(T), "e");
             var predicate =

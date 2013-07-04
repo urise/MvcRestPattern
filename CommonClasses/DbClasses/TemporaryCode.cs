@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CommonClasses.DbClasses
 {
-    public class TemporaryCode
+    public class TemporaryCode : MappingClass
     {
         public int TemporaryCodeId { get; set; }
         public int UserId { get; set; }

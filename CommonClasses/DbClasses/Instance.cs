@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CommonClasses.DbClasses
 {
-    public class Instance
+    public class Instance : MappingClass
     {
         public int InstanceId { get; set; }
         [MaxLength(256)]

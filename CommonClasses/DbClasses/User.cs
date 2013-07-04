@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CommonClasses.DbClasses
 {
-    public class User
+    public class User : MappingClass
     {
         public int UserId { get; set; }
         [Required, MaxLength(128)]

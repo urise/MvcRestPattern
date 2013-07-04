@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CommonClasses.DbClasses
 {
-    public class UserInstance
+    public class UserInstance : MappingClass
     {
         public int UserInstanceId { get; set; }
         public int UserId { get; set; }

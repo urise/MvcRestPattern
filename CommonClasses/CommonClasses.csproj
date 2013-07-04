@@ -48,6 +48,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="DbClasses\Instance.cs" />
     <Compile Include="DbClasses\InstanceUsage.cs" />
+    <Compile Include="DbClasses\MappingClass.cs" />
     <Compile Include="DbClasses\TemporaryCode.cs" />
     <Compile Include="DbClasses\User.cs" />
     <Compile Include="DbClasses\UserInstance.cs" />
