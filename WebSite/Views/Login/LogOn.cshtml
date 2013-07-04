@@ -1,4 +1,5 @@
 ﻿@using CommonClasses
+@using CommonClasses.DbClasses
 @using CommonClasses.Helpers
 @using CommonClasses.InfoClasses
 @using WebSite.Helpers
@@ -7,12 +8,12 @@
 @{
     ViewBag.Title = "Форма входа";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var companies = ViewBag.UserCompanies as IList<UserCompanyView>;
+    var companies = ViewBag.UserCompanies as IList<Instance>;
 }
 
 <div class="big_logo"></div>
 <div id="login">
-    @if (SessionHelper.UserName() == null)
+    @if (SessionHelper.UserName == null)
     {
         using (Html.BeginForm())
         {
@@ -32,11 +33,6 @@
                 @Html.ValidationMessageFor(m => m.Login)
                 @Html.PasswordFor(m => m.Password, new {placeholder = "Пароль"})
                 @Html.ValidationMessageFor(m => m.Password)
-                @if (AppConfiguration.DefaultCompanyId > 0)
-                {
-                    @Html.PasswordFor(m => m.FinanceKey, new {placeholder = "Финансовый ключ"})
-                    @Html.ValidationMessageFor(m => m.FinanceKey)
-                }
             </div>
 
          @*<div class="editor-label">
@@ -73,14 +69,12 @@
                     {
                         foreach (var c in companies)
                         {
-                            var keyClass = @c.HasKey ? "key-dependant" : "";
-                            <option class="@keyClass" value="@c.CompanyId">@c.Name</option>
+                            <option value="@c.InstanceId">@c.InstanceName</option>
                         }
                     }
                 </select>
                 <span id="addCompany" class="" title="Добавить новую компанию"></span>
             </div>
-            <input type="password" name="FinanceKey" id="FinanceKey" value="@TempData["FinanceKey"]" placeholder="Финансовый ключ" />
         </div>
     
         <span id="goToCompany" class="login-btn" title="Войти в компанию">Войти</span>
@@ -95,7 +89,7 @@
             
             $(document).on('keydown', function (e) {
                 // key for "enter"
-                if (e.keyCode == 13 && !$("#companyCreator").length) { $("#goToCompany").click(); }
+                if (e.keyCode == 13 && !$("#instanceCreator").length) { $("#goToCompany").click(); }
             });
 
             function setupInteractivity() {
@@ -145,10 +139,10 @@
 
             $("body").on('click', '#saveCompany',
                 function () {
-                    var companyName = $("#CompanyName").val();
+                    var companyName = $("#InstanceName").val();
 
 
-                    var data = { CompanyName: companyName, CompanyIdForTransactionTypes: $("#CompanyIdForTransactionTypes").val(), CompanyIdForDuties: $("#CompanyIdForDuties").val() };
+                    var data = { InstanceName: companyName, CompanyIdForTransactionTypes: $("#CompanyIdForTransactionTypes").val(), CompanyIdForDuties: $("#CompanyIdForDuties").val() };
                     window.ajaxCallSingleton('@Url.Action("AddCompany")', 'Post', data, function (r) {
 
                             $("#inputs").data("lastInstance", r.NewId);
@@ -171,25 +165,25 @@
                     if ($('#login #companySelector').length == 0) $('#login').wrapInner('<div id="companySelector"/>');
 
                     $('#login #companySelector').hide();
-                    $("#companyCreator").remove();
+                    $("#instanceCreator").remove();
                     $('#login').append(markup);
 
-                    $('#login #companyCreator').fadeIn('slow');
+                    $('#login #instanceCreator').fadeIn('slow');
                     $("select option:not(:first)").removeAttr("selected");
-                    if ($.browser.msie) $("input#CompanyName").placeholder();
+                    if ($.browser.msie) $("input#InstanceName").placeholder();
                     detectBrowsers();
                 });
             
             function closeNewCompanyForm() {
-                $("#companyCreator").remove();
+                $("#instanceCreator").remove();
                 $('#login #companySelector').fadeIn('slow');
                 setupInteractivity();
             }
 
             function generateAddCompanyMarkUp() {
             
-                var html = $('<div id="companyCreator"><h1>Новая компания</h1>');
-                html.append('<input type="text" name="CompanyName" id="CompanyName" value="" class="placeholder" placeholder="Введите имя компании" />');
+                var html = $('<div id="instanceCreator"><h1>Новая компания</h1>');
+                html.append('<input type="text" name="InstanceName" id="InstanceName" value="" class="placeholder" placeholder="Введите имя компании" />');
                 var listOfCompanies = $("#companiesSelector").clone(false);
                 html.append(listOfCompanies.clone(false).attr('id', 'CompanyIdForTransactionTypes')
                         .attr('title', 'Компании для импорта операций').prepend('<option class="" selected="selected" value="">Компании для импорта операций</option>'));

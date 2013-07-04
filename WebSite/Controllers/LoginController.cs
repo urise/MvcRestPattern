@@ -78,7 +78,7 @@ namespace WebSite.Controllers
                         break;
                 }
 
-                LoginResult loginResult = ServiceProxySingleton.Instance.Logon(new LogonArg(model.Login.ToLower(), passwordHash, salt, model.FinanceKey));
+                LoginResult loginResult = ServiceProxySingleton.Instance.Logon(new LogonArg(model.Login.ToLower(), passwordHash, salt));
 
                 if (loginResult.IsSuccess())
                 {
@@ -90,7 +90,6 @@ namespace WebSite.Controllers
                     SessionHelper.LastUsedInstanceId = loginResult.LastUsedInstanceId;
                     Session[Constants.SESSION_FORCED_LOGOUT] = null;
                     SessionHelper.Permissions = loginResult.Access;
-                    TempData["FinanceKey"] = model.FinanceKey;
                     TempData["ReturnUrl"] = returnUrl;
                     return RedirectToAction("LogOn", "Login");
                 }

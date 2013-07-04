@@ -14,9 +14,6 @@ namespace CommonClasses.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [DataType(DataType.Password)]
-        public string FinanceKey { get; set; }
-
         public string Email { get; set; }
         public string UserFio { get; set; }
         public string RegistrationCode { get; set; }

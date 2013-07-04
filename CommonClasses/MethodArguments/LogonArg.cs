@@ -7,19 +7,17 @@ namespace CommonClasses.MethodArguments
         public string Login { get; set; }
         public string PasswordHash { get; set; }
         public string Salt { get; set; }
-        public string FinanceKey { get; set; }
         public int DefaultInstanceId { get; set; }
         
         public LogonArg()
         {
         }
 
-        public LogonArg(string login, string passwordHash, string salt, string financeKey)
+        public LogonArg(string login, string passwordHash, string salt)
         {
             Login = login;
             PasswordHash = passwordHash;
             Salt = salt;
-            FinanceKey = financeKey;
             DefaultInstanceId = AppConfiguration.DefaultCompanyId;
         }
     }
