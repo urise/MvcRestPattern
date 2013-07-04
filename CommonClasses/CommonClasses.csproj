@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
+    <Compile Include="DbClasses\DataLog.cs" />
     <Compile Include="DbClasses\IConstraintedByInstanceId.cs" />
     <Compile Include="DbClasses\Instance.cs" />
     <Compile Include="DbClasses\InstanceUsage.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Helpers\RandomHelper.cs" />
     <Compile Include="Helpers\ReflectionHelper.cs" />
     <Compile Include="Helpers\TripleDesProvider.cs" />
+    <Compile Include="Helpers\XmlHelper.cs" />
     <Compile Include="InfoClasses\AuthInfo.cs" />
     <Compile Include="InfoClasses\PasswordMailInfo.cs" />
     <Compile Include="Messages.cs" />

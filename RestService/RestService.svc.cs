@@ -56,7 +56,7 @@ namespace RestService
 
         private T RunLoginManagerMethod<T>(Func<LoginManager, T> func) where T : BaseResult, new()
         {
-            using (var db = new DbRepository(0))
+            using (var db = new DbRepository(null))
             {
                 try
                 {
@@ -114,6 +114,11 @@ namespace RestService
         public LoginResult Logon(LogonArg arg)
         {
             return RunLoginManagerMethod(lm => lm.Logon(arg));
+        }
+
+        public void Test()
+        {
+            RunLoginManagerMethod(lm => lm.Test());
         }
 
         public LoginResult LogonToInstance(string token, int instanceId)

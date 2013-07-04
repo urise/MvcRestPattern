@@ -70,6 +70,10 @@
     <Compile Include="Migrations\201307031327125_TemporaryCode.Designer.cs">
       <DependentUpon>201307031327125_TemporaryCode.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201307042225334_DataLog.cs" />
+    <Compile Include="Migrations\201307042225334_DataLog.Designer.cs">
+      <DependentUpon>201307042225334_DataLog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\DbRepository.cs" />
@@ -106,6 +110,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201307031327125_TemporaryCode.resx">
       <DependentUpon>201307031327125_TemporaryCode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201307042225334_DataLog.resx">
+      <DependentUpon>201307042225334_DataLog.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

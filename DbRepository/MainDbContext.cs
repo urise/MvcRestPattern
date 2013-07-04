@@ -17,6 +17,7 @@ namespace DbLayer
         public DbSet<UserInstance> UserInstances { get; set; }
         public DbSet<InstanceUsage> InstanceUsages { get; set; }
         public DbSet<TemporaryCode> TemporaryCodes { get; set; }
+        public DbSet<DataLog> DataLogs { get; set; }
 
         #region Auxilliary Properties and Methods
 

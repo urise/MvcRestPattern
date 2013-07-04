@@ -13,19 +13,19 @@ namespace DbLayer
     {
         #region Properties and Constructors
 
-        private int _instanceId;
-        public int InstanceId { get { return _instanceId; } }
+        private int? _instanceId;
+        public int? InstanceId { get { return _instanceId; } }
         private readonly MainDbContext _context;
 
-        public FilteredContext(int instanceId)
+        public FilteredContext(int? instanceId)
         {
             _instanceId = instanceId;
             _context = new MainDbContext();
         }
 
-        public void SetInstanceId(int companyId)
+        public void SetInstanceId(int? instanceId)
         {
-            _instanceId = companyId;
+            _instanceId = instanceId;
         }
 
         #endregion
@@ -65,6 +65,12 @@ namespace DbLayer
         {
             get { return _context.TemporaryCodes; }
         }
+
+        public IQueryable<DataLog> DataLogs
+        {
+            get { return _context.DataLogs.Where(r => r.InstanceId == InstanceId); }
+        }
+
         #endregion
 
         #region Other Methods

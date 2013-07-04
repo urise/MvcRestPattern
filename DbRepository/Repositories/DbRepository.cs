@@ -22,17 +22,17 @@ namespace DbLayer.Repositories
             get { return _context; }
         }
 
-        private int _instanceId;
-        public int InstanceId
+        private int? _instanceId = null;
+        public int? InstanceId
         {
             get { return _instanceId; }
         }
         private bool _releaseContext;
         private AuthInfo _authInfo;
 
-        public int UserId
+        public int? UserId
         {
-            get { return _authInfo == null ? 0 : _authInfo.UserId; }
+            get { return _authInfo == null ? (int?)null : _authInfo.UserId; }
         }
 
         public void SetInstanceId(int instanceId)
@@ -56,7 +56,7 @@ namespace DbLayer.Repositories
 
         #region Constructors
 
-        public DbRepository(int instanceId)
+        public DbRepository(int? instanceId)
         {
             _context = new FilteredContext(instanceId);
             _instanceId = instanceId;
@@ -83,15 +83,43 @@ namespace DbLayer.Repositories
 
         #endregion
 
+        #region Logging
+
+        private void LogToDb(int? userId, string tableName, int recordId, string operation, string details, int? transactionNumber)
+        {
+            InsertLogToDb(_instanceId, userId, tableName, recordId, operation, details, transactionNumber);
+        }
+
+        private void InsertLogToDb(int? instanceId, int? userId, string tableName, int recordId, string operation, string details, int? transactionNumber)
+        {
+            var dataLog = new DataLog
+            {
+                InstanceId = instanceId,
+                UserId = userId,
+                OperationTime = DateTime.Now,
+                TableName = tableName,
+                RecordId = recordId,
+                Operation = operation,
+                Details = details,
+                TransactionNumber = transactionNumber
+            };
+            _context.Add(dataLog);
+            _context.SaveChanges();
+        }
+
+        #endregion
+
         #region Save
 
-        public int Save<T>(T obj) where T : class, IMapping
+        public int Save<T>(T obj, int? transactionNumber = null) where T : class, IMapping
         {
             if (obj is IConstraintedByInstanceId && (obj as IConstraintedByInstanceId).InstanceId != InstanceId)
             {
                 throw new Exception("Save: wrong InstanceId for object type " + obj.GetType().Name + ".");
             }
+
             int id = obj.PrimaryKeyValue;
+            string diffXml = string.Empty;
             if (id == 0)
             {
                 _context.Add(obj);
@@ -99,9 +127,19 @@ namespace DbLayer.Repositories
             else
             {
                 var record = _context.GetById<T>(id);
+                diffXml = XmlHelper.GetDifferenceXml(record, obj);
                 ReflectionHelper.CopyAllProperties(obj, record);
             }
             _context.SaveChanges();
+            
+            if (id == 0)
+            {
+                LogToDb(UserId, obj.GetType().Name, obj.PrimaryKeyValue, "I", XmlHelper.GetObjectXml(obj), transactionNumber);
+            }
+            else
+            {
+                LogToDb(UserId, "CurrencyClasses", obj.PrimaryKeyValue, "U", diffXml, transactionNumber);
+            }
             return obj.PrimaryKeyValue;
         }
 

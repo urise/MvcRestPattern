@@ -13,6 +13,13 @@ namespace RestService
     [ServiceContract(SessionMode = SessionMode.NotAllowed)]
     public interface IRestService
     {
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            RequestFormat = WebMessageFormat.Json,
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "test")]
+        void Test();
+
         #region Login, Passwords & Register
 
         [OperationContract]

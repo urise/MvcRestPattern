@@ -243,6 +243,12 @@ namespace BusinessLayer.Managers
         }
 
         #endregion
+
+        public BaseResult Test()
+        {
+            Db.Save(new Instance {InstanceId = 1, InstanceName = "bbb"});
+            return null;
+        }
         
     }
 }

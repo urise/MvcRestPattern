@@ -16,7 +16,7 @@ namespace CommonClasses.DbRepositoryInterface
         void SetAuthInfo(AuthInfo authInfo);
         //IDbTransaction BeginTransaction();
 
-        int Save<T>(T obj) where T : class, IMapping;
+        int Save<T>(T obj, int? transactionNumber = null) where T : class, IMapping;
         int SaveInstanceUsage(InstanceUsage instanceUsage);
         int SaveTemporaryCode(TemporaryCode temporaryCode);
 
