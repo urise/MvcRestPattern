@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
@@ -93,6 +95,17 @@ namespace DbLayer
         public void SaveChanges()
         {
             _context.SaveChanges();
+        }
+
+        #endregion
+
+        #region Transaction
+
+        public DbTransaction BeginTransaction()
+        {
+            if (_context.Database.Connection.State != ConnectionState.Open)
+                _context.Database.Connection.Open();
+            return _context.Database.Connection.BeginTransaction();
         }
 
         #endregion

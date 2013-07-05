@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CommonClasses;
 using CommonClasses.DbClasses;
 using CommonClasses.DbRepositoryInterface;
 using CommonClasses.Helpers;
@@ -12,7 +12,7 @@ using CommonClasses.Roles;
 
 namespace DbLayer.Repositories
 {
-    public partial class DbRepository: IDbRepository
+    public class DbRepository: IDbRepository
     {
         #region Properties and Variables
 
@@ -145,6 +145,15 @@ namespace DbLayer.Repositories
 
         #endregion
 
+        #region Methods
+
+        public IDbTransaction BeginTransaction()
+        {
+            return _context.BeginTransaction();
+        }
+
+        #endregion
+
         #region Login
 
         public User GetUserByLogin(string login)
@@ -223,6 +232,30 @@ namespace DbLayer.Repositories
         { return null; }
 
         public void DeleteTemporaryCode(int temporaryCodeId) { }
+        #endregion
+
+        #region Instance
+        public bool IsExistInstanceName(string instanceName)
+        {
+            return Context.Instances.Any(i => i.InstanceName == instanceName);
+        }
+
+        public void CreateUserInstance()
+        {
+            if (!InstanceId.HasValue || !UserId.HasValue)
+                throw new Exception(Messages.ErrorCompanyCreation);
+            var userInstance = new UserInstance { InstanceId = InstanceId.Value, UserId = UserId.Value };
+            Save(userInstance);
+        }
+
+//        public void AddUserToRole(int roleId)
+//        {
+//            if (!InstanceId.HasValue || !UserId.HasValue)
+//                throw new Exception(Messages.ErrorCompanyCreation);
+//            var userRole = new UserToRole { CompanyId = InstanceId.Value, RoleId = roleId, UserId = UserId.Value };
+//            Save(userRole);
+//        }
+
         #endregion
     }
 }

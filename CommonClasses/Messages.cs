@@ -37,5 +37,9 @@
         public const string ConfirmMailSuccess = "Регистрация подтверждена";
         public const string ConfirmMailError = "Ошибка подтверждения регистрации";
         public const string ChangePasswordSuccess = "Пароль успешно изменен";
+
+        public const string ErrorCompanyCreation = "Ошибка при создании компании. Попробуйте повторить попытку или обратитесь к администратору сиситемы.";
+        public const string ExistsCompanyName = "Такая компания уже есть в Вашем списке доступных компаний";
+        public const string EmptyCompanyName = "Введите название компании";
     }
 }

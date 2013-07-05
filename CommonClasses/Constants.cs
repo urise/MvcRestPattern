@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace CommonClasses
 {
@@ -12,26 +11,11 @@ namespace CommonClasses
     public enum AccessComponent
     {
         None = 0,
-        Payrolls = 1,
-        Transactions = 2, 
-        Calculations = 3,
-        BankPayrolls = 4,
-        Acts = 5,
-        Employees = 6,
-        IndividPayroll = 7,
-        Settings = 9,
-        Currencies = 10,
-        Company = 11,
-        FinanceKey = 12,
-        PositionCategories = 13,
-        PositionLevels = 14,
-        Users = 15,
-        Roles = 16,
-        Periods = 17,
-        Duties = 18,
-        TransactionTypes = 19,
-        Positions = 20,
-        Reports = 21
+        Home = 1,
+        Instance = 2,
+        Settings = 3,
+        Users = 4,
+        Roles = 5
     }
 
     public enum AccessLevel
@@ -60,10 +44,7 @@ namespace CommonClasses
         #region Predefined
         public static readonly List<int> ComponentsForGuest = new List<int>
         {
-            (int)AccessComponent.Payrolls,
-            (int)AccessComponent.BankPayrolls,
-            (int)AccessComponent.Acts,
-            (int)AccessComponent.Employees,
+            (int)AccessComponent.Home
         };
 
         public static readonly List<int> DisabledComponentsForAdmin = new List<int>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using CommonClasses.DbClasses;
 using CommonClasses.InfoClasses;
 using CommonClasses.MethodArguments;
@@ -9,9 +10,11 @@ namespace CommonClasses.DbRepositoryInterface
 {
     public interface IDbRepository: IDisposable
     {
+//        int? InstanceId { get; }
+//        int? UserId { get; }
         void SetInstanceId(int instanceId);
         void SetAuthInfo(AuthInfo authInfo);
-        //IDbTransaction BeginTransaction();
+        IDbTransaction BeginTransaction();
 
         int Save<T>(T obj, int? transactionNumber = null) where T : class, IMapping;
 
@@ -31,5 +34,8 @@ namespace CommonClasses.DbRepositoryInterface
 
         bool LoginIsNotUnique(string login);
         bool EmailIsNotUnique(string email, int userId = 0);
+        bool IsExistInstanceName(string instanceName);
+        void CreateUserInstance();
+       // void AddUserToRole(int roleId);
     }
 }
