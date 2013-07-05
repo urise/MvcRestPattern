@@ -5,17 +5,6 @@ namespace CommonClasses.Helpers
 {
     public static class AppConfiguration
     {
-        public const int HoursPerDay = 8;
-        public const int HourRateDecimals = 2;
-        public const int ValueLimit = 100000000;
-        public const decimal OvertimeKoef = 1.5m;
-        public const decimal VacationCompensationKoef = 0.5m;
-        public const int MaxVacationCompensationDays = 5;
-        public const int AverageDaysPerMonth = 21;
-        public const int PlanedCountDay = 10;
-        public const decimal CommonTaxCoef = 1.0525m;
-        public const int NationalCurrencyId = 3;
-
         public static int ServiceMethodDelay
         {
             get

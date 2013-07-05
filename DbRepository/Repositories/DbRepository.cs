@@ -219,12 +219,6 @@ namespace DbLayer.Repositories
         }
 
         //TODO:
-        public int SaveInstanceUsage(InstanceUsage instanceUsage)
-        { return 0; }
-        public int SaveTemporaryCode(TemporaryCode temporaryCode)
-        { return 0; }
-
-
         public UserAccess GetUserAccess(int userId)
         { return null; }
 

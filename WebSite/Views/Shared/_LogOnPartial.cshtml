@@ -3,7 +3,7 @@
 @using WebSite.Helpers
 @if (SessionHelper.IsAthorized())
 {
-    <div class="loginDiv">@SessionHelper.CompanyName(), <strong>@SessionHelper.UserName()</strong></div>
+    <div class="loginDiv">@SessionHelper.CompanyName, <strong>@SessionHelper.UserName</strong></div>
 
     <div class="topNav">
         

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Mvc;
 using CommonClasses;
 //using CommonClasses.Helpers;
@@ -209,83 +208,80 @@ namespace WebSite.Controllers
 
         #endregion
 
-        //#region ChangePassword
+        #region ChangePassword
         
-        //public ActionResult ChangePassword(string key)
-        //{
-        //    if (key == null)
-        //    {
-        //        var login = Session[Constants.SESSION_USER_NAME];
-        //        if (login == null) return View();
-        //        var userPassword = new UserPassword(login.ToString(), true);
-        //        Session["ReturnUrl"] = Request.UrlReferrer;
-        //        return View(userPassword);
-        //    }
-        //    else
-        //    {
-        //        var result = ServiceProxySingleton.Instance.GetUserPasswordByCode(key);
-        //        if (result.IsError())
-        //        {
-        //            SessionHelper.ClearSession(result.ErrorMessage);
-        //            return RedirectToAction("LogOn", "Login");
-        //        }
-        //        return View(result.AttachedObject);
-        //    }
-        //}
+        public ActionResult ChangePassword(string key)
+        {
+            if (key == null)
+            {
+                var login = Session[Constants.SESSION_USER_NAME];
+                if (login == null) return View();
+                var userPassword = new UserPassword(login.ToString(), true);
+                Session["ReturnUrl"] = Request.UrlReferrer;
+                return View(userPassword);
+            }
+            var result = ServiceProxySingleton.Instance.GetUserPasswordByCode(key);
+            if (result.IsError())
+            {
+                SessionHelper.ClearSession(result.ErrorMessage);
+                return RedirectToAction("LogOn", "Login");
+            }
+            return View(result.AttachedObject);
+        }
 
-        //[HttpPost]
-        //public ActionResult ChangePassword(UserPassword userPassword)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        userPassword.Password = CryptHelper.GetSha512Base64Hash(userPassword.UserName.ToLower() + userPassword.Password);
+        [HttpPost]
+        public ActionResult ChangePassword(UserPassword userPassword)
+        {
+            if (ModelState.IsValid)
+            {
+                userPassword.Password = CryptHelper.GetSha512Base64Hash(userPassword.UserName.ToLower() + userPassword.Password);
 
-        //        BaseResult result;
+                BaseResult result;
 
-        //        if (userPassword.OldPasswordNeeded)
-        //        {
-        //            userPassword.Salt = RandomHelper.GetRandomString(10);
-        //            userPassword.OldPassword = CryptHelper.GetSha512Base64Hash(userPassword.Salt
-        //                + CryptHelper.GetSha512Base64Hash(userPassword.UserName.ToLower() + userPassword.OldPassword));
-        //            result = ServiceProxySingleton.Instance.ChangePassword(userPassword);
-        //        }
-        //        else
-        //            result = ServiceProxySingleton.Instance.ForgotPassword(userPassword);
-        //        if (result.IsSuccess())
-        //        {
-        //            if (Session["ReturnUrl"] != null)
-        //            {
-        //                var url = Session["ReturnUrl"].ToString();
-        //                Session["ReturnUrl"] = null;
-        //                return Redirect(url);
-        //            }
-        //            TempData["SuccessMessage"] = Service.ChangePasswordSuccess;
-        //            return RedirectToAction("LogOn", "Login");
-        //        }
-        //        ModelState.AddModelError("", result.ErrorMessage);
+                if (userPassword.OldPasswordNeeded)
+                {
+                    userPassword.Salt = RandomHelper.GetRandomString(10);
+                    userPassword.OldPassword = CryptHelper.GetSha512Base64Hash(userPassword.Salt
+                        + CryptHelper.GetSha512Base64Hash(userPassword.UserName.ToLower() + userPassword.OldPassword));
+                    result = ServiceProxySingleton.Instance.ChangePassword(userPassword);
+                }
+                else
+                    result = ServiceProxySingleton.Instance.ForgotPassword(userPassword);
+                if (result.IsSuccess())
+                {
+                    if (Session["ReturnUrl"] != null)
+                    {
+                        var url = Session["ReturnUrl"].ToString();
+                        Session["ReturnUrl"] = null;
+                        return Redirect(url);
+                    }
+                    TempData["SuccessMessage"] = Messages.ChangePasswordSuccess;
+                    return RedirectToAction("LogOn", "Login");
+                }
+                ModelState.AddModelError("", result.ErrorMessage);
                 
-        //    }
-        //    else
-        //    {
-        //        var errors =
-        //            ModelState.Values.SelectMany(v => v.Errors).Select(x => x.ErrorMessage).Distinct().ToArray();
-        //        foreach (var e in errors)
-        //            ModelState.AddModelError("", Service.ErrorMsgToRussian(e));
-        //    }
-        //    return View(userPassword);
-        //}
+            }
+            else
+            {
+                var errors =
+                    ModelState.Values.SelectMany(v => v.Errors).Select(x => x.ErrorMessage).Distinct().ToArray();
+                foreach (var e in errors)
+                    ModelState.AddModelError("", e);
+            }
+            return View(userPassword);
+        }
 
-        //[HttpPost]
-        //public ActionResult SendPasswordEmail(string nameOrEmail)
-        //{
-        //    var result = ServiceProxySingleton.Instance.CreateTemporaryCode(new TemporaryCodeArg{NameOrEmail = nameOrEmail});
-        //    if (result.IsError()) return Json(result);
-        //    var helper = new EmailController("ChangePasswordEmail", result.AttachedObject);
-        //    helper.SendPasswordEmail();
-        //    TempData["SuccessMessage"] = Messages.EmailSentPasswordReset;
-        //    return new EmptyResult();
-        //}
-        //#endregion
+        [HttpPost]
+        public ActionResult SendPasswordEmail(string nameOrEmail)
+        {
+            var result = ServiceProxySingleton.Instance.CreateTemporaryCode(nameOrEmail);
+            if (result.IsError()) return Json(result);
+            var helper = new EmailController("ChangePasswordEmail", result.AttachedObject);
+            helper.SendPasswordEmail();
+            TempData["SuccessMessage"] = Messages.EmailSentPasswordReset;
+            return new EmptyResult();
+        }
+        #endregion
 
 
         #region Additional Methods

@@ -14,8 +14,6 @@ namespace CommonClasses.DbRepositoryInterface
         //IDbTransaction BeginTransaction();
 
         int Save<T>(T obj, int? transactionNumber = null) where T : class, IMapping;
-        int SaveInstanceUsage(InstanceUsage instanceUsage);
-        int SaveTemporaryCode(TemporaryCode temporaryCode);
 
         void DeleteTemporaryCode(int temporaryCodeId);
 

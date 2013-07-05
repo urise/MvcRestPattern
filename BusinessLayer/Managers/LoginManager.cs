@@ -100,7 +100,7 @@ namespace BusinessLayer.Managers
         private void LogUsageToDb(int userId, int companyId)
         {
             var usageLog = new InstanceUsage { LoginDate = DateTime.Now, InstanceId = companyId, UserId = userId };
-            Db.SaveInstanceUsage(usageLog);
+            Db.Save(usageLog);
         }
 
         public MethodResult<IList<Instance>> GetUserInstances()
@@ -217,7 +217,7 @@ namespace BusinessLayer.Managers
                 Code = RandomHelper.GetRandomString(10),
                 ExpireDate = DateTime.Now.AddHours(AppConfiguration.PasswordLinkTtl)
             };
-            Db.SaveTemporaryCode(newCode);
+            Db.Save(newCode);
 
             var info = new PasswordMailInfo
             {
