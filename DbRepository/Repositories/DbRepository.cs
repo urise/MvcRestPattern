@@ -94,8 +94,8 @@ namespace DbLayer.Repositories
         {
             var dataLog = new DataLog
             {
-                InstanceId = instanceId,
-                UserId = userId,
+                InstanceId = instanceId == 0 ? null: instanceId,
+                UserId = userId == 0 ? null : userId,
                 OperationTime = DateTime.Now,
                 TableName = tableName,
                 RecordId = recordId,

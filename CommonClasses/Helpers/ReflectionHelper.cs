@@ -4,11 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
-using CommonClasses.DbClasses;
-using CommonClasses.InfoClasses;
-using Interfaces.MiscInterfaces;
 
 #endregion
 
@@ -49,14 +45,14 @@ namespace CommonClasses.Helpers
         //    }
         //}
 
-        private static object GetDefaultValue(Type t)
-        {
-            if (t.IsValueType && Nullable.GetUnderlyingType(t) == null)
-            {
-                return Activator.CreateInstance(t);
-            }
-            return null;
-        }
+//        private static object GetDefaultValue(Type t)
+//        {
+//            if (t.IsValueType && Nullable.GetUnderlyingType(t) == null)
+//            {
+//                return Activator.CreateInstance(t);
+//            }
+//            return null;
+//        }
 
         public static bool TypeCanBeRestoredFromString(Type type)
         {
@@ -74,7 +70,7 @@ namespace CommonClasses.Helpers
 
         public static void CopyAllProperties(object src, object dest, List<String> notCopyList)
         {
-            var destProperties = dest.GetType().GetProperties().ToDictionary(p => p.Name, p => p);
+            var destProperties = dest.GetType().GetProperties().Where(p=>p.CanWrite).ToDictionary(p => p.Name, p => p);
             var propertyInfos = src.GetType().GetProperties().Where(
                 p => !notCopyList.Contains(p.Name)
                     && (p.PropertyType.IsValueType || p.PropertyType == typeof(string))

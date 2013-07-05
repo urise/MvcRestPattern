@@ -84,7 +84,7 @@ namespace WebSite.Controllers
                 {
                     Session.RemoveAll();
                     Session[Constants.SESSION_INSTANCE_ID] = loginResult.InstanceId;
-                    SessionHelper.CompanyName = GetViewCompanyName(loginResult.InstanceName);
+                    SessionHelper.CompanyName = GetViewInstanceName(loginResult.InstanceName);
                     Session[Constants.SESSION_AUTH_INFO] = loginResult.Token;
                     SessionHelper.UserName = model.Login;
                     SessionHelper.LastUsedInstanceId = loginResult.LastUsedInstanceId;
@@ -110,7 +110,7 @@ namespace WebSite.Controllers
         //    if (loginResult.IsError()) return Json(loginResult);
 
         //    Session[Constants.SESSION_INSTANCE_ID] = loginResult.CompanyId;
-        //    Session[Constants.SESSION_VIEW_INSTANCE_NAME] = GetViewCompanyName(loginResult.CompanyName);
+        //    Session[Constants.SESSION_VIEW_INSTANCE_NAME] = GetViewInstanceName(loginResult.CompanyName);
         //    SessionHelper.IsFinanceKeyEntered = loginResult.FinanceKeyIsEntered;
         //    SessionHelper.CompanyHasKey = loginResult.CompanyHasKey;
         //    Session[Constants.SESSION_LAST_LOGGED_COMPANY] = loginResult.CompanyId;
@@ -119,11 +119,11 @@ namespace WebSite.Controllers
         //    return Json(new {});
         //}
 
-        //public ActionResult SelectCompany()
-        //{
-        //    SessionHelper.ClearCompanyInfoFromSession();
-        //    return RedirectToAction("LogOn", "Login");
-        //}
+        public ActionResult SelectInstance()
+        {
+            SessionHelper.ClearCompanyInfoFromSession();
+            return RedirectToAction("LogOn", "Login");
+        }
 
         //[SessionAuthorize]
         //[HttpPost]
@@ -286,13 +286,13 @@ namespace WebSite.Controllers
 
         #region Additional Methods
 
-        private const int VIEW_COMPANY_NAME_LENGTH = 50;
-        private const string VIEW_COMPANY_NAME_POSTFIX = "...";
-        private string GetViewCompanyName(string companyName)
+        private const int VIEW_INSTANCE_NAME_LENGTH = 50;
+        private const string VIEW_INSTANCE_NAME_POSTFIX = "...";
+        private string GetViewInstanceName(string instanceName)
         {
-            return !string.IsNullOrEmpty(companyName) && companyName.Length > VIEW_COMPANY_NAME_LENGTH ?
-                companyName.Substring(0, VIEW_COMPANY_NAME_LENGTH) + VIEW_COMPANY_NAME_POSTFIX
-                : companyName;
+            return !string.IsNullOrEmpty(instanceName) && instanceName.Length > VIEW_INSTANCE_NAME_LENGTH ?
+                instanceName.Substring(0, VIEW_INSTANCE_NAME_LENGTH) + VIEW_INSTANCE_NAME_POSTFIX
+                : instanceName;
         }
         #endregion
     }

@@ -9,7 +9,7 @@
         
         <a id="settings-button" class="settings-button"></a>
         <div id="user-toolbar-options" style="display: none;">
-           <a id="selectCompany" href="@Url.Action("SelectCompany", "Login")"><span>Сменить компанию</span></a>
+           <a id="selectInstance" href="@Url.Action("SelectInstance", "Login")"><span>Сменить компанию</span></a>
            @if(AppConfiguration.AuthenticationMethod == AuthenticationType.Native)
             {
                <a  id="changePassword" href="@Url.Action("ChangePassword", "Login")"><span>Изменить пароль</span></a>

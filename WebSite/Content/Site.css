@@ -1523,7 +1523,7 @@ table#finKeyTable td:first-child, table#periodSelector td:first-child { font-wei
 	background: url(images/arrow_ex_black.png) no-repeat 10px 15px #fff;
 }
 
-a#selectCompany { background: url(images/icon_company_black.png)  no-repeat 0 5px #fff; }
+a#selectInstance { background: url(images/icon_company_black.png)  no-repeat 0 5px #fff; }
 a#changePassword { background: url(images/login-sprite_black.png)  no-repeat  0 -62px #fff; }
 a#logOff { background: url(images/exit.png)  no-repeat 0 5px #fff; }
 
