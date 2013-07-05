@@ -74,43 +74,17 @@ namespace CommonClasses.Helpers
 
         public static void CopyAllProperties(object src, object dest, List<String> notCopyList)
         {
-            if (src.GetType() != dest.GetType())
-                throw new Exception("src and dest should have the same type");
+            var destProperties = dest.GetType().GetProperties().ToDictionary(p => p.Name, p => p);
+            var propertyInfos = src.GetType().GetProperties().Where(
+                p => !notCopyList.Contains(p.Name)
+                    && (p.PropertyType.IsValueType || p.PropertyType == typeof(string))
+                    && destProperties.Keys.Contains(p.Name)
+                    && destProperties[p.Name].PropertyType == p.PropertyType
+                );
 
-            PropertyInfo[] propertyInfos;
-            propertyInfos = src.GetType().GetProperties();
-
-            foreach (PropertyInfo propertyInfo in propertyInfos)
+            foreach (var propertyInfo in propertyInfos)
             {
-                if (!propertyInfo.PropertyType.IsValueType && propertyInfo.PropertyType != typeof(string)) continue;
-                if (notCopyList.Contains(propertyInfo.Name)) continue;
-                try
-                {
-                    propertyInfo.SetValue(dest, propertyInfo.GetValue(src, null), null);
-                }
-                catch (Exception)
-                {
-
-                }
-            }
-        }
-
-        public static void CopyTheSameProperties(object src, object dest)
-        {
-            PropertyInfo[] propertyInfos = src.GetType().GetProperties();
-            var destProperties = dest.GetType().GetProperties().ToDictionary(p=>p.Name, p=>p);
-
-            foreach (PropertyInfo propertyInfo in propertyInfos.Where(p => destProperties.Keys.Contains(p.Name) && destProperties[p.Name].PropertyType == p.PropertyType))
-            {
-                if (!propertyInfo.PropertyType.IsValueType && propertyInfo.PropertyType != typeof(string)) continue;
-                try
-                {
-                    destProperties[propertyInfo.Name].SetValue(dest, propertyInfo.GetValue(src, null), null);
-                }
-                catch (Exception)
-                {
-
-                }
+                destProperties[propertyInfo.Name].SetValue(dest, propertyInfo.GetValue(src, null), null);
             }
         }
 

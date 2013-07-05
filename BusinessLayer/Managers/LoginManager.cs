@@ -132,7 +132,7 @@ namespace BusinessLayer.Managers
                 return new MethodResult<string> { ErrorMessage = Messages.EmailAlreadyUsed };
             registerUser.RegistrationCode = RandomHelper.GetRandomString(10);
             var user = new User();
-            ReflectionHelper.CopyTheSameProperties(registerUser, user);
+            ReflectionHelper.CopyAllProperties(registerUser, user);
             Db.Save(user);
             return new MethodResult<string>(user.RegistrationCode);
         }
