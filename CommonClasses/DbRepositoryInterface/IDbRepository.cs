@@ -14,7 +14,6 @@ namespace CommonClasses.DbRepositoryInterface
 //        int? UserId { get; }
         void SetInstanceId(int instanceId);
         void SetAuthInfo(AuthInfo authInfo);
-        IDbTransaction BeginTransaction();
 
         int Save<T>(T obj, int? transactionNumber = null) where T : class, IMapping;
 
@@ -36,6 +35,6 @@ namespace CommonClasses.DbRepositoryInterface
         bool EmailIsNotUnique(string email, int userId = 0);
         bool IsExistInstanceName(string instanceName);
         void CreateUserInstance();
-       // void AddUserToRole(int roleId);
+        void AddUserToRole(int roleId);
     }
 }

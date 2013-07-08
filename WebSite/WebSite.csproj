@@ -120,6 +120,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\MenuCollection.cs" />
+    <Compile Include="Helpers\SessionAuthorize.cs" />
     <Compile Include="Helpers\SessionHelper.cs" />
     <Compile Include="Models\MenuPartialModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

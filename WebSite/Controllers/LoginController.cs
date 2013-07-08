@@ -1,11 +1,6 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using CommonClasses;
-//using CommonClasses.Helpers;
-//using CommonClasses.MethodArguments;
-//using CommonClasses.MethodResults;
-//using CommonClasses.Models;
-//using ServiceProxy;
 using CommonClasses.Helpers;
 using CommonClasses.InfoClasses;
 using CommonClasses.MethodArguments;
@@ -18,7 +13,7 @@ namespace WebSite.Controllers
 {
     public class LoginController : Controller
     {
-        //#region LogOn
+        #region LogOn
 
         public ActionResult LogOn()
         {
@@ -26,7 +21,6 @@ namespace WebSite.Controllers
             {
                 if (SessionHelper.IsInstanceSelected())
                 {
-                    TempData["FinanceKey"] = null;
                     var returnUrl = TempData["ReturnUrl"] != null ? TempData["ReturnUrl"].ToString() : "";
                     if (IsValidUrlToRedirect(returnUrl))
                     {
@@ -100,24 +94,22 @@ namespace WebSite.Controllers
             return View(model);
         }
 
-        //[HttpPost]
-        //public ActionResult LogonToCompany(int companyId, string finKey)
-        //{
-        //    var salt = RandomHelper.GetRandomString(10);
-        //    var loginResult = ServiceProxySingleton.Instance.LogonToCompany(new CompanyArg(companyId, salt, finKey));
-        //    if (loginResult.IsNotLoggedIn()) return SessionHelper.ClearSession();
+        [HttpPost]
+        public ActionResult LogonToInstance(int instanceId)
+        {
+            var loginResult = ServiceProxySingleton.Instance.LogonToInstance(instanceId);
+            if (loginResult.IsNotLoggedIn()) return SessionHelper.ClearSession();
 
-        //    if (loginResult.IsError()) return Json(loginResult);
+            if (loginResult.IsError()) return Json(loginResult);
 
-        //    Session[Constants.SESSION_INSTANCE_ID] = loginResult.CompanyId;
-        //    Session[Constants.SESSION_VIEW_INSTANCE_NAME] = GetViewInstanceName(loginResult.CompanyName);
-        //    SessionHelper.IsFinanceKeyEntered = loginResult.FinanceKeyIsEntered;
-        //    SessionHelper.CompanyHasKey = loginResult.CompanyHasKey;
-        //    Session[Constants.SESSION_LAST_LOGGED_COMPANY] = loginResult.CompanyId;
-        //    SessionHelper.Permissions = loginResult.Access;
+            //TODO: change to property
+            Session[Constants.SESSION_INSTANCE_ID] = loginResult.InstanceId;
+            Session[Constants.SESSION_VIEW_INSTANCE_NAME] = GetViewInstanceName(loginResult.InstanceName);
+            SessionHelper.LastUsedInstanceId = loginResult.InstanceId;
+            SessionHelper.Permissions = loginResult.Access;
 
-        //    return Json(new {});
-        //}
+            return Json(new {});
+        }
 
         public ActionResult SelectInstance()
         {
@@ -125,19 +117,19 @@ namespace WebSite.Controllers
             return RedirectToAction("LogOn", "Login");
         }
 
-        //[SessionAuthorize]
-        //[HttpPost]
-        //public ActionResult AddCompany(NewCompanyArg arg)
-        //{
-        //    var result = ServiceProxySingleton.Instance.CreateCompany(arg);
-        //    if (result.IsNotLoggedIn()) return SessionHelper.ClearSession();
+        [SessionAuthorize]
+        [HttpPost]
+        public ActionResult AddInstance(string instanceName)
+        {
+            var result = ServiceProxySingleton.Instance.CreateInstance(instanceName);
+            if (result.IsNotLoggedIn()) return SessionHelper.ClearSession();
 
-        //    if (result.IsError()) return Json(result);
+            if (result.IsError()) return Json(result);
 
-        //    return Json(new { NewId = result.AttachedObject });
-        //}
+            return Json(new { NewId = result.AttachedObject });
+        }
 
-        //#endregion
+        #endregion
 
         #region LogOff
 

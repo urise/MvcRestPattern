@@ -73,7 +73,7 @@
                         }
                     }
                 </select>
-                <span id="addCompany" class="" title="Добавить новую компанию"></span>
+                <span id="addInstance" class="" title="Добавить новую компанию"></span>
             </div>
         </div>
     
@@ -95,8 +95,8 @@
             function setupInteractivity() {
                 var selectedCompanyInPropDown = "";
                 if ($("#companiesSelector option").length == 0) {
-                    $("#companiesSelector, #FinanceKey, #goToCompany").addClass('disabled');
-                    $("#companiesSelector, #FinanceKey").attr('disabled', 'disabled');
+                    $("#companiesSelector, #goToCompany").addClass('disabled');
+                    $("#companiesSelector").attr('disabled', 'disabled');
                 }
                 
                 var dataForLastInstance = $("#inputs").data("lastInstance");
@@ -110,44 +110,26 @@
                 }
                 $('#companiesSelector :selected').removeAttr('selected');
                 $('#companiesSelector option[value="' + selectedCompanyInPropDown + '"]').attr('selected', 'selected');
-
-                if ($('#companiesSelector :selected').hasClass('key-dependant')) {
-                    $("#FinanceKey").removeClass('disabled').removeAttr('disabled');
-                }
-                else {
-                    $("#FinanceKey").addClass('disabled').attr('disabled', 'disabled');
-                }
             }
-
-            $("body").on('change', '#companiesSelector',
-                function () {
-                    if (!$(':selected').hasClass('key-dependant')) {
-                        $("#FinanceKey").addClass('disabled').attr('disabled', 'disabled');
-                        $("#FinanceKey").val('');
-                    } else $("#FinanceKey").removeClass('disabled').removeAttr('disabled');
-                });
 
             $("body").on('click', '#goToCompany',
                 function () {
                     if ($(this).hasClass('disabled')) return;
                     $(document).off('ajaxStop');
-                    var data = { CompanyId: $("#companiesSelector :selected").val(), FinKey: $("#FinanceKey").val() };
-                    window.ajaxCallSingleton('@Url.Action("LogonToCompany")', 'Post', data, function (r) {
-                        window.location.href = '@Url.Action("Index", "Home")';
+                    window.ajaxCallSingleton('@Url.Action("LogonToInstance")', 'Post', { instanceId: $("#companiesSelector :selected").val() }, function (r) {
+                        window.location.href = '@Url.Action("Home", "Home")';
                     }, null, null, window.progressOverlay.stop);
                 });
 
             $("body").on('click', '#saveCompany',
                 function () {
-                    var companyName = $("#InstanceName").val();
+                    var instanceName = $("#InstanceName").val();
 
-
-                    var data = { InstanceName: companyName, CompanyIdForTransactionTypes: $("#CompanyIdForTransactionTypes").val(), CompanyIdForDuties: $("#CompanyIdForDuties").val() };
-                    window.ajaxCallSingleton('@Url.Action("AddCompany")', 'Post', data, function (r) {
+                    window.ajaxCallSingleton('@Url.Action("AddInstance")', 'Post', { instanceName: instanceName }, function (r) {
 
                             $("#inputs").data("lastInstance", r.NewId);
-                            $("#companiesSelector").prepend('<option class="" selected value="' + r.NewId + '">' + companyName + '</option>');
-                            $("#companiesSelector, #FinanceKey, #goToCompany").removeClass('disabled').removeAttr('disabled');
+                            $("#companiesSelector").prepend('<option class="" selected value="' + r.NewId + '">' + instanceName + '</option>');
+                            $("#companiesSelector, #goToCompany").removeClass('disabled').removeAttr('disabled');
                             closeNewCompanyForm();
                     }, null);
                 });
@@ -157,10 +139,10 @@
                     closeNewCompanyForm();
                 });
 
-            $("body").on('click', '#addCompany',
+            $("body").on('click', '#addInstance',
                 function () {
 
-                    var markup = generateAddCompanyMarkUp();
+                    var markup = generateAddInstanceMarkUp();
 
                     if ($('#login #companySelector').length == 0) $('#login').wrapInner('<div id="companySelector"/>');
 
@@ -180,15 +162,10 @@
                 setupInteractivity();
             }
 
-            function generateAddCompanyMarkUp() {
+            function generateAddInstanceMarkUp() {
             
                 var html = $('<div id="instanceCreator"><h1>Новая компания</h1>');
                 html.append('<input type="text" name="InstanceName" id="InstanceName" value="" class="placeholder" placeholder="Введите имя компании" />');
-                var listOfCompanies = $("#companiesSelector").clone(false);
-                html.append(listOfCompanies.clone(false).attr('id', 'CompanyIdForTransactionTypes')
-                        .attr('title', 'Компании для импорта операций').prepend('<option class="" selected="selected" value="">Компании для импорта операций</option>'));
-                html.append(listOfCompanies.clone(false).attr('id', 'CompanyIdForDuties')
-                        .attr('title', 'Компании для импорта видов работ').prepend('<option class="" selected="selected" value="">Компании для импорта видов работ</option>'));
                 html.append('<span id="saveCompany" class="login-btn" title="Сохранить компанию">Сохранить</span><span id="backCompany" class="login-btn" title="Отмена">Отмена</span></div>');
                 return html;
             }

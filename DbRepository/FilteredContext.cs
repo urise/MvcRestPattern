@@ -98,16 +98,5 @@ namespace DbLayer
         }
 
         #endregion
-
-        #region Transaction
-
-        public DbTransaction BeginTransaction()
-        {
-            if (_context.Database.Connection.State != ConnectionState.Open)
-                _context.Database.Connection.Open();
-            return _context.Database.Connection.BeginTransaction();
-        }
-
-        #endregion
     }
 }

@@ -85,6 +85,10 @@
     <Compile Include="Migrations\201307080916358_Role_UserRole_ComponentRole.Designer.cs">
       <DependentUpon>201307080916358_Role_UserRole_ComponentRole.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201307081125560_UpdateForeignKeys.cs" />
+    <Compile Include="Migrations\201307081125560_UpdateForeignKeys.Designer.cs">
+      <DependentUpon>201307081125560_UpdateForeignKeys.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\DbRepository.cs" />
@@ -130,6 +134,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201307080916358_Role_UserRole_ComponentRole.resx">
       <DependentUpon>201307080916358_Role_UserRole_ComponentRole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201307081125560_UpdateForeignKeys.resx">
+      <DependentUpon>201307081125560_UpdateForeignKeys.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

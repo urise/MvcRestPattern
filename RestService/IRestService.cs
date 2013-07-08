@@ -83,5 +83,13 @@ namespace RestService
         MethodResult<UserPassword> GetUserPasswordByCode(string code);
 
         #endregion
+
+        #region Instance
+        [OperationContract]
+        [WebInvoke(Method = "POST",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "createInstance/{token}")]
+        MethodResult<int> CreateInstance(string token, string instanceName);
+        #endregion
     }
 }

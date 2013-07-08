@@ -147,11 +147,6 @@ namespace DbLayer.Repositories
 
         #region Methods
 
-        public IDbTransaction BeginTransaction()
-        {
-            return _context.BeginTransaction();
-        }
-
         #endregion
 
         #region Login
@@ -248,13 +243,13 @@ namespace DbLayer.Repositories
             Save(userInstance);
         }
 
-//        public void AddUserToRole(int roleId)
-//        {
-//            if (!InstanceId.HasValue || !UserId.HasValue)
-//                throw new Exception(Messages.ErrorCompanyCreation);
-//            var userRole = new UserToRole { CompanyId = InstanceId.Value, RoleId = roleId, UserId = UserId.Value };
-//            Save(userRole);
-//        }
+        public void AddUserToRole(int roleId)
+        {
+            if (!InstanceId.HasValue || !UserId.HasValue)
+                throw new Exception(Messages.ErrorCompanyCreation);
+            var userRole = new UserRole { InstanceId = InstanceId.Value, RoleId = roleId, UserId = UserId.Value };
+            Save(userRole);
+        }
 
         #endregion
     }

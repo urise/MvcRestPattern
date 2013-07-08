@@ -107,6 +107,14 @@ namespace RestService
             }
         }
 
+        private void ClearAuthCompanyId(string token)
+        {
+            var authInfo = AuthTokens.Instance.GetAuth(token);
+            if (authInfo != null)
+            {
+                authInfo.InstanceId = 0;
+            }
+        }
         #endregion
 
         #region Login, Passwords & Register
@@ -166,6 +174,15 @@ namespace RestService
             return RunLoginManagerMethod(lm => lm.GetUserPasswordByCode(code));
         }
 
+        #endregion
+
+        #region Instance
+
+        public MethodResult<int> CreateInstance(string token, string instanceName)
+        {
+            ClearAuthCompanyId(token);
+            return RunManagerMethod<InstanceManager, MethodResult<int>>(token, cm => cm.CreateInstance(instanceName));
+        }
         #endregion
     }
 }

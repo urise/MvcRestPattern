@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections;
+using System.Transactions;
 using CommonClasses;
 using CommonClasses.DbClasses;
 using CommonClasses.Helpers;
 using CommonClasses.MethodResults;
+using Interfaces.Enums;
 
 namespace BusinessLayer.Managers
 {
@@ -14,10 +13,9 @@ namespace BusinessLayer.Managers
     {
         #region Create Save Company
 
-        public MethodResult<int> CreateCompany(string instanceName)
+        public MethodResult<int> CreateInstance(string instanceName)
         {
-            var dbTran = Db.BeginTransaction();
-            try
+            using (var transaction = new TransactionScope())
             {
                 var instance = new Instance
                 {
@@ -30,17 +28,12 @@ namespace BusinessLayer.Managers
                 Db.Save(instance);
                 Db.SetInstanceId(instance.InstanceId);
 
-              //  var adminRoleId = InsertSystemRoles();
+                var adminRoleId = InsertSystemRoles(instance.InstanceId);
                 Db.CreateUserInstance();
-                //Db.AddUserToRole(adminRoleId);
-                
-                dbTran.Commit();
+                Db.AddUserToRole(adminRoleId);
+                transaction.Complete();
                 return new MethodResult<int>(instance.InstanceId);
-            }
-            catch
-            {
-                dbTran.Rollback();
-                throw;
+
             }
         }
         
@@ -52,72 +45,39 @@ namespace BusinessLayer.Managers
                 return Messages.ExistsCompanyName;
             return null;
         }
-        /*
 
-                private int InsertSystemRoles()
-                {
-                    var adminRoleId = InsertAdminRoleAndAccess();
-                    InsertGuestRoleAndAccess();
-                    return adminRoleId;
-                }
+        private int InsertSystemRoles(int instanceId)
+        {
+            var adminRoleId = InsertRoleAndAccess(instanceId, SystemRoles.Administrator, Enum.GetValues(typeof(AccessComponent)), AccessLevel.ReadWrite);
+            InsertRoleAndAccess(instanceId, SystemRoles.Guest, Constants.ComponentsForGuest, AccessLevel.Read);
+            return adminRoleId;
+        }
 
-                private int InsertAdminRoleAndAccess()
+        private int InsertRoleAndAccess(int instanceId, SystemRoles systemRole, IEnumerable components, AccessLevel accessLevel)
+        {
+            var role = new Role
+            {
+                InstanceId = instanceId,
+                RoleType = systemRole,
+                RoleName = systemRole.GetDescription()
+            };
+            Db.Save(role);
+            foreach (var component in components)
+            {
+                if ((int)component == (int)AccessComponent.None)
+                    continue;
+                var componentsToRole = new ComponentRole
                 {
-                    var adminRole = new RoleDb
-                    {
-                        CompanyId = Db.CompanyId,
-                        Type = (int)SystemRoles.Administrator,
-                        Name = SystemRoles.Administrator.GetDescription()
-                    };
-                    Db.SaveRole(adminRole);
-                    foreach (var component in Enum.GetValues(typeof(AccessComponent)))
-                    {
-                        if ((int)component == (int)AccessComponent.None)
-                            continue;
-                        var componentsToRole = new ComponentsToRoleDb
-                        {
-                            CompanyId = Db.CompanyId,
-                            AccessLevel = (int)AccessLevel.ReadWrite,
-                            ComponentId = (int)component,
-                            RoleId = adminRole.RoleId
-                        };
-                        Db.SaveComponentsToRole(componentsToRole);
-                    }
-                    return adminRole.RoleId;
-                }
+                    InstanceId = instanceId,
+                    AccessLevel = accessLevel,
+                    ComponentId = (int)component,
+                    RoleId = role.RoleId
+                };
+                Db.Save(componentsToRole);
+            }
+            return role.RoleId;
+        }
 
-                private void InsertGuestRoleAndAccess()
-                {
-                    var guestRole = new RoleDb
-                    {
-                        CompanyId = Db.CompanyId,
-                        Type = (int)SystemRoles.Guest,
-                        Name = SystemRoles.Guest.GetDescription()
-                    };
-                    Db.SaveRole(guestRole);
-                    foreach (var componentId in Constants.ComponentsForGuest)
-                    {
-                        var componentsToRole = new ComponentsToRoleDb
-                        {
-                            CompanyId = Db.CompanyId,
-                            AccessLevel = (int)AccessLevel.Read,
-                            ComponentId = componentId,
-                            RoleId = guestRole.RoleId
-                        };
-                        Db.SaveComponentsToRole(componentsToRole);
-                    }
-                }
-
-                private int GetSystemRole(SystemRoles roleType)
-                {
-                    if (roleType == SystemRoles.None)
-                        throw new Exception();
-                    var roleId = Db.GetSystemRoleId(roleType);
-                    if (!roleId.HasValue)
-                        throw new Exception();
-                    return roleId.Value;
-                }
-                */
         #endregion
     }
 }

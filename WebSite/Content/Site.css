@@ -1314,9 +1314,7 @@ table#finKeyTable td:first-child, table#periodSelector td:first-child { font-wei
 #login #inputs select:focus { background-color: #fff;}
 #login #inputs select option { padding: 5px 5px 5px 30px;}
 #login #inputs select .key-dependant { background: url(images/login-sprite.png) 7px -61px no-repeat;}
-#login #companyCreator input#CompanyName,
-#login #companyCreator select#CompanyIdForTransactionTypes,
-#login #companyCreator select#CompanyIdForDuties { background-position:  7px -150px;}
+#login #companyCreator input#CompanyName { background-position:  7px -150px;}
 #login #inputs select:disabled { min-height: 56px;background-color: #E0E0E0;}
 
 .chrome-wrapper { position: relative;overflow: hidden;display: inline-block;}
@@ -1341,11 +1339,6 @@ table#finKeyTable td:first-child, table#periodSelector td:first-child { font-wei
 #login #Password, #login #ConfirmPassword, #login #OldPassword
 {
     background-position: 5px -50px, 97% 20px;
-}
-
-#login #inputs input#FinanceKey
-{
-    background-position: 5px -100px;
 }
 
 #login #inputs input:focus
@@ -1380,7 +1373,7 @@ table#finKeyTable td:first-child, table#periodSelector td:first-child { font-wei
 
 .add-btn-holder { overflow: hidden;margin-bottom: 5px;position: relative;}
 
-#addCompany {
+#addInstance {
     display: inline-block;
     width: 58px;
     height: 58px;
@@ -1388,7 +1381,7 @@ table#finKeyTable td:first-child, table#periodSelector td:first-child { font-wei
     float: right;
 }
 
-#addCompany:hover { background-position: 0 100%;cursor: pointer;}
+#addInstance:hover { background-position: 0 100%;cursor: pointer;}
 
 /*--------------------*/
 #login #actions

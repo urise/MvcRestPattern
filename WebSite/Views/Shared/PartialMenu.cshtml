@@ -9,7 +9,6 @@
     var menuCollection = Model.Collection;
     var requestedItem = menuCollection.FirstOrDefault(x => x.Controller == controller && x.Action == action && x.TargetId == target);
     var requiredId = ViewBag.EmpId ?? 0;
-    var finKey = SessionHelper.IsFinanceKeyEntered;
 }
 @if (requestedItem == null && action == "AccessError")
 {

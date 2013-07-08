@@ -36,6 +36,14 @@ namespace ServiceProxy
         }
         #endregion
 
+        #region Instance
+        public MethodResult<int> CreateInstance(string instanceName)
+        {
+            Delay();
+            return SendPostRequest<MethodResult<int>, string>("createInstance", instanceName);
+        }
+        #endregion
+
         #region Login
 
         public LoginResult Logon(LogonArg arg)

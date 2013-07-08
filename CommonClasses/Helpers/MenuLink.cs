@@ -10,7 +10,6 @@
         public bool IdDependant { get; set; }
         public bool FinKeyRestricted { get; set; }
         public int ItemLevel { get; set; }
-        public bool IsDisabledWithoutFinanceKey { get; set; }
         public bool IsCategory { get; set; }
         public AccessComponent Component { get; set; }
         public bool HasAccess { get; set; }
