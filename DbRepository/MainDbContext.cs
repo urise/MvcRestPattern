@@ -16,6 +16,9 @@ namespace DbLayer
         public DbSet<TemporaryCode> TemporaryCodes { get; set; }
         public DbSet<DataLog> DataLogs { get; set; }
         public DbSet<Component> Components { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<ComponentRole> ComponentRoles { get; set; }
 
         #region Auxilliary Properties and Methods
 

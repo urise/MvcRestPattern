@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.DirectoryServices;
-using System.Runtime.InteropServices;
-using System.Configuration;
 using CommonClasses.MethodResults;
 
 namespace CommonClasses.Helpers
@@ -65,6 +60,9 @@ namespace CommonClasses.Helpers
                 DirectorySearcher search = new DirectorySearcher(root);
                 search.SearchScope = SearchScope.Subtree;
                 search.Filter = "(sAMAccountName=" + userName.Substring(userName.IndexOf("\\") + 1) + ")";
+                SearchResultCollection results = search.FindAll();
+                if (results.Count == 0)
+                    return new BaseResult { ErrorMessage = Messages.WrongLoginOrPassword };
             }
             catch (Exception ex)
             {

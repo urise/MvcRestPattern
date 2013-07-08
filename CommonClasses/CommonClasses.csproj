@@ -47,14 +47,17 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="DbClasses\Component.cs" />
+    <Compile Include="DbClasses\ComponentRole.cs" />
     <Compile Include="DbClasses\DataLog.cs" />
     <Compile Include="DbClasses\IConstraintedByInstanceId.cs" />
     <Compile Include="DbClasses\Instance.cs" />
     <Compile Include="DbClasses\InstanceUsage.cs" />
     <Compile Include="DbClasses\IMapping.cs" />
+    <Compile Include="DbClasses\Role.cs" />
     <Compile Include="DbClasses\TemporaryCode.cs" />
     <Compile Include="DbClasses\User.cs" />
     <Compile Include="DbClasses\UserInstance.cs" />
+    <Compile Include="DbClasses\UserRole.cs" />
     <Compile Include="DbRepositoryInterface\IDbRepository.cs" />
     <Compile Include="Helpers\AdHelper.cs" />
     <Compile Include="Helpers\AppConfiguration.cs" />
