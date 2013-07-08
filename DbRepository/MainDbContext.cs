@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using CommonClasses.DbClasses;
 
 namespace DbLayer
@@ -55,15 +56,9 @@ namespace DbLayer
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserRole>()
-                        .HasRequired(a => a.Instance)
-                        .WithMany()
-                        .HasForeignKey(u => u.InstanceId).WillCascadeOnDelete(false);
+            base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<ComponentRole>()
-            .HasRequired(a => a.Instance)
-            .WithMany()
-            .HasForeignKey(u => u.InstanceId).WillCascadeOnDelete(false);
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
         }
 
         #endregion
