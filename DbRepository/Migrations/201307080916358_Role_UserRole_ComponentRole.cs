@@ -32,7 +32,7 @@ namespace DbLayer.Migrations
                 .PrimaryKey(t => t.UserRoleId)
                 .ForeignKey("dbo.Users", t => t.UserId, cascadeDelete: true)
                 .ForeignKey("dbo.Roles", t => t.RoleId, cascadeDelete: true)
-                .ForeignKey("dbo.Instances", t => t.InstanceId, cascadeDelete: true)
+                .ForeignKey("dbo.Instances", t => t.InstanceId)
                 .Index(t => t.UserId)
                 .Index(t => t.RoleId)
                 .Index(t => t.InstanceId);
@@ -50,7 +50,7 @@ namespace DbLayer.Migrations
                 .PrimaryKey(t => t.ComponentRoleId)
                 .ForeignKey("dbo.Components", t => t.ComponentId, cascadeDelete: true)
                 .ForeignKey("dbo.Roles", t => t.RoleId, cascadeDelete: true)
-                .ForeignKey("dbo.Instances", t => t.InstanceId, cascadeDelete: true)
+                .ForeignKey("dbo.Instances", t => t.InstanceId)
                 .Index(t => t.ComponentId)
                 .Index(t => t.RoleId)
                 .Index(t => t.InstanceId);

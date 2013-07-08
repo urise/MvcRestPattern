@@ -53,6 +53,19 @@ namespace DbLayer
             return (DbSet<T>) result;
         }
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UserRole>()
+                        .HasRequired(a => a.Instance)
+                        .WithMany()
+                        .HasForeignKey(u => u.InstanceId).WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ComponentRole>()
+            .HasRequired(a => a.Instance)
+            .WithMany()
+            .HasForeignKey(u => u.InstanceId).WillCascadeOnDelete(false);
+        }
+
         #endregion
     }
 }
