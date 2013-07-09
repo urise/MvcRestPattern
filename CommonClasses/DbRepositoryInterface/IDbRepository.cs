@@ -36,5 +36,7 @@ namespace CommonClasses.DbRepositoryInterface
         bool IsExistInstanceName(string instanceName);
         void CreateUserInstance();
         void AddUserToRole(int roleId);
+
+        List<UserInstanceInfo> GetUserInstanceList();
     }
 }

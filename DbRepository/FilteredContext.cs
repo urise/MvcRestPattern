@@ -73,6 +73,16 @@ namespace DbLayer
             get { return _context.DataLogs.Where(r => r.InstanceId == InstanceId); }
         }
 
+        public IQueryable<UserRole> UserRoles
+        {
+            get { return _context.UserRoles.Where(r => r.InstanceId == InstanceId); }
+        }
+
+        public IQueryable<ComponentRole> ComponentRoles
+        {
+            get { return _context.ComponentRoles.Where(r => r.InstanceId == InstanceId); }
+        }
+
         #endregion
 
         #region Other Methods

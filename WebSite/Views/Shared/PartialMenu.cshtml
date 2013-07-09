@@ -47,9 +47,8 @@
             @foreach (var l in collectionToRender)
             {
                 var isActive = MenuHelper.CheckForRelationship(menuCollection, l, requestedItem) ? "active " : "";
-                var keyRestrictable = (!finKey && l.FinKeyRestricted) ? "keyRestricted " : "";
                 var hasAccess = l.HasAccess ? " " : "noAccess";
-                var linkClass = isActive + keyRestrictable + hasAccess;
+                var linkClass = isActive + hasAccess;
                 <li class="link-@l.MenuLinkId">
                     @if(l.IsCategory)
                     {

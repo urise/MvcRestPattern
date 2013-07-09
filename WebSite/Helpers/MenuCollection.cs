@@ -9,13 +9,13 @@ namespace WebSite.Helpers
     {
         private static List<MenuLink> _menuLinks = new List<MenuLink>
                        {
-                           new MenuLink { MenuLinkId = 1, Name = "Расчетная ведомость", Controller = "Home", Action = "Home", ParentId = null, ItemLevel = 1, Component = AccessComponent.Home},
-                           new MenuLink { MenuLinkId = 2, Name = "Компания", Controller = "Company", Action = "Index", ParentId = 20, ItemLevel = 1, Component = AccessComponent.Instance},
-                           new MenuLink { MenuLinkId = 3, Name = "Настройки", Controller = "CompanyUsers", Action = "CompanyUsersList", ParentId = null, ItemLevel = 1, Component = AccessComponent.Settings, AutoRedirectedMenuId = 3},
-                           new MenuLink { MenuLinkId = 4, Name = "Компания", Controller = "", Action = "", ParentId = 10, ItemLevel = 2, IsCategory = true, Component = AccessComponent.None}, 
-                           new MenuLink { MenuLinkId = 5, Name = "Пользователи", Controller = "CompanyUsers", Action = "CompanyUsersList", ParentId = 4, ItemLevel = 3, Component = AccessComponent.Users},
+                           new MenuLink { MenuLinkId = 1, Name = "Главная", Controller = "Home", Action = "Home", ParentId = null, ItemLevel = 1, Component = AccessComponent.Home},
+                           new MenuLink { MenuLinkId = 2, Name = "Компания", Controller = "Instance", Action = "Instance", ParentId = 20, ItemLevel = 1, Component = AccessComponent.Instance},
+                           new MenuLink { MenuLinkId = 3, Name = "Настройки", Controller = "", Action = "", ParentId = null, ItemLevel = 1, Component = AccessComponent.Settings, AutoRedirectedMenuId = 5},
+                           new MenuLink { MenuLinkId = 4, Name = "Компания", Controller = "", Action = "", ParentId = 3, ItemLevel = 2, IsCategory = true, Component = AccessComponent.None}, 
+                           new MenuLink { MenuLinkId = 5, Name = "Пользователи", Controller = "Users", Action = "Users", ParentId = 4, ItemLevel = 3, Component = AccessComponent.Users},
                            new MenuLink { MenuLinkId = 6, Name = "Роли", Controller = "Roles", Action = "Roles", ParentId = 4, ItemLevel = 3, Component = AccessComponent.Roles},
-                            new MenuLink { MenuLinkId = 7, Name = "Инфраструктура", Controller = "", Action = "", ParentId = 10, ItemLevel = 2, IsCategory = true, Component = AccessComponent.None},
+                           new MenuLink { MenuLinkId = 7, Name = "Инфраструктура", Controller = "", Action = "", ParentId = 3, ItemLevel = 2, IsCategory = true, Component = AccessComponent.None},
                        };
 
         public static List<MenuLink> MenuLinks
@@ -56,7 +56,7 @@ namespace WebSite.Helpers
         private static MenuLink GetAvailableActionLink(MenuLink menuLink)
         {
             MenuLink autoLink = _menuLinks.FirstOrDefault(m => menuLink.AutoRedirectedMenuId == m.MenuLinkId);
-            if (!autoLink.HasAccess)
+            if (autoLink != null && !autoLink.HasAccess)
                 foreach (var dependedLink in _menuLinks.Where(m => m.ParentId == menuLink.MenuLinkId))
                 {
                     if (dependedLink.IsCategory)

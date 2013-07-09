@@ -102,11 +102,11 @@
                 var dataForLastInstance = $("#inputs").data("lastInstance");
                 if (dataForLastInstance > 0) {
                     if (localStorage) {
-                        localStorage.setItem('lastAssCompany', dataForLastInstance);
+                        localStorage.setItem('lastVisitedInstance', dataForLastInstance);
                         selectedCompanyInPropDown = dataForLastInstance;
                     }
                 } else {
-                    if (localStorage && localStorage.getItem('lastAssCompany')) selectedCompanyInPropDown = localStorage.getItem('lastAssCompany');
+                    if (localStorage && localStorage.getItem('lastVisitedInstance')) selectedCompanyInPropDown = localStorage.getItem('lastVisitedInstance');
                 }
                 $('#companiesSelector :selected').removeAttr('selected');
                 $('#companiesSelector option[value="' + selectedCompanyInPropDown + '"]').attr('selected', 'selected');

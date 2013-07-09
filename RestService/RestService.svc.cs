@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using BusinessLayer.Authentication;
+using CommonClasses;
 using CommonClasses.DbClasses;
 using CommonClasses.Helpers;
 using CommonClasses.InfoClasses;
 using CommonClasses.MethodArguments;
 using CommonClasses.MethodResults;
 using CommonClasses.Models;
+using CommonClasses.Roles;
 using DbLayer.Repositories;
 using Interfaces.Enums;
 using NLog;
@@ -182,6 +184,14 @@ namespace RestService
         {
             ClearAuthCompanyId(token);
             return RunManagerMethod<InstanceManager, MethodResult<int>>(token, cm => cm.CreateInstance(instanceName));
+        }
+        #endregion
+
+        #region User
+        [AccessTier(AccessComponent.Users, AccessLevel.Read)]
+        public MethodResult<List<UserInstanceInfo>> GetUserInstanceList(string token)
+        {
+            return RunManagerMethod<UserManager, MethodResult<List<UserInstanceInfo>>>(token, rep => rep.GetUserInstanceList());
         }
         #endregion
     }

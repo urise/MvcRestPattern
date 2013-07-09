@@ -8,7 +8,6 @@
         public string Action { get; set; }
         public int? ParentId { get; set; }
         public bool IdDependant { get; set; }
-        public bool FinKeyRestricted { get; set; }
         public int ItemLevel { get; set; }
         public bool IsCategory { get; set; }
         public AccessComponent Component { get; set; }

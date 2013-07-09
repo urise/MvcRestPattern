@@ -73,6 +73,7 @@
     <Compile Include="Helpers\XmlHelper.cs" />
     <Compile Include="InfoClasses\AuthInfo.cs" />
     <Compile Include="InfoClasses\PasswordMailInfo.cs" />
+    <Compile Include="InfoClasses\UserInstanceInfo.cs" />
     <Compile Include="Messages.cs" />
     <Compile Include="MethodArguments\LogonArg.cs" />
     <Compile Include="MethodResults\BaseResult.cs" />

@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Web;
+using CommonClasses;
 using CommonClasses.DbClasses;
 using CommonClasses.InfoClasses;
 using CommonClasses.MethodArguments;
 using CommonClasses.MethodResults;
 using CommonClasses.Models;
+using CommonClasses.Roles;
 
 namespace RestService
 {
@@ -91,5 +93,12 @@ namespace RestService
             UriTemplate = "createInstance/{token}")]
         MethodResult<int> CreateInstance(string token, string instanceName);
         #endregion
+
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "getUserInstanceList/{token}")]
+        MethodResult<List<UserInstanceInfo>> GetUserInstanceList(string token);
+
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using CommonClasses;
 using CommonClasses.DbClasses;
@@ -22,7 +21,7 @@ namespace DbLayer.Repositories
             get { return _context; }
         }
 
-        private int? _instanceId = null;
+        private int? _instanceId;
         public int? InstanceId
         {
             get { return _instanceId; }
@@ -222,10 +221,21 @@ namespace DbLayer.Repositories
             return Context.Instances.FirstOrDefault(i=>i.InstanceId == id);
         }
 
-        //TODO:
-        public UserAccess GetUserAccess(int userId)
-        { return null; }
 
+        public UserAccess GetUserAccess(int userId)
+        {
+            var q = from ur in Context.UserRoles
+                    join cr in Context.ComponentRoles on ur.RoleId equals cr.RoleId
+                    where ur.UserId == userId
+                    group cr by cr.ComponentId into accesses
+                    select new { Component = (AccessComponent)accesses.Key, Level = accesses.Max(l => l.AccessLevel) };
+
+            var result = new UserAccess();
+            foreach (var r in q) result.Add(r.Component, r.Level);
+            return result;
+        }
+
+        //TODO:
         public void DeleteTemporaryCode(int temporaryCodeId) { }
         #endregion
 
@@ -251,6 +261,17 @@ namespace DbLayer.Repositories
             Save(userRole);
         }
 
+        #endregion
+
+        #region Users
+        public List<UserInstanceInfo> GetUserInstanceList()
+        {
+            return (from user in Context.Users
+                    join uc in Context.UserInstances on user.UserId equals uc.UserId
+                    where uc.InstanceId == InstanceId
+                    select new UserInstanceInfo { UserInstanceId = uc.UserInstanceId, UserName = user.Login })
+                    .OrderBy(u => u.UserName).AsEnumerable().ToList();
+        }
         #endregion
     }
 }

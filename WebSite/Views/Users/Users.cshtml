@@ -1,0 +1,70 @@
+﻿@using CommonClasses
+@using WebSite.Helpers
+@using CommonClasses.InfoClasses
+@model List<UserInstanceInfo>
+@{
+    ViewBag.Title = "Пользователи";
+    var accessClass = SessionHelper.Permissions.IsGranted(AccessComponent.Users, AccessLevel.ReadWrite) ? "" : "noAccess";
+}
+
+<h3>Пользователи</h3>
+<div>
+<ul>
+    <li></li>
+    <li id="searchEmployee">
+        @using (Html.BeginForm("Users", "Users"))
+        {
+            string search = ViewBag.SearchString ?? string.Empty;
+            @Html.TextBox("SearchString", search) 
+
+            <input type="submit" id="applyFilters" value="Поиск" title="Применить фильтр" class="bw-btn-long" />
+            <input type="button" id="clearButton" value="Очистить" title="Очистить настройки фильтра"
+                class="bw-btn-long" />
+        }
+    </li>
+</ul>
+</div>
+<br style="clear: both;"><br/>
+
+<div class="table-wrapper companyUserList">
+    <table class="pseudo-table companyUserList">
+        <tr class="pseudo-th">
+            <th class="ps-name">Логин</th>
+            <th class="ps-action">
+                <span class="new iconed-button @accessClass" title="Добавить нового пользователя">Добавить нового пользователя</span>
+            </th>
+        </tr>
+        @if (Model.Any())
+        {
+            var currentUser = Session[Constants.SESSION_USER_NAME].ToString().ToLower();
+            foreach (var r in Model)
+            {
+                <tr class="companyUserRow" id="@r.UserInstanceId" data-login="@r.UserName">
+                    <td class="ps-name">@r.UserName</td>
+                    <td class="ps-action">
+                        <span class="edit iconed-button @accessClass" title="Редактировать">Редактировать</span>
+                        @if (!Equals(@currentUser, @r.UserName.ToLower()))
+                        {
+                            <span class="delete iconed-button @accessClass" title="Удалить">Удалить</span>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr class="emty-pseudo-row"><td colspan="2">Список пользователей пуст.</td></tr>
+        }
+    </table>
+</div>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/CommonDynamicTable.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/CompanyUser.js")" type="text/javascript"></script>
+<script type="text/javascript">
+//    window.ShowUser = '@Url.Action("CompanyUser", "CompanyUsers")';
+//    window.SaveUser = '@Url.Action("SaveCompanyUser", "CompanyUsers")';
+//    window.DeleteCompanyUser = '@Url.Action("Delete", "CompanyUsers")';
+//    window.UpdateCompanyUser = '@Url.Action("Update", "CompanyUsers")';
+</script>

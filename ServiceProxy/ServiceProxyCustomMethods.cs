@@ -86,5 +86,13 @@ namespace ServiceProxy
         }
 
         #endregion
+
+        #region Users Methods
+        public MethodResult<List<UserInstanceInfo>> GetUserInstanceList()
+        {
+            Delay();
+            return SendGetRequest<MethodResult<List<UserInstanceInfo>>>("getUserInstanceList");
+        }
+        #endregion
     }
 }
