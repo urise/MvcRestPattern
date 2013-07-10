@@ -33,20 +33,20 @@ namespace RestService
         [OperationContract]
         [WebInvoke(Method = "GET",
             ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "logout/{token}")]
-        BaseResult Logout(string token);
+            UriTemplate = "logout")]
+        BaseResult Logout();
 
         [OperationContract]
         [WebInvoke(Method = "GET",
             ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "getUserInstances/{token}")]
-        MethodResult<IList<Instance>> GetUserInstances(string token);
+            UriTemplate = "getUserInstances")]
+        MethodResult<IList<Instance>> GetUserInstances();
 
         [OperationContract]
         [WebInvoke(Method = "POST",
             ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "logonToInstance/{token}")]
-        LoginResult LogonToInstance(string token, int instanceId);
+            UriTemplate = "logonToInstance")]
+        LoginResult LogonToInstance(int instanceId);
 
         [OperationContract]
         [WebInvoke(Method = "POST",
@@ -63,8 +63,8 @@ namespace RestService
         [OperationContract]
         [WebInvoke(Method = "POST",
             ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "changePassword/{token}")]
-        BaseResult ChangePassword(string token, UserPassword userPassword);
+            UriTemplate = "changePassword")]
+        BaseResult ChangePassword(UserPassword userPassword);
 
         [OperationContract]
         [WebInvoke(Method = "POST",
@@ -90,15 +90,15 @@ namespace RestService
         [OperationContract]
         [WebInvoke(Method = "POST",
             ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "createInstance/{token}")]
-        MethodResult<int> CreateInstance(string token, string instanceName);
+            UriTemplate = "createInstance")]
+        MethodResult<int> CreateInstance(string instanceName);
         #endregion
 
         [OperationContract]
         [WebInvoke(Method = "GET",
             ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "getUserInstanceList/{token}")]
-        MethodResult<List<UserInstanceInfo>> GetUserInstanceList(string token);
+            UriTemplate = "getUserInstanceList")]
+        MethodResult<List<UserInstanceInfo>> GetUserInstanceList();
 
     }
 }

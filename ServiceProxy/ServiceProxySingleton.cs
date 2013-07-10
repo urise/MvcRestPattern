@@ -71,8 +71,8 @@ namespace ServiceProxy
 
         private string GetFullReqUrl(string operation, string parameters, bool sendToken = true)
         {
-            var result = AppConfiguration.RestServiceUrl + operation +
-                         (sendToken ? "/" + (AuthToken ?? "_") : string.Empty);
+            var result = AppConfiguration.RestServiceUrl + operation;
+                         //+ (sendToken ? "/" + (AuthToken ?? "_") : string.Empty);
             if (string.IsNullOrEmpty(parameters)) return result;
             if (!parameters.StartsWith("?")) result = result + "/";
             return result + parameters;
@@ -109,6 +109,7 @@ namespace ServiceProxy
         public T SendRequest<T>(HttpWebRequest request)
         {
             request.KeepAlive = false;
+            request.Headers.Add("authToken", AuthToken);
             var response = request.GetResponse() as HttpWebResponse;
             Encoding encoding = Encoding.UTF8;
             var stream = new StreamReader(response.GetResponseStream(), encoding);

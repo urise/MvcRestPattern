@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.ServiceModel.Web;
 using BusinessLayer.Authentication;
 using CommonClasses;
 using CommonClasses.DbClasses;
@@ -24,6 +25,16 @@ namespace RestService
         #region Auxilliary Methods
 
         private Logger _logger = LogManager.GetLogger("AasRest");
+
+        public string AuthToken
+        {
+            get
+            {
+                if (WebOperationContext.Current == null) return null;
+                IncomingWebRequestContext context = WebOperationContext.Current.IncomingRequest;
+                return context.Headers["AuthToken"];
+            }
+        }
 
         private string GetPreviousMethodName()
         {
@@ -79,12 +90,13 @@ namespace RestService
             }
         }
 
-        private T RunManagerMethod<TClass, T>(string token, Func<TClass, T> func)
+        private T RunManagerMethod<TClass, T>(Func<TClass, T> func)
             where T : BaseResult, new()
             where TClass : IDbManager, new()
         {
             AuthInfo authInfo;
-            var checkResult = CheckAccess(token, out authInfo);
+            
+            var checkResult = CheckAccess(AuthToken, out authInfo);
             if (checkResult != ResultTypeEnum.Success)
                 return new T { ResultType = checkResult };
 
@@ -131,19 +143,19 @@ namespace RestService
             RunLoginManagerMethod(lm => lm.Test());
         }
 
-        public LoginResult LogonToInstance(string token, int instanceId)
+        public LoginResult LogonToInstance(int instanceId)
         {
-            return RunLoginManagerMethod(lm => lm.LogonToInstance(token, instanceId));
+            return RunLoginManagerMethod(lm => lm.LogonToInstance(AuthToken, instanceId));
         }
         
-        public MethodResult<IList<Instance>> GetUserInstances(string token)
+        public MethodResult<IList<Instance>> GetUserInstances()
         {
-            return RunManagerMethod<LoginManager, MethodResult<IList<Instance>>>(token, lm => lm.GetUserInstances());
+            return RunManagerMethod<LoginManager, MethodResult<IList<Instance>>>(lm => lm.GetUserInstances());
         }
 
-        public BaseResult Logout(string token)
+        public BaseResult Logout()
         {
-            return RunLoginManagerMethod(lm => lm.Logout(token));
+            return RunLoginManagerMethod(lm => lm.Logout(AuthToken));
         }
 
         public MethodResult<string> RegisterUser(RegisterUser user)
@@ -156,9 +168,9 @@ namespace RestService
             return RunLoginManagerMethod(lm => lm.ConfirmUserKey(key));
         }
 
-        public BaseResult ChangePassword(string token, UserPassword userPassword)
+        public BaseResult ChangePassword(UserPassword userPassword)
         {
-            return RunManagerMethod<LoginManager, BaseResult>(token, lm => lm.ChangePassword(userPassword));
+            return RunManagerMethod<LoginManager, BaseResult>(lm => lm.ChangePassword(userPassword));
         }
 
         public BaseResult ForgotPassword(UserPassword userPassword)
@@ -180,18 +192,18 @@ namespace RestService
 
         #region Instance
 
-        public MethodResult<int> CreateInstance(string token, string instanceName)
+        public MethodResult<int> CreateInstance(string instanceName)
         {
-            ClearAuthCompanyId(token);
-            return RunManagerMethod<InstanceManager, MethodResult<int>>(token, cm => cm.CreateInstance(instanceName));
+            ClearAuthCompanyId(AuthToken);
+            return RunManagerMethod<InstanceManager, MethodResult<int>>(cm => cm.CreateInstance(instanceName));
         }
         #endregion
 
         #region User
         [AccessTier(AccessComponent.Users, AccessLevel.Read)]
-        public MethodResult<List<UserInstanceInfo>> GetUserInstanceList(string token)
+        public MethodResult<List<UserInstanceInfo>> GetUserInstanceList()
         {
-            return RunManagerMethod<UserManager, MethodResult<List<UserInstanceInfo>>>(token, rep => rep.GetUserInstanceList());
+            return RunManagerMethod<UserManager, MethodResult<List<UserInstanceInfo>>>(rep => rep.GetUserInstanceList());
         }
         #endregion
     }
