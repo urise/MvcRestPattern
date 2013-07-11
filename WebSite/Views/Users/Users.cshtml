@@ -1,7 +1,6 @@
 ﻿@using CommonClasses
 @using WebSite.Helpers
-@using CommonClasses.InfoClasses
-@model List<UserInstanceInfo>
+@model List<string>
 @{
     ViewBag.Title = "Пользователи";
     var accessClass = SessionHelper.Permissions.IsGranted(AccessComponent.Users, AccessLevel.ReadWrite) ? "" : "noAccess";
@@ -37,13 +36,13 @@
         @if (Model.Any())
         {
             var currentUser = Session[Constants.SESSION_USER_NAME].ToString().ToLower();
-            foreach (var r in Model)
+            foreach (var userName in Model)
             {
-                <tr class="companyUserRow" id="@r.UserInstanceId" data-login="@r.UserName">
-                    <td class="ps-name">@r.UserName</td>
+                <tr class="companyUserRow" data-login="@userName">
+                    <td class="ps-name">@userName</td>
                     <td class="ps-action">
                         <span class="edit iconed-button @accessClass" title="Редактировать">Редактировать</span>
-                        @if (!Equals(@currentUser, @r.UserName.ToLower()))
+                        @if (!Equals(@currentUser, @userName.ToLower()))
                         {
                             <span class="delete iconed-button @accessClass" title="Удалить">Удалить</span>
                         }
@@ -65,6 +64,6 @@
 <script type="text/javascript">
 //    window.ShowUser = '@Url.Action("CompanyUser", "CompanyUsers")';
 //    window.SaveUser = '@Url.Action("SaveCompanyUser", "CompanyUsers")';
-//    window.DeleteCompanyUser = '@Url.Action("Delete", "CompanyUsers")';
-//    window.UpdateCompanyUser = '@Url.Action("Update", "CompanyUsers")';
+    window.DeleteCompanyUser = '@Url.Action("RemoveUser", "Users")';
+    window.UpdateCompanyUser = '@Url.Action("AddUser", "Users")';
 </script>

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Mvc;
 using CommonClasses;
 using CommonClasses.InfoClasses;
+using CommonClasses.MethodArguments;
 using ServiceProxy;
 using WebSite.Helpers;
 
@@ -13,19 +14,19 @@ namespace WebSite.Controllers
     {
         #region  Properties and additional methods
 
-        private List<UserInstanceInfo> StoredInstanceUsers
+        private List<string> StoredInstanceUsers
         {
-            get { return Session[Constants.SESSION_INSTANCE_USERS] as List<UserInstanceInfo>; }
+            get { return Session[Constants.SESSION_INSTANCE_USERS] as List<string>; }
             set { Session[Constants.SESSION_INSTANCE_USERS] = value; }
         }
 
-        private List<UserInstanceInfo> GetInstanceUsers(string searchString)
+        private List<string> GetInstanceUsers(string searchString)
         {
             var list = StoredInstanceUsers;
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                list = list.Where(tt => tt.UserName.ToLower().Contains(searchString.ToLower())).ToList();
+                list = list.Where(tt => tt.ToLower().Contains(searchString.ToLower())).ToList();
             }
             return list;
         }
@@ -64,24 +65,24 @@ namespace WebSite.Controllers
             return RedirectToAction("CompanyUsersList");
         }
 
-//        [HttpPost]
-//        public ActionResult Update(string userName)
-//        {
-//            var response = ServiceProxySingleton.Instance.SaveUserToCompany(userName);
-//            if (response.IsNotLoggedIn()) return SessionHelper.ClearSession();
-//            if (response.IsError()) return Json(response);
-//            SessionHelper.ClearUserRolesFromSession();
-//            return Json(new { response.Id, response.Value });
-//        }
-//
-//        [HttpPost]
-//        public ActionResult Delete(int id)
-//        {
-//            var response = ServiceProxySingleton.Instance.DeleteUserToCompany(new DeleteArg { Id = id });
-//            if (response.IsNotLoggedIn()) return SessionHelper.ClearSession();
-//            if (response.IsError()) return Json(response);
-//            SessionHelper.ClearUserRolesFromSession();
-//            return new EmptyResult();
-//        }
+        [HttpPost]
+        public ActionResult AddUser(string userName)
+        {
+            var response = ServiceProxySingleton.Instance.SaveUserInstance(userName);
+            if (response.IsNotLoggedIn()) return SessionHelper.ClearSession();
+            if (response.IsError()) return Json(response);
+            SessionHelper.ClearUserRolesFromSession();
+            return Json(new { UserName = userName });
+        }
+
+        [HttpPost]
+        public ActionResult RemoveUser(string userName)
+        {
+            var response = ServiceProxySingleton.Instance.DeleteUserInstance(userName);
+            if (response.IsNotLoggedIn()) return SessionHelper.ClearSession();
+            if (response.IsError()) return Json(response);
+            SessionHelper.ClearUserRolesFromSession();
+            return new EmptyResult();
+        }
     }
 }

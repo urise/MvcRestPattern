@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CommonClasses.InfoClasses;
 using CommonClasses.MethodArguments;
 using CommonClasses.MethodResults;
@@ -88,10 +89,22 @@ namespace ServiceProxy
         #endregion
 
         #region Users Methods
-        public MethodResult<List<UserInstanceInfo>> GetUserInstanceList()
+        public MethodResult<List<string>> GetUserInstanceList()
         {
             Delay();
-            return SendGetRequest<MethodResult<List<UserInstanceInfo>>>("getUserInstanceList");
+            return SendGetRequest<MethodResult<List<string>>>("getUserInstanceList");
+        }
+
+        public BaseResult SaveUserInstance(string userName)
+        {
+            Delay();
+            return SendPostRequest<BaseResult, string>("saveUserInstance", userName);
+        }
+
+        public BaseResult DeleteUserInstance(string userName)
+        {
+            Delay();
+            return SendPostRequest<BaseResult, string>("deleteUserInstance", userName);
         }
         #endregion
     }

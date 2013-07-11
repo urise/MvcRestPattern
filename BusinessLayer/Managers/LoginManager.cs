@@ -185,7 +185,7 @@ namespace BusinessLayer.Managers
             if (temporaryCode.ExpireDate < DateTime.Now)
                 return new BaseResult { ErrorMessage = Messages.TemporaryCodeExpired };
 
-            Db.DeleteTemporaryCode(temporaryCode.TemporaryCodeId);
+            Db.Delete(temporaryCode);
 
             user.Password = userPassword.Password;
             Db.Save(user);

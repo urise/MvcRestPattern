@@ -201,10 +201,23 @@ namespace RestService
 
         #region User
         [AccessTier(AccessComponent.Users, AccessLevel.Read)]
-        public MethodResult<List<UserInstanceInfo>> GetUserInstanceList()
+        public MethodResult<List<string>> GetUserInstanceList()
         {
-            return RunManagerMethod<UserManager, MethodResult<List<UserInstanceInfo>>>(rep => rep.GetUserInstanceList());
+            return RunManagerMethod<UserManager, MethodResult<List<string>>>(rep => rep.GetUserInstanceList());
         }
+
+        [AccessTier(AccessComponent.Users, AccessLevel.ReadWrite)]
+        public BaseResult SaveUserInstance(string userName)
+        {
+            return RunManagerMethod<UserManager, BaseResult>(rep => rep.SaveUserInstance(userName));
+        }
+
+        [AccessTier(AccessComponent.Users, AccessLevel.ReadWrite)]
+        public BaseResult DeleteUserInstance(string userName)
+        {
+            return RunManagerMethod<UserManager, BaseResult>(rep => rep.DeleteUserInstance(userName));
+        }
+
         #endregion
     }
 }

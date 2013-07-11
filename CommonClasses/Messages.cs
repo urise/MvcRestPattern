@@ -28,8 +28,6 @@
         //public const string UserNotFoundByPassword = "Введен неверный пароль";
         //        public const string UserCompanyDoesntExist = "Для указанного пользователь не создана ни одна компания";
         //        public const string CompanyDataIsNotFull = "Данные компании неполные";
-        //        public const string UserCompanyNotFound = "Указанный пользователь не связан с данной компанией";
-        //        public const string UserCompanyAlreadyExist = "Указанный пользователь уже связан с данной компанией";
 
         public const string InstanceNotFound = "Компания не найдена.";
 
@@ -41,5 +39,9 @@
         public const string ErrorCompanyCreation = "Ошибка при создании компании. Попробуйте повторить попытку или обратитесь к администратору сиситемы.";
         public const string ExistsCompanyName = "Такая компания уже есть в Вашем списке доступных компаний";
         public const string EmptyCompanyName = "Введите название компании";
+
+        public const string UserInstanceNotFound = "Указанный пользователь не связан с данной компанией";
+        public const string UserInstanceAlreadyExist = "Указанный пользователь уже связан с данной компанией";
+
     }
 }

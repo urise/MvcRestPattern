@@ -8,6 +8,7 @@ using CommonClasses.Helpers;
 using CommonClasses.InfoClasses;
 using CommonClasses.MethodArguments;
 using CommonClasses.Roles;
+using Interfaces.Enums;
 
 namespace DbLayer.Repositories
 {
@@ -144,6 +145,23 @@ namespace DbLayer.Repositories
 
         #endregion
 
+        #region Delete
+
+        public void Delete<T>(int id, string reason = null, int? transactionNumber = null) where T : class, IMapping
+        {
+            var record = _context.GetById<T>(id);
+            Delete(record, reason, transactionNumber);
+        }
+
+        public void Delete<T>(T record, string reason = null, int? transactionNumber = null) where T : class, IMapping
+        {
+            LogToDb(UserId, record.GetType().Name, record.PrimaryKeyValue, "D", XmlHelper.GetObjectXml(record, reason), transactionNumber);
+            _context.Remove(record);
+            _context.SaveChanges();
+        }
+
+        #endregion
+
         #region Methods
 
         #endregion
@@ -176,6 +194,11 @@ namespace DbLayer.Repositories
         public bool CheckIfUserLinkedToInstance(int userId, int instanceId)
         {
             return Context.UserInstances.Any(x => x.UserId == userId && x.InstanceId == instanceId);
+        }
+
+        public bool CheckIfUserLinkedToInstance(int userId)
+        {
+            return Context.UserInstances.Any(x => x.UserId == userId && x.InstanceId == InstanceId);
         }
 
         public bool LoginIsNotUnique(string login)
@@ -235,8 +258,6 @@ namespace DbLayer.Repositories
             return result;
         }
 
-        //TODO:
-        public void DeleteTemporaryCode(int temporaryCodeId) { }
         #endregion
 
         #region Instance
@@ -245,33 +266,63 @@ namespace DbLayer.Repositories
             return Context.Instances.Any(i => i.InstanceName == instanceName);
         }
 
-        public void CreateUserInstance()
+        public void AddUserRole(int roleId, int? userId = null)
         {
             if (!InstanceId.HasValue || !UserId.HasValue)
                 throw new Exception(Messages.ErrorCompanyCreation);
-            var userInstance = new UserInstance { InstanceId = InstanceId.Value, UserId = UserId.Value };
-            Save(userInstance);
-        }
-
-        public void AddUserToRole(int roleId)
-        {
-            if (!InstanceId.HasValue || !UserId.HasValue)
-                throw new Exception(Messages.ErrorCompanyCreation);
-            var userRole = new UserRole { InstanceId = InstanceId.Value, RoleId = roleId, UserId = UserId.Value };
+            var userRole = new UserRole { InstanceId = InstanceId.Value, RoleId = roleId, UserId = userId == null ? UserId.Value : userId.Value };
             Save(userRole);
         }
 
         #endregion
 
-        #region Users
-        public List<UserInstanceInfo> GetUserInstanceList()
+        #region Roles
+        public int GetSystemRoleId(SystemRoles roleType)
+        {
+            return Context.Roles.First(r => r.RoleType == roleType).RoleId;
+        }
+        #endregion
+
+        #region User Instance
+        public List<string> GetUserInstanceList()
         {
             return (from user in Context.Users
                     join uc in Context.UserInstances on user.UserId equals uc.UserId
                     where uc.InstanceId == InstanceId
-                    select new UserInstanceInfo { UserInstanceId = uc.UserInstanceId, UserName = user.Login })
-                    .OrderBy(u => u.UserName).AsEnumerable().ToList();
+                    select user.Login)
+                    .OrderBy(u=>u).AsEnumerable().ToList();
         }
+
+        public void AddUserInstance(int? userId = null)
+        {
+            if (!InstanceId.HasValue || !UserId.HasValue)
+                throw new Exception(Messages.ErrorCompanyCreation);
+            var userInstance = new UserInstance { InstanceId = InstanceId.Value, UserId = userId == null ? UserId.Value : userId.Value };
+            Save(userInstance);
+        }
+
+        public UserInstance GetUserInstance(string userName)
+        {
+            return (from user in Context.Users
+                    join uc in Context.UserInstances on user.UserId equals uc.UserId
+                    where user.Login == userName
+                    select uc).FirstOrDefault();
+        }
+
+
+        public void DeleteUserRoles(int userId, string reason)
+        {
+            foreach (var userToRole in GetUserToRoles(userId))
+            {
+                Delete(userToRole, reason);
+            }
+        }
+
+        public List<UserRole> GetUserToRoles(int userId)
+        {
+            return Context.UserRoles.Where(ur => ur.UserId == userId).AsEnumerable().ToList();
+        }
+
         #endregion
     }
 }

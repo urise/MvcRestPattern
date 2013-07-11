@@ -17,8 +17,8 @@ $(document).ready(function () {
     window.saveEditorRow = saveCompanyUser;
     
     window.deleteRow = function (row) {
-        var id = row.attr('id');
-        confirm('Вы уверены, что хотите лишить пользователя прав на компанию?', null, deleteCompanyUser, id);
+        var userName = row.attr('data-login');
+        confirm('Вы уверены, что хотите лишить пользователя прав на компанию?', null, deleteCompanyUser, userName);
     };
 
 
@@ -93,8 +93,8 @@ $(document).ready(function () {
         $("tr.companyUserRow").removeClass('dimmed');
     }
 
-    function deleteCompanyUser(id) {
-        window.ajaxCallSingleton( window.DeleteCompanyUser, 'Post', { id: id }, function () { $('tr#' + id).remove(); }, null);
+    function deleteCompanyUser(userName) {
+        window.ajaxCallSingleton(window.DeleteCompanyUser, 'Post', { userName: userName }, function () { $('tr[data-login=' + userName + ']').remove(); }, null);
         return true;
     }
 
@@ -107,9 +107,8 @@ $(document).ready(function () {
     }
 
     function processSuccessOnCompanyUserSave(response) {
-        var id = response.Id;
-        var newName = response.Value;
-
+        var newName = response.UserName;
+        
         if ($('.companyRow-under-edit').length > 0) {
             var rowUnderEdit = $('.companyRow-under-edit');
             rowUnderEdit.find('.ps-name').text(newName);
@@ -119,7 +118,6 @@ $(document).ready(function () {
             var newField = $(".editor-field");
             newField.find('.ps-name').text(newName);
             newField.find('.ps-action').html('<span class="edit iconed-button" title="Редактировать">Редактировать</span><span class="delete iconed-button" title="Удалить">Удалить</span>');
-            newField.attr('id', id);
             newField.removeClass('editor-field').addClass('companyUserRow');
             newField.attr("data-login", newName);
             closeEditorField();

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using CommonClasses;
@@ -94,11 +95,25 @@ namespace RestService
         MethodResult<int> CreateInstance(string instanceName);
         #endregion
 
+        #region UserInstance
         [OperationContract]
         [WebInvoke(Method = "GET",
             ResponseFormat = WebMessageFormat.Json,
             UriTemplate = "getUserInstanceList")]
-        MethodResult<List<UserInstanceInfo>> GetUserInstanceList();
+        MethodResult<List<string>> GetUserInstanceList();
+
+        [OperationContract]
+        [WebInvoke(Method = "POST",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "saveUserInstance")]
+        BaseResult SaveUserInstance(string userName);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "deleteUserInstance")]
+        BaseResult DeleteUserInstance(string userName);
+        #endregion
 
     }
 }

@@ -29,8 +29,8 @@ namespace BusinessLayer.Managers
                 Db.SetInstanceId(instance.InstanceId);
 
                 var adminRoleId = InsertSystemRoles(instance.InstanceId);
-                Db.CreateUserInstance();
-                Db.AddUserToRole(adminRoleId);
+                Db.AddUserInstance();
+                Db.AddUserRole(adminRoleId);
                 transaction.Complete();
                 return new MethodResult<int>(instance.InstanceId);
 

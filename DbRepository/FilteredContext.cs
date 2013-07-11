@@ -83,6 +83,11 @@ namespace DbLayer
             get { return _context.ComponentRoles.Where(r => r.InstanceId == InstanceId); }
         }
 
+        public IQueryable<Role> Roles
+        {
+            get { return _context.Roles.Where(r => r.InstanceId == InstanceId); }
+        }
+
         #endregion
 
         #region Other Methods
@@ -90,6 +95,11 @@ namespace DbLayer
         public void Add<T>(T record) where T: class, IMapping
         {
             _context.GetDbSet<T>().Add(record);
+        }
+
+        public void Remove<T>(T record) where T : class, IMapping
+        {
+            _context.GetDbSet<T>().Remove(record);
         }
 
         public T GetById<T>(int id) where T : class, IMapping
