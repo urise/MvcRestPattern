@@ -95,6 +95,39 @@ namespace RestService
         MethodResult<int> CreateInstance(string instanceName);
         #endregion
 
+        #region Roles
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "getRoleList")]
+        MethodResult<List<RoleModel>> GetRoleList();
+
+        [OperationContract]
+        [WebInvoke(Method = "POST",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "saveRole")]
+        ChangePermissionsResult SaveRole(RoleModel role);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "deleteRole")]
+        ChangePermissionsResult DeleteRole(DeleteArg arg);
+
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "getNewRole")]
+        MethodResult<RoleModel> GetNewRole();
+
+        [OperationContract]
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "getRole?id={id}")]
+        MethodResult<RoleModel> GetRole(int id);
+
+        #endregion
+
         #region UserInstance
         [OperationContract]
         [WebInvoke(Method = "GET",
@@ -113,6 +146,18 @@ namespace RestService
             ResponseFormat = WebMessageFormat.Json,
             UriTemplate = "deleteUserInstance")]
         BaseResult DeleteUserInstance(string userName);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "getUserInfo")]
+        MethodResult<UserInfo> GetUserInfo(string userName);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "saveUserInfo")]
+        ChangePermissionsResult SaveUserInfo(UserInfo userInfo);
         #endregion
 
     }

@@ -7,6 +7,7 @@ using CommonClasses.DbRepositoryInterface;
 using CommonClasses.Helpers;
 using CommonClasses.InfoClasses;
 using CommonClasses.MethodArguments;
+using CommonClasses.Models;
 using CommonClasses.Roles;
 using Interfaces.Enums;
 
@@ -162,6 +163,15 @@ namespace DbLayer.Repositories
 
         #endregion
 
+        #region Get
+
+        public T GetById<T>(int id) where T : class, IMapping
+        {
+            return _context.GetById<T>(id);
+        }
+
+        #endregion
+
         #region Methods
 
         #endregion
@@ -281,6 +291,82 @@ namespace DbLayer.Repositories
         {
             return Context.Roles.First(r => r.RoleType == roleType).RoleId;
         }
+
+        public List<RoleModel> GetRoles()
+        {
+            var roles = (from role in Context.Roles
+                         select role)
+                  .OrderBy(r => r.RoleName).ToList();
+
+            var model = new List<RoleModel>();
+            foreach (var r in roles)
+            {
+                model.Add(new RoleModel(r) { UserNames = GetUserNamesLinkedToRole(r.RoleId) });
+            }
+            return model;
+        }
+
+        public string GetUserNamesLinkedToRole(int roleId)
+        {
+            var userNames = (from userRoles in Context.UserRoles
+                             join users in Context.Users on userRoles.UserId equals users.UserId
+                             where userRoles.RoleId == roleId
+                             select users.Login).ToArray();
+            return string.Join(",", userNames);
+        }
+
+        public List<ComponentInfo> GetComponents(int roleId)
+        {
+            var components =
+                from c in Context.Components
+                join ctr in Context.ComponentRoles.Where(x => x.RoleId == roleId)
+                on c.ComponentId equals ctr.ComponentId
+                into a
+                from b in a.AsEnumerable().Select(x => x.AccessLevel).DefaultIfEmpty(AccessLevel.None)
+                select new {c, b};
+            var list = new List<ComponentInfo>();
+            foreach (var component in components)
+            {
+                list.Add(new ComponentInfo(component.c, component.b));
+            }
+
+            return list;
+        }
+
+        public bool IsUniqueRoleName(int roleId, string roleName)
+        {
+            return Context.Roles.Any(p => p.RoleId != roleId && p.RoleName == roleName);
+        }
+
+        public List<int> GetUserIdsLinkedToRole(int roleId)
+        {
+            return Context.UserRoles.Where(ur => ur.RoleId == roleId).AsEnumerable().Select(ur => ur.UserId).ToList();
+        }
+
+        public List<ComponentRole> GetComponentRoles(List<ComponentInfo> components, int roleId)
+        {
+            return (from c in components
+                                    join ctr in Context.ComponentRoles.Where(x => x.RoleId == roleId)
+                                        on c.ComponentId equals ctr.ComponentId
+                                        into a
+                                    from b in a.DefaultIfEmpty(new ComponentRole
+                                        {
+                                            InstanceId = InstanceId.Value,
+                                            RoleId = roleId,
+                                            ComponentId = c.ComponentId
+                                        })
+                                    select c.Update(b)).ToList();
+        }
+
+        public bool ExistsUsersLinkedToRole(int roleId)
+        {
+            return Context.UserRoles.Any(ur => ur.RoleId == roleId);
+        }
+
+        public List<ComponentRole> GetComponentRoles(int roleId)
+        {
+            return Context.ComponentRoles.Where(ur => ur.RoleId == roleId).ToList();
+        }
         #endregion
 
         #region User Instance
@@ -323,6 +409,37 @@ namespace DbLayer.Repositories
             return Context.UserRoles.Where(ur => ur.UserId == userId).AsEnumerable().ToList();
         }
 
+        public bool IsCurrentUserAdministrator()
+        {
+            return (from role in Context.Roles
+                    join userRoles in Context.UserRoles on role.RoleId equals userRoles.RoleId
+                    where userRoles.UserId ==  UserId && role.RoleType == SystemRoles.Administrator
+                    select userRoles.UserRoleId).Any();
+
+        }
+
+        public List<RoleInfo> GetUserRoles(int userId)
+        {
+            var cantChangeAdministratorRole = UserId == userId || !IsCurrentUserAdministrator();
+            return (from role in Context.Roles
+                    join userToRoles in Context.UserRoles.Where(ur => ur.UserId == userId) on role.RoleId equals userToRoles.RoleId
+                    into sub
+                    from userRoles in sub.DefaultIfEmpty()
+                    select new RoleInfo
+                    {
+                        RoleId = role.RoleId,
+                        Name = role.RoleName,
+                        Type = role.RoleType,
+                        IsUsed = userRoles != null,
+                        IsReadOnly = role.RoleType == SystemRoles.Administrator && cantChangeAdministratorRole
+                    })
+                    .OrderBy(u => u.Name).AsEnumerable().ToList();
+        }
+
+        public IDictionary<int, int> GetUserRoleIds(int userId)
+        {
+            return Context.UserRoles.Where(x => x.UserId == userId).ToDictionary(x => x.RoleId, x => x.UserRoleId);
+        }
         #endregion
     }
 }

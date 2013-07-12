@@ -25,9 +25,6 @@
         public const string EmailSentPasswordReset = "Ссылка для восстановления пароля была отправлена на Ваш электронный адрес";
         public const string UserNotFoundByLogin = "Пользователь с таким логином не зарегистрирован в системе";
         public const string UserNotFoundByEmail = "Пользователь с таким электронным адресом не существует";
-        //public const string UserNotFoundByPassword = "Введен неверный пароль";
-        //        public const string UserCompanyDoesntExist = "Для указанного пользователь не создана ни одна компания";
-        //        public const string CompanyDataIsNotFull = "Данные компании неполные";
 
         public const string InstanceNotFound = "Компания не найдена.";
 
@@ -42,6 +39,11 @@
 
         public const string UserInstanceNotFound = "Указанный пользователь не связан с данной компанией";
         public const string UserInstanceAlreadyExist = "Указанный пользователь уже связан с данной компанией";
+        public const string UserRolesNotFound = "Ошибка сохранения. Роли для данного пользователя не найдены.";
 
+
+        public const string RoleNameNotUnique = "Роль с таким именем уже существует. Введите уникальное имя для создаваемой роли";
+        public const string RoleNotFound = "Роль не найдена.";
+        public const string RoleDisabledToDelete = "Роль не может быть удалена.";
     }
 }

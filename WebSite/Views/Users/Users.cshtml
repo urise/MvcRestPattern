@@ -62,8 +62,8 @@
 <script src="@Url.Content("~/Scripts/CommonDynamicTable.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/CompanyUser.js")" type="text/javascript"></script>
 <script type="text/javascript">
-//    window.ShowUser = '@Url.Action("CompanyUser", "CompanyUsers")';
-//    window.SaveUser = '@Url.Action("SaveCompanyUser", "CompanyUsers")';
+    window.ShowUser = '@Url.Action("UserInfo", "Users")';
+    window.SaveUser = '@Url.Action("SaveUser", "Users")';
     window.DeleteCompanyUser = '@Url.Action("RemoveUser", "Users")';
     window.UpdateCompanyUser = '@Url.Action("AddUser", "Users")';
 </script>

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using CommonClasses.DbClasses;
 using CommonClasses.InfoClasses;
 using CommonClasses.MethodArguments;
+using CommonClasses.MethodResults;
+using CommonClasses.Models;
 using CommonClasses.Roles;
 using Interfaces.Enums;
 
@@ -10,7 +12,7 @@ namespace CommonClasses.DbRepositoryInterface
 {
     public interface IDbRepository: IDisposable
     {
-//        int? InstanceId { get; }
+        int? InstanceId { get; }
 //        int? UserId { get; }
         void SetInstanceId(int instanceId);
         void SetAuthInfo(AuthInfo authInfo);
@@ -18,6 +20,7 @@ namespace CommonClasses.DbRepositoryInterface
         int Save<T>(T obj, int? transactionNumber = null) where T : class, IMapping;
         void Delete<T>(int id, string reason = null, int? transactionNumber = null) where T : class, IMapping;
         void Delete<T>(T record, string reason = null, int? transactionNumber = null) where T : class, IMapping;
+        T GetById<T>(int id) where T : class, IMapping;
 
         User GetUserByKey(string key);
         TemporaryCode GetTemporaryCodeByUserId(int userId);
@@ -42,5 +45,14 @@ namespace CommonClasses.DbRepositoryInterface
         UserInstance GetUserInstance(string userName);
         int GetSystemRoleId(SystemRoles roleType);
         void DeleteUserRoles(int userId, string reason);
+        List<RoleInfo> GetUserRoles(int userId);
+        IDictionary<int, int> GetUserRoleIds(int userId);
+        string GetUserNamesLinkedToRole(int roleId);
+        List<ComponentInfo> GetComponents(int roleId);
+        bool IsUniqueRoleName(int roleId, string roleName);
+        List<ComponentRole> GetComponentRoles(List<ComponentInfo> components, int roleId);
+        bool ExistsUsersLinkedToRole(int roleId);
+        List<ComponentRole> GetComponentRoles(int roleId);
+        List<RoleModel> GetRoles();
     }
 }

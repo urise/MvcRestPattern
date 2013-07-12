@@ -45,6 +45,7 @@
     <Compile Include="Managers\IDbManager.cs" />
     <Compile Include="Managers\InstanceManager.cs" />
     <Compile Include="Managers\LoginManager.cs" />
+    <Compile Include="Managers\RoleManager.cs" />
     <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

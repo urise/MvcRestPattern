@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using CommonClasses;
 using CommonClasses.InfoClasses;
 using CommonClasses.MethodArguments;
+using CommonClasses.Models;
 using ServiceProxy;
 using WebSite.Helpers;
 
@@ -32,6 +33,7 @@ namespace WebSite.Controllers
         }
         #endregion
 
+        #region UserInstance
         [HttpGet]
         [Permissions(AccessComponent.Users, AccessLevel.Read)]
         public ActionResult Users()
@@ -59,10 +61,10 @@ namespace WebSite.Controllers
 
         [HttpPost]
         [Permissions(AccessComponent.Users, AccessLevel.Read)]
-        public ActionResult CompanyUsersList(string searchString)
+        public ActionResult Users(string searchString)
         {
             TempData["Filters"] = searchString;
-            return RedirectToAction("CompanyUsersList");
+            return RedirectToAction("Users");
         }
 
         [HttpPost]
@@ -84,5 +86,37 @@ namespace WebSite.Controllers
             SessionHelper.ClearUserRolesFromSession();
             return new EmptyResult();
         }
+        #endregion
+
+        #region Edit User Role
+//        [HttpGet]
+//        [Permissions(AccessComponent.Users, AccessLevel.Read)]
+//        public ActionResult UserRoles()
+//        {
+//            return View(new UserRoles());
+//        }
+
+        [HttpPost]
+        public ActionResult UserInfo(string userName)
+        {
+            var response = ServiceProxySingleton.Instance.GetUserInfo(userName);
+            if (response.IsNotLoggedIn()) return SessionHelper.ClearSession();
+            if (response.IsError()) return Json(response);
+            if (response.IsAccessDenied()) RedirectToAction("AccessError", "Error");
+            return View(response.AttachedObject);
+        }
+
+        [HttpPost]
+        public ActionResult SaveUser(UserInfo userInfo)
+        {
+            var result = ServiceProxySingleton.Instance.SaveUserInfo(userInfo);
+            if (result.IsError()) return Json(result);
+            if (result.CurrentUserPermissions != null)
+                SessionHelper.Permissions = result.CurrentUserPermissions;
+            SessionHelper.ClearUserRolesFromSession();
+            return new EmptyResult();
+        }
+
+        #endregion
     }
 }

@@ -88,6 +88,11 @@ namespace DbLayer
             get { return _context.Roles.Where(r => r.InstanceId == InstanceId); }
         }
 
+        public IQueryable<Component> Components
+        {
+            get { return _context.Components; }
+        }
+
         #endregion
 
         #region Other Methods

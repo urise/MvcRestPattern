@@ -121,12 +121,70 @@ namespace RestService
             }
         }
 
+        private MethodResult<T> RunDbMethodWrapped<T>(Func<DbRepository, T> func)
+        {
+            AuthInfo authInfo;
+            var checkResult = CheckAccess(AuthToken, out authInfo);
+            if (checkResult != ResultTypeEnum.Success)
+                return new MethodResult<T> { ResultType = checkResult };
+
+            using (var db = new DbRepository(authInfo))
+            {
+                try
+                {
+                    T result = func(db);
+                    _logger.Info(GetPreviousMethodName());
+                    return new MethodResult<T>(result);
+                }
+                catch (Exception ex)
+                {
+                    var message = ex.SmartMessage();
+                    _logger.Fatal(GetPreviousMethodName() + ": " + message);
+                    return new MethodResult<T> { ErrorMessage = message };
+                }
+            }
+        }
+
         private void ClearAuthCompanyId(string token)
         {
             var authInfo = AuthTokens.Instance.GetAuth(token);
             if (authInfo != null)
             {
                 authInfo.InstanceId = 0;
+            }
+        }
+
+        private void ResetCompanyUserPermissions(ChangePermissionsResult result)
+        {
+            if (result.IsPermissionsChanged)
+                ResetUserPermissions(result.EntityId, result);
+        }
+
+        private void ResetRolePermissions(ChangePermissionsResult result)
+        {
+            if (result.IsPermissionsChanged)
+            {
+                var dependUsers = RunDbMethodWrapped(rep => rep.GetUserIdsLinkedToRole(result.EntityId)).AttachedObject;
+                foreach (var userId in dependUsers)
+                    ResetUserPermissions(userId, result);
+            }
+        }
+
+        /// <summary>
+        /// Remove token for edited user (he will get appropriate permissions on next login)
+        /// Reset permissions for current user (send new permissions to web and replace it in session)
+        /// </summary>
+        private void ResetUserPermissions(int userId, ChangePermissionsResult result)
+        {
+            var authInfo = AuthTokens.Instance.GetAuth(AuthToken);
+            if (authInfo.UserId != userId)
+            {
+                AuthTokens.Instance.RemoveAuthInfoForUser(userId, authInfo.InstanceId);
+            }
+            else
+            {
+                authInfo.UserAccess = RunDbMethodWrapped(rep => rep.GetUserAccess(authInfo.UserId)).AttachedObject;
+                result.CurrentUserPermissions = authInfo.UserAccess;
             }
         }
         #endregion
@@ -199,6 +257,52 @@ namespace RestService
         }
         #endregion
 
+        #region Roles
+        [AccessTier(AccessComponent.Roles, AccessLevel.Read)]
+        public MethodResult<List<RoleModel>> GetRoleList()
+        {
+            return RunManagerMethod<RoleManager, MethodResult<List<RoleModel>>>(rm => rm.GetRoles());
+        }
+
+        [AccessTier(AccessComponent.Roles, AccessLevel.ReadWrite)]
+        public ChangePermissionsResult SaveRole(RoleModel role)
+        {
+            var result = RunManagerMethod<RoleManager, ChangePermissionsResult>(rm => rm.SaveRole(role));
+            if (result.IsSuccess())
+                ResetRolePermissions(result);
+            return result;
+        }
+
+        [AccessTier(AccessComponent.Roles, AccessLevel.ReadWrite)]
+        public ChangePermissionsResult DeleteRole(DeleteArg arg)
+        {
+            var result = RunManagerMethod<RoleManager, BaseResult>(rm => rm.DeleteCompanyRole(arg));
+            var sentResult = new ChangePermissionsResult
+            {
+                ErrorMessage = result.ErrorMessage,
+                ResultType = result.ResultType,
+                EntityId = arg.Id,
+                IsPermissionsChanged = true
+            };
+            if (sentResult.IsSuccess())
+                ResetRolePermissions(sentResult);
+            return sentResult;
+        }
+
+        [AccessTier(AccessComponent.Roles, AccessLevel.ReadWrite)]
+        public MethodResult<RoleModel> GetNewRole()
+        {
+            return RunManagerMethod<RoleManager, MethodResult<RoleModel>>(rm => rm.GetRole());
+        }
+
+        [AccessTier(AccessComponent.Roles, AccessLevel.ReadWrite)]
+        public MethodResult<RoleModel> GetRole(int id)
+        {
+            return RunManagerMethod<RoleManager, MethodResult<RoleModel>>(rm => rm.GetRole(id));
+        }
+
+        #endregion
+
         #region User
         [AccessTier(AccessComponent.Users, AccessLevel.Read)]
         public MethodResult<List<string>> GetUserInstanceList()
@@ -218,6 +322,19 @@ namespace RestService
             return RunManagerMethod<UserManager, BaseResult>(rep => rep.DeleteUserInstance(userName));
         }
 
+        [AccessTier(AccessComponent.Users, AccessLevel.Read)]
+        public MethodResult<UserInfo> GetUserInfo(string userName)
+        {
+            return RunManagerMethod<UserManager, MethodResult<UserInfo>>(rep => rep.GetUserInfo(userName));
+        }
+
+        [AccessTier(AccessComponent.Users, AccessLevel.ReadWrite)]
+        public ChangePermissionsResult SaveUserInfo(UserInfo userInfo)
+        {
+            var result = RunManagerMethod<UserManager, ChangePermissionsResult>(rep => rep.SaveUserInfo(userInfo));
+            if (result.IsSuccess()) ResetCompanyUserPermissions(result);
+            return result;
+        }
         #endregion
     }
 }

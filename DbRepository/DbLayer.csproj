@@ -94,6 +94,10 @@
     <Compile Include="Repositories\DbRepository.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BusinessLayer\BusinessLayer.csproj">
+      <Project>{00E7B1C7-453B-4F02-BE3F-655907C40C49}</Project>
+      <Name>BusinessLayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CommonClasses\CommonClasses.csproj">
       <Project>{44723a6a-7ee6-49bc-9d95-35c10178c99e}</Project>
       <Name>CommonClasses</Name>

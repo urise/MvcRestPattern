@@ -88,6 +88,36 @@ namespace ServiceProxy
 
         #endregion
 
+        #region Roles
+        public MethodResult<List<RoleModel>> GetRoleList()
+        {
+            return SendGetRequest<MethodResult<List<RoleModel>>>("getRoleList");
+        }
+
+        //TODO: check mehods, smth not works
+        /*
+        public ChangePermissionsResult SaveRole(RoleModel role)
+        {
+            return SendPostRequest<ChangePermissionsResult, RoleModel>("saveRole", role);
+        }
+
+        public ChangePermissionsResult DeleteRole(DeleteArg arg)
+        {
+            return SendPostRequest<ChangePermissionsResult, DeleteArg>("deleteRole", arg);
+        }
+
+        public MethodResult<RoleModel> GetNewRole()
+        {
+            return SendGetRequest<MethodResult<RoleModel>>("getNewRole");
+        }
+
+        public MethodResult<RoleModel> GetRole(int id)
+        {
+            return SendGetRequest<MethodResult<RoleModel>>("getRole", "?id=" + id);
+        }
+        */
+        #endregion
+
         #region Users Methods
         public MethodResult<List<string>> GetUserInstanceList()
         {
@@ -105,6 +135,18 @@ namespace ServiceProxy
         {
             Delay();
             return SendPostRequest<BaseResult, string>("deleteUserInstance", userName);
+        }
+
+        public MethodResult<UserInfo> GetUserInfo(string userName)
+        {
+            Delay();
+            return SendPostRequest<MethodResult<UserInfo>, string>("getUserInfo", userName);
+        }
+
+        public ChangePermissionsResult SaveUserInfo(UserInfo userInfo)
+        {
+            Delay();
+            return SendPostRequest<ChangePermissionsResult, UserInfo>("saveUserInfo", userInfo);
         }
         #endregion
     }
