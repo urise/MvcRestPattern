@@ -89,13 +89,12 @@ namespace ServiceProxy
         #endregion
 
         #region Roles
+
         public MethodResult<List<RoleModel>> GetRoleList()
         {
             return SendGetRequest<MethodResult<List<RoleModel>>>("getRoleList");
         }
 
-        //TODO: check mehods, smth not works
-        /*
         public ChangePermissionsResult SaveRole(RoleModel role)
         {
             return SendPostRequest<ChangePermissionsResult, RoleModel>("saveRole", role);
@@ -115,7 +114,7 @@ namespace ServiceProxy
         {
             return SendGetRequest<MethodResult<RoleModel>>("getRole", "?id=" + id);
         }
-        */
+
         #endregion
 
         #region Users Methods

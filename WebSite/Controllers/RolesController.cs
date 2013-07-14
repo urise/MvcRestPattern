@@ -67,8 +67,7 @@ namespace WebSite.Controllers
             TempData["Filters"] = searchString;
             return RedirectToAction("Roles");
         }
-        //TODO: not works, check methods
-        /* 
+
         [HttpGet]
         public ActionResult New()
         {
@@ -78,7 +77,7 @@ namespace WebSite.Controllers
             return View("RolePartial", response.AttachedObject);
         }
 
-        [HttpGet]
+        [HttpPost]
         public ActionResult Edit(int id)
         {
             var response = ServiceProxySingleton.Instance.GetRole(id);
@@ -135,7 +134,6 @@ namespace WebSite.Controllers
                 SessionHelper.Permissions = response.CurrentUserPermissions;
             return new EmptyResult();
         }
-         * */
         #endregion
 
     }

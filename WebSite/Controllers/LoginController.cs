@@ -274,8 +274,7 @@ namespace WebSite.Controllers
             return new EmptyResult();
         }
         #endregion
-
-
+        
         #region Additional Methods
 
         private const int VIEW_INSTANCE_NAME_LENGTH = 50;

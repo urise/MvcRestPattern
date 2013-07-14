@@ -18,6 +18,7 @@ namespace CommonClasses.InfoClasses
 
         public bool Disabled { get; set; }
 
+        public ComponentInfo() {}
         public ComponentInfo(Component component, AccessLevel access)
         {
             ComponentId = component.ComponentId;
