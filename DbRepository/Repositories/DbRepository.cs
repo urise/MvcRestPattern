@@ -135,11 +135,11 @@ namespace DbLayer.Repositories
             
             if (id == 0)
             {
-                LogToDb(UserId, obj.GetType().Name, obj.PrimaryKeyValue, "I", XmlHelper.GetObjectXml(obj), transactionNumber);
+                LogToDb(UserId, typeof(T).Name, obj.PrimaryKeyValue, "I", XmlHelper.GetObjectXml(obj), transactionNumber);
             }
             else
             {
-                LogToDb(UserId, obj.GetType().Name, obj.PrimaryKeyValue, "U", diffXml, transactionNumber);
+                LogToDb(UserId, typeof(T).Name, obj.PrimaryKeyValue, "U", diffXml, transactionNumber);
             }
             return obj.PrimaryKeyValue;
         }
@@ -156,7 +156,7 @@ namespace DbLayer.Repositories
 
         public void Delete<T>(T record, string reason = null, int? transactionNumber = null) where T : class, IMapping
         {
-            LogToDb(UserId, record.GetType().Name, record.PrimaryKeyValue, "D", XmlHelper.GetObjectXml(record, reason), transactionNumber);
+            LogToDb(UserId, typeof(T).Name, record.PrimaryKeyValue, "D", XmlHelper.GetObjectXml(record, reason), transactionNumber);
             _context.Remove(record);
             _context.SaveChanges();
         }
