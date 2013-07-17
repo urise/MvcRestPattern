@@ -156,8 +156,8 @@ ul#menu a.keyRestricted {color: #666;}
 ul#menu a.noAccess, #subMenu a.noAccess {color: orange !important;border: none;}
 .addNewUser {display: inline-block; margin: 30px 0 0 200px;}
 
-#subMenu ul { display: none;}
-#subMenu li:hover ul { display: block;}
+#subMenu ul, ul#menu ul { display: none;}
+#subMenu li:hover ul, #menu li:hover ul { display: block;}
 #subMenu li > ul {width: 210px;position: absolute;left: 5px;top: 30px;padding: 5px 0;background: #fff;border-radius: 7px;box-shadow: 0 2px 5px rgba(0,0,0,0.5);}
 #subMenu li > ul a {width: 180px;padding: 5px 15px;font-size: 12px;color: #000;}
 #subMenu li > ul a span { border-bottom: 1px dashed #000;}
