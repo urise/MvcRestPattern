@@ -30,6 +30,29 @@ namespace DbLayer
             _instanceId = instanceId;
         }
 
+        private Dictionary<Type, object> _filteredTableDict;
+        protected Dictionary<Type, object> FilteredTableDict
+        {
+            get
+            {
+                if (_filteredTableDict == null) InitializeFilteredTableDict();
+                return _filteredTableDict;
+            }
+        }
+
+        private void InitializeFilteredTableDict()
+        {
+            _filteredTableDict = new Dictionary<Type, object>();
+            var propertyInfos = GetType().GetProperties();
+            foreach (var propertyInfo in propertyInfos)
+            {
+                if (propertyInfo.PropertyType.FullName != null && propertyInfo.PropertyType.FullName.StartsWith("System.Linq.IQueryable"))
+                {
+                    _filteredTableDict.Add(propertyInfo.PropertyType.GenericTypeArguments[0], propertyInfo.GetValue(this));
+                }
+            }
+        }
+
         #endregion
 
         #region IDisposable Members
@@ -113,13 +136,21 @@ namespace DbLayer
             var predicate =
                 Expression.Lambda<Func<T, bool>>(Expression.Equal(Expression.Property(param, typeof(T).Name + "Id"),
                                                                   Expression.Constant(id)), param);
-            var dbSet = _context.GetDbSet<T>();
-            return dbSet.SingleOrDefault(predicate);
+            var table = GetFilteredTable<T>();
+            return table.SingleOrDefault(predicate);
         }
 
         public void SaveChanges()
         {
             _context.SaveChanges();
+        }
+
+        public IQueryable<T> GetFilteredTable<T>() where T : class, IMapping
+        {
+            object result;
+            if (!FilteredTableDict.TryGetValue(typeof(T), out result))
+                throw new Exception("There is no IQueryable<" + typeof(T).Name + "> property");
+            return (IQueryable<T>)result;
         }
 
         #endregion

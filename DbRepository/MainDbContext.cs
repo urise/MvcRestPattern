@@ -23,25 +23,25 @@ namespace DbLayer
 
         #region Auxilliary Properties and Methods
 
-        private Dictionary<Type, object> _dict;
-        protected Dictionary<Type, object> Dict
+        private Dictionary<Type, object> _dbSetDict;
+        protected Dictionary<Type, object> DbSetDict
         {
             get
             {
-                if (_dict == null) InitializeDict();
-                return _dict;
+                if (_dbSetDict == null) InitializeDbSetDict();
+                return _dbSetDict;
             }
         }
 
-        private void InitializeDict()
+        private void InitializeDbSetDict()
         {
-            _dict = new Dictionary<Type, object>();
+            _dbSetDict = new Dictionary<Type, object>();
             var propertyInfos = GetType().GetProperties();
             foreach (var propertyInfo in propertyInfos)
             {
-                if (propertyInfo.PropertyType.FullName.StartsWith("System.Data.Entity.DbSet"))
+                if (propertyInfo.PropertyType.FullName != null && propertyInfo.PropertyType.FullName.StartsWith("System.Data.Entity.DbSet"))
                 {
-                    _dict.Add(propertyInfo.PropertyType.GenericTypeArguments[0], propertyInfo.GetValue(this));
+                    _dbSetDict.Add(propertyInfo.PropertyType.GenericTypeArguments[0], propertyInfo.GetValue(this));
                 }
             }
         }
@@ -49,7 +49,7 @@ namespace DbLayer
         public DbSet<T> GetDbSet<T>() where T: class, IMapping
         {
             object result;
-            if (!Dict.TryGetValue(typeof(T), out result))
+            if (!DbSetDict.TryGetValue(typeof(T), out result))
                 throw new Exception("There is no DbSet for class " + typeof(T).Name);
             return (DbSet<T>) result;
         }
@@ -62,6 +62,5 @@ namespace DbLayer
         }
 
         #endregion
-
     }
 }
