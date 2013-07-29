@@ -41,7 +41,7 @@ namespace WebSite.Controllers
             var searchString = (string)TempData["Filters"];
             if (StoredInstanceUsers == null)
             {
-                var result = GetCompanyUsersResult();
+                var result = GetInstanceUsersResult();
                 if (StoredInstanceUsers == null) return result;
             }
             var model = GetInstanceUsers(searchString);
@@ -49,7 +49,7 @@ namespace WebSite.Controllers
             return View(model);
         }
 
-        private ActionResult GetCompanyUsersResult()
+        private ActionResult GetInstanceUsersResult()
         {
             var response = ServiceProxySingleton.Instance.GetUserInstanceList();
             if (response.IsNotLoggedIn()) return SessionHelper.ClearSession();

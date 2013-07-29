@@ -47,13 +47,13 @@ namespace CommonClasses.Helpers
             get { return ConfigurationManager.AppSettings["LDAPServer"]; }
         }
 
-        public static int DefaultCompanyId
+        public static int DefaultInstanceId
         {
             get
             {
-                int defaultCompanyId;
-                int.TryParse(ConfigurationManager.AppSettings["DefaultCompanyId"], out defaultCompanyId);
-                return defaultCompanyId;
+                int defaultInstanceId;
+                int.TryParse(ConfigurationManager.AppSettings["DefaultInstanceId"], out defaultInstanceId);
+                return defaultInstanceId;
             }
         }
 

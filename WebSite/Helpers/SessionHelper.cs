@@ -23,13 +23,13 @@ namespace WebSite.Helpers
             }
         }
 
-        public static string CompanyName
+        public static string InstanceName
         {
             get
             {
                 var session = HttpContext.Current.Session;
-                var companyName = session[Constants.SESSION_VIEW_INSTANCE_NAME];
-                return (session != null && companyName != null) ? companyName.ToString() : null;
+                var name = session[Constants.SESSION_VIEW_INSTANCE_NAME];
+                return (session != null && name != null) ? name.ToString() : null;
             }
             set
             {
@@ -73,7 +73,7 @@ namespace WebSite.Helpers
             return null;
         }
 
-        public static void ClearCompanyInfoFromSession()
+        public static void ClearInstanceInfoFromSession()
         {
             var session = HttpContext.Current.Session;
             if (session != null)

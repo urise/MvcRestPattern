@@ -18,7 +18,7 @@ namespace CommonClasses.MethodArguments
             Login = login;
             PasswordHash = passwordHash;
             Salt = salt;
-            DefaultInstanceId = AppConfiguration.DefaultCompanyId;
+            DefaultInstanceId = AppConfiguration.DefaultInstanceId;
         }
     }
 }

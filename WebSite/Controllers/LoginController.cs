@@ -78,7 +78,7 @@ namespace WebSite.Controllers
                 {
                     Session.RemoveAll();
                     Session[Constants.SESSION_INSTANCE_ID] = loginResult.InstanceId;
-                    SessionHelper.CompanyName = GetViewInstanceName(loginResult.InstanceName);
+                    SessionHelper.InstanceName = GetViewInstanceName(loginResult.InstanceName);
                     Session[Constants.SESSION_AUTH_INFO] = loginResult.Token;
                     SessionHelper.UserName = model.Login;
                     SessionHelper.LastUsedInstanceId = loginResult.LastUsedInstanceId;
@@ -113,7 +113,7 @@ namespace WebSite.Controllers
 
         public ActionResult SelectInstance()
         {
-            SessionHelper.ClearCompanyInfoFromSession();
+            SessionHelper.ClearInstanceInfoFromSession();
             return RedirectToAction("LogOn", "Login");
         }
 

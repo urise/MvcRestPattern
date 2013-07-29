@@ -19,17 +19,17 @@ namespace ServiceProxy
 
         public BaseResult ForgotPassword(UserPassword userPassword)
         {
-            return SendPostRequest<BaseResult, UserPassword>("forgotPassword", userPassword, false);
+            return SendPostRequest<BaseResult, UserPassword>("forgotPassword", userPassword);
         }
 
         public MethodResult<PasswordMailInfo> CreateTemporaryCode(string nameOrEmail)
         {
-            return SendPostRequest<MethodResult<PasswordMailInfo>, string>("createTemporaryCode", nameOrEmail, false);
+            return SendPostRequest<MethodResult<PasswordMailInfo>, string>("createTemporaryCode", nameOrEmail);
         }
 
         public MethodResult<UserPassword> GetUserPasswordByCode(string code)
         {
-            return SendGetRequest<MethodResult<UserPassword>>("getUserPasswordByCode", code, false);
+            return SendGetRequest<MethodResult<UserPassword>>("getUserPasswordByCode", code);
         }
         #endregion
 
@@ -44,7 +44,7 @@ namespace ServiceProxy
 
         public LoginResult Logon(LogonArg arg)
         {
-            return SendPostRequest<LoginResult, LogonArg>("logon", arg, false);
+            return SendPostRequest<LoginResult, LogonArg>("logon", arg);
         }
 
         public LoginResult LogonToInstance(int instanceId)
@@ -68,12 +68,12 @@ namespace ServiceProxy
 
         public MethodResult<string> RegisterUser(RegisterUser user)
         {
-            return SendPostRequest<MethodResult<string>, RegisterUser>("registerUser", user, false);
+            return SendPostRequest<MethodResult<string>, RegisterUser>("registerUser", user);
         }
 
         public BaseResult ConfirmUserKey(string key)
         {
-            return SendGetRequest<BaseResult>("confirmUserKey", key, false);
+            return SendGetRequest<BaseResult>("confirmUserKey", key);
         }
 
         #endregion

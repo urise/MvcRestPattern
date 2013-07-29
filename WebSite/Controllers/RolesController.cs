@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using CommonClasses;
-using CommonClasses.DbClasses;
 using CommonClasses.MethodArguments;
 using CommonClasses.Models;
 using Interfaces.Enums;
@@ -17,15 +14,15 @@ namespace WebSite.Controllers
     public class RolesController : Controller
     {
         #region  Properties and additional methods
-        protected List<RoleModel> StoredCompanyRoles
+        protected List<RoleModel> StoredInstanceRoles
         {
             get { return Session[Constants.SESSION_INSTANCE_ROLES] as List<RoleModel>; }
             set { Session[Constants.SESSION_INSTANCE_ROLES] = value; }
         }
 
-        private List<RoleModel> GetCompanyRoles(string searchString)
+        private List<RoleModel> GetInstanceRoles(string searchString)
         {
-            var list = StoredCompanyRoles;
+            var list = StoredInstanceRoles;
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -41,23 +38,23 @@ namespace WebSite.Controllers
         public ActionResult Roles()
         {
             var searchString = (string)TempData["Filters"];
-            if (StoredCompanyRoles == null)
+            if (StoredInstanceRoles == null)
             {
-                var result = GetAllCompanyRolesResult();
-                if (StoredCompanyRoles == null) return result;
+                var result = GetAllInstanceRolesResult();
+                if (StoredInstanceRoles == null) return result;
             }
-            var model = GetCompanyRoles(searchString);
+            var model = GetInstanceRoles(searchString);
             if (model == null) return SessionHelper.ClearSession();
             ViewBag.SearchString = searchString;
             return View(model);
         }
 
-        private ActionResult GetAllCompanyRolesResult()
+        private ActionResult GetAllInstanceRolesResult()
         {
             var response = ServiceProxySingleton.Instance.GetRoleList();
             if (response.IsNotLoggedIn()) return SessionHelper.ClearSession();
             if (response.IsAccessDenied()) return RedirectToAction("AccessError", "Error");
-            StoredCompanyRoles = response.AttachedObject;
+            StoredInstanceRoles = response.AttachedObject;
             return null;
         }
 
@@ -113,7 +110,7 @@ namespace WebSite.Controllers
             var response = ServiceProxySingleton.Instance.SaveRole(role);
             if (response.IsNotLoggedIn()) return SessionHelper.ClearSession();
             if (response.IsError()) return Json(response);
-            StoredCompanyRoles = null;
+            StoredInstanceRoles = null;
             if (response.CurrentUserPermissions != null)
             {
                 SessionHelper.Permissions = response.CurrentUserPermissions;
@@ -129,7 +126,7 @@ namespace WebSite.Controllers
             var response = ServiceProxySingleton.Instance.DeleteRole(new DeleteArg { Id = roleId });
             if (response.IsNotLoggedIn()) return SessionHelper.ClearSession();
             if (response.IsError()) return Json(response);
-            StoredCompanyRoles = null;
+            StoredInstanceRoles = null;
             if (response.CurrentUserPermissions != null)
                 SessionHelper.Permissions = response.CurrentUserPermissions;
             return new EmptyResult();

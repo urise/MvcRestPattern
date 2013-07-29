@@ -11,7 +11,7 @@ namespace BusinessLayer.Managers
 {
     public class InstanceManager: CommonManager
     {
-        #region Create Save Company
+        #region Create Save Instance
 
         public MethodResult<int> CreateInstance(string instanceName)
         {
@@ -40,9 +40,9 @@ namespace BusinessLayer.Managers
         public string ValidateInstance(Instance instance)
         {
             if (string.IsNullOrEmpty(instance.InstanceName))
-                return Messages.EmptyCompanyName;
+                return Messages.EmptyInstanceName;
             if (Db.IsExistInstanceName(instance.InstanceName))
-                return Messages.ExistsCompanyName;
+                return Messages.ExistsInstanceName;
             return null;
         }
 

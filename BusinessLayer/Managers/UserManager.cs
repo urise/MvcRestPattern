@@ -36,11 +36,11 @@ namespace BusinessLayer.Managers
 
         public BaseResult DeleteUserInstance(string userName)
         {
-            var userCompany = Db.GetUserInstance(userName);
-            if (userCompany == null)
+            var userInstance = Db.GetUserInstance(userName);
+            if (userInstance == null)
                 return new BaseResult { ErrorMessage = Messages.UserInstanceNotFound };
-            Db.DeleteUserRoles(userCompany.UserId, string.Empty);
-            Db.Delete(userCompany);
+            Db.DeleteUserRoles(userInstance.UserId, string.Empty);
+            Db.Delete(userInstance);
             return new BaseResult();
         }
 

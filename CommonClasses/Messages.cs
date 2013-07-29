@@ -33,9 +33,9 @@
         public const string ConfirmMailError = "Ошибка подтверждения регистрации";
         public const string ChangePasswordSuccess = "Пароль успешно изменен";
 
-        public const string ErrorCompanyCreation = "Ошибка при создании компании. Попробуйте повторить попытку или обратитесь к администратору сиситемы.";
-        public const string ExistsCompanyName = "Такая компания уже есть в Вашем списке доступных компаний";
-        public const string EmptyCompanyName = "Введите название компании";
+        public const string ErrorInstanceCreation = "Ошибка при создании компании. Попробуйте повторить попытку или обратитесь к администратору сиситемы.";
+        public const string ExistsInstanceName = "Такая компания уже есть в Вашем списке доступных компаний";
+        public const string EmptyInstanceName = "Введите название компании";
 
         public const string UserInstanceNotFound = "Указанный пользователь не связан с данной компанией";
         public const string UserInstanceAlreadyExist = "Указанный пользователь уже связан с данной компанией";

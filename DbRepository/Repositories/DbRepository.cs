@@ -279,7 +279,7 @@ namespace DbLayer.Repositories
         public void AddUserRole(int roleId, int? userId = null)
         {
             if (!InstanceId.HasValue || !UserId.HasValue)
-                throw new Exception(Messages.ErrorCompanyCreation);
+                throw new Exception(Messages.ErrorInstanceCreation);
             var userRole = new UserRole { InstanceId = InstanceId.Value, RoleId = roleId, UserId = userId == null ? UserId.Value : userId.Value };
             Save(userRole);
         }
@@ -382,7 +382,7 @@ namespace DbLayer.Repositories
         public void AddUserInstance(int? userId = null)
         {
             if (!InstanceId.HasValue || !UserId.HasValue)
-                throw new Exception(Messages.ErrorCompanyCreation);
+                throw new Exception(Messages.ErrorInstanceCreation);
             var userInstance = new UserInstance { InstanceId = InstanceId.Value, UserId = userId == null ? UserId.Value : userId.Value };
             Save(userInstance);
         }

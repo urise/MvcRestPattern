@@ -97,9 +97,9 @@ namespace BusinessLayer.Managers
             };
         }
        
-        private void LogUsageToDb(int userId, int companyId)
+        private void LogUsageToDb(int userId, int instanceId)
         {
-            var usageLog = new InstanceUsage { LoginDate = DateTime.Now, InstanceId = companyId, UserId = userId };
+            var usageLog = new InstanceUsage { LoginDate = DateTime.Now, InstanceId = instanceId, UserId = userId };
             Db.Save(usageLog);
         }
 

@@ -76,7 +76,7 @@ namespace BusinessLayer.Managers
             }
         }
 
-        public BaseResult DeleteCompanyRole(DeleteArg arg)
+        public BaseResult DeleteInstanceRole(DeleteArg arg)
         {
             var role = Db.GetById<Role>(arg.Id);
             if (role == null)

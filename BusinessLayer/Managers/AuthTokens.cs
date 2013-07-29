@@ -70,9 +70,9 @@ namespace BusinessLayer.Authentication
             return true;
         }
 
-        public void RemoveAuthInfoForUser(int userId, int companyId)
+        public void RemoveAuthInfoForUser(int userId, int instanceId)
         {
-            var token = GetTokenByUserAndCompany(userId, companyId);
+            var token = GetTokenByUserAndInstance(userId, instanceId);
             if (!string.IsNullOrEmpty(token))
             {
                 lock (_lock)
@@ -82,12 +82,12 @@ namespace BusinessLayer.Authentication
             }
         }
 
-        private string GetTokenByUserAndCompany(int userId, int companyId)
+        private string GetTokenByUserAndInstance(int userId, int instanceId)
         {
             var token = string.Empty;
             foreach (var info in _dict)
             {
-                if (info.Value.UserId == userId && info.Value.InstanceId == companyId)
+                if (info.Value.UserId == userId && info.Value.InstanceId == instanceId)
                 {
                     token = info.Key;
                     break;

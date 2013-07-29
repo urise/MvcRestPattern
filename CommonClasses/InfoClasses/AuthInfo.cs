@@ -28,10 +28,10 @@ namespace CommonClasses.InfoClasses
             UserAccess = new UserAccess();
         }
 
-        public AuthInfo(int userId, int companyId)
+        public AuthInfo(int userId, int instanceId)
         {
             UserId = userId;
-            InstanceId = companyId;
+            InstanceId = instanceId;
         }
 
         public bool AccessGranted(System.Reflection.MethodBase method)

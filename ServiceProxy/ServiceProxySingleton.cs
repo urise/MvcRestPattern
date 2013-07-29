@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading;
 using System.Web;
 using CommonClasses;
 using CommonClasses.Helpers;
@@ -15,24 +13,6 @@ namespace ServiceProxy
     public partial class ServiceProxySingleton
     {
         #region Properties and Variables
-
-        public int CompanyId
-        {
-            get
-            {
-                if (HttpContext.Current == null) return 1; // for console test application
-                return (int)(HttpContext.Current.Session[Constants.SESSION_INSTANCE_ID]);
-            }
-        }
-
-        public int UserId
-        {
-            get
-            {
-                if (HttpContext.Current == null) return 1; // for console test application
-                return (int)(HttpContext.Current.Session["UserId"]);
-            }
-        }
 
         public string AuthToken
         {
@@ -49,7 +29,7 @@ namespace ServiceProxy
 
         private ServiceProxySingleton()
         {
-            System.Net.ServicePointManager.Expect100Continue = false;
+            ServicePointManager.Expect100Continue = false;
         }
 
         private static ServiceProxySingleton _instance;
@@ -64,10 +44,9 @@ namespace ServiceProxy
 
         #endregion
 
-        private string GetFullReqUrl(string operation, string parameters, bool sendToken = true)
+        private string GetFullReqUrl(string operation, string parameters)
         {
             var result = AppConfiguration.RestServiceUrl + operation;
-                         //+ (sendToken ? "/" + (AuthToken ?? "_") : string.Empty);
             if (string.IsNullOrEmpty(parameters)) return result;
             if (!parameters.StartsWith("?")) result = result + "/";
             return result + parameters;
@@ -75,9 +54,9 @@ namespace ServiceProxy
 
         #region Service Requests Methods
 
-        public T SendGetRequest<T>(string operation, string parameters = null, bool sendToken = true)
+        public T SendGetRequest<T>(string operation, string parameters = null)
         {
-            string fullReq = GetFullReqUrl(operation, parameters, sendToken);
+            string fullReq = GetFullReqUrl(operation, parameters);
             var request = WebRequest.Create(fullReq) as HttpWebRequest;
             if (request == null) return default(T);
 
@@ -85,9 +64,9 @@ namespace ServiceProxy
             return SendRequest<T>(request);
         }
 
-        public TReturn SendPostRequest<TReturn, TParam>(string operation, TParam param, bool sendToken = true)
+        public TReturn SendPostRequest<TReturn, TParam>(string operation, TParam param)
         {
-            string fullReq = GetFullReqUrl(operation, null, sendToken);
+            string fullReq = GetFullReqUrl(operation, null);
             var request = WebRequest.Create(fullReq) as HttpWebRequest;
             if (request == null) return default(TReturn);
 
@@ -129,7 +108,7 @@ namespace ServiceProxy
 
         public T SendDeleteRequest<T>(string operation, int id)
         {
-            string fullReq = GetFullReqUrl(operation, null) + "?id=" + id.ToString();
+            string fullReq = GetFullReqUrl(operation, null) + "?id=" + id.ToString(CultureInfo.InvariantCulture);
             var request = WebRequest.Create(fullReq) as HttpWebRequest;
             if (request == null) throw new Exception("AasService request is not valid");
 

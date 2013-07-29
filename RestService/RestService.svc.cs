@@ -145,7 +145,7 @@ namespace RestService
             }
         }
 
-        private void ClearAuthCompanyId(string token)
+        private void ClearAuthInstanceId(string token)
         {
             var authInfo = AuthTokens.Instance.GetAuth(token);
             if (authInfo != null)
@@ -154,7 +154,7 @@ namespace RestService
             }
         }
 
-        private void ResetCompanyUserPermissions(ChangePermissionsResult result)
+        private void ResetUserInstancePermissions(ChangePermissionsResult result)
         {
             if (result.IsPermissionsChanged)
                 ResetUserPermissions(result.EntityId, result);
@@ -252,7 +252,7 @@ namespace RestService
 
         public MethodResult<int> CreateInstance(string instanceName)
         {
-            ClearAuthCompanyId(AuthToken);
+            ClearAuthInstanceId(AuthToken);
             return RunManagerMethod<InstanceManager, MethodResult<int>>(cm => cm.CreateInstance(instanceName));
         }
         #endregion
@@ -276,7 +276,7 @@ namespace RestService
         [AccessTier(AccessComponent.Roles, AccessLevel.ReadWrite)]
         public ChangePermissionsResult DeleteRole(DeleteArg arg)
         {
-            var result = RunManagerMethod<RoleManager, BaseResult>(rm => rm.DeleteCompanyRole(arg));
+            var result = RunManagerMethod<RoleManager, BaseResult>(rm => rm.DeleteInstanceRole(arg));
             var sentResult = new ChangePermissionsResult
             {
                 ErrorMessage = result.ErrorMessage,
@@ -332,7 +332,7 @@ namespace RestService
         public ChangePermissionsResult SaveUserInfo(UserInfo userInfo)
         {
             var result = RunManagerMethod<UserManager, ChangePermissionsResult>(rep => rep.SaveUserInfo(userInfo));
-            if (result.IsSuccess()) ResetCompanyUserPermissions(result);
+            if (result.IsSuccess()) ResetUserInstancePermissions(result);
             return result;
         }
         #endregion
