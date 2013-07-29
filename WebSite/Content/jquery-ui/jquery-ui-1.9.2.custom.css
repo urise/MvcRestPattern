@@ -596,8 +596,8 @@ body .ui-tooltip { border-width: 2px; }
 .role-content .table-wrapper .pseudo-th {
     display: block;
 }
-.role-content .table-wrapper .ps-access { width: 273px;}
-.role-content .table-wrapper .ps-access-level { width: 289px;text-align: center;}
+.role-content .table-wrapper .ps-access { width: 317px;}
+.role-content .table-wrapper .ps-access-level { width: 325px;text-align: center;}
 .role-content .table-wrapper .overbody {
     height: 480px;
     overflow: auto;

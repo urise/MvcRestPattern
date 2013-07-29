@@ -9,12 +9,12 @@ $(document).ready(function () {
     window.setupNewRow = function (button) {
                 var newLine = formDynamicCompanyUserTr();
                 button.closest('tr').after(newLine);
-                $("tr.companyUserRow").addClass('dimmed');
+                $("tr.active-row").addClass('dimmed');
                 $("#userName").focus();
     };
 
     window.closeEditorRow = closeEditorField;
-    window.saveEditorRow = saveCompanyUser;
+    window.saveEditorRow = saveInstanceUser;
     
     window.deleteRow = function (row) {
         var userName = row.attr('data-login');
@@ -90,7 +90,7 @@ $(document).ready(function () {
     function closeEditorField() {
         $(".editor-field").remove();
         $('.companyRow-under-edit').show().removeClass('companyRow-under-edit');
-        $("tr.companyUserRow").removeClass('dimmed');
+        $("tr.active-row").removeClass('dimmed');
     }
 
     function deleteCompanyUser(userName) {
@@ -98,7 +98,7 @@ $(document).ready(function () {
         return true;
     }
 
-    function saveCompanyUser() {
+    function saveInstanceUser() {
         if ($("#userName").val().match(/^\s*$/)) { alert("Заполните все поля."); return false; }
 
         var user = { userName: $("#userName").val() };
@@ -118,7 +118,7 @@ $(document).ready(function () {
             var newField = $(".editor-field");
             newField.find('.ps-name').text(newName);
             newField.find('.ps-action').html('<span class="edit iconed-button" title="Редактировать">Редактировать</span><span class="delete iconed-button" title="Удалить">Удалить</span>');
-            newField.removeClass('editor-field').addClass('companyUserRow');
+            newField.removeClass('editor-field').addClass('active-row');
             newField.attr("data-login", newName);
             closeEditorField();
             $('.emty-pseudo-row').hide();

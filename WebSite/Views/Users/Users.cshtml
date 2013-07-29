@@ -25,8 +25,8 @@
 </div>
 <br style="clear: both;"><br/>
 
-<div class="table-wrapper companyUserList">
-    <table class="pseudo-table companyUserList">
+<div class="table-wrapper">
+    <table class="pseudo-table interactive-table">
         <tr class="pseudo-th">
             <th class="ps-name">Логин</th>
             <th class="ps-action">
@@ -38,7 +38,7 @@
             var currentUser = Session[Constants.SESSION_USER_NAME].ToString().ToLower();
             foreach (var userName in Model)
             {
-                <tr class="companyUserRow" data-login="@userName">
+                <tr class="active-row" data-login="@userName">
                     <td class="ps-name">@userName</td>
                     <td class="ps-action">
                         <span class="edit iconed-button @accessClass" title="Редактировать">Редактировать</span>

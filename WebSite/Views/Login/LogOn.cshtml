@@ -64,7 +64,7 @@
         
         <div id="inputs" data-lastcompany="@lastInstance">
             <div class="add-btn-holder">
-                <select id="companiesSelector">
+                <select id="instanceSelector">
                     @if (companies != null)
                     {
                         foreach (var c in companies)
@@ -94,9 +94,9 @@
 
             function setupInteractivity() {
                 var selectedCompanyInPropDown = "";
-                if ($("#companiesSelector option").length == 0) {
-                    $("#companiesSelector, #goToCompany").addClass('disabled');
-                    $("#companiesSelector").attr('disabled', 'disabled');
+                if ($("#instanceSelector option").length == 0) {
+                    $("#instanceSelector, #goToCompany").addClass('disabled');
+                    $("#instanceSelector").attr('disabled', 'disabled');
                 }
                 
                 var dataForLastInstance = $("#inputs").data("lastInstance");
@@ -108,28 +108,28 @@
                 } else {
                     if (localStorage && localStorage.getItem('lastVisitedInstance')) selectedCompanyInPropDown = localStorage.getItem('lastVisitedInstance');
                 }
-                $('#companiesSelector :selected').removeAttr('selected');
-                $('#companiesSelector option[value="' + selectedCompanyInPropDown + '"]').attr('selected', 'selected');
+                $('#instanceSelector :selected').removeAttr('selected');
+                $('#instanceSelector option[value="' + selectedCompanyInPropDown + '"]').attr('selected', 'selected');
             }
 
             $("body").on('click', '#goToCompany',
                 function () {
                     if ($(this).hasClass('disabled')) return;
                     $(document).off('ajaxStop');
-                    window.ajaxCallSingleton('@Url.Action("LogonToInstance")', 'Post', { instanceId: $("#companiesSelector :selected").val() }, function (r) {
+                    window.ajaxCallSingleton('@Url.Action("LogonToInstance")', 'Post', { instanceId: $("#instanceSelector :selected").val() }, function (r) {
                         window.location.href = '@Url.Action("Home", "Home")';
                     }, null, null, window.progressOverlay.stop);
                 });
 
-            $("body").on('click', '#saveCompany',
+            $("body").on('click', '#saveInstance',
                 function () {
                     var instanceName = $("#InstanceName").val();
 
                     window.ajaxCallSingleton('@Url.Action("AddInstance")', 'Post', { instanceName: instanceName }, function (r) {
 
                             $("#inputs").data("lastInstance", r.NewId);
-                            $("#companiesSelector").prepend('<option class="" selected value="' + r.NewId + '">' + instanceName + '</option>');
-                            $("#companiesSelector, #goToCompany").removeClass('disabled').removeAttr('disabled');
+                            $("#instanceSelector").prepend('<option class="" selected value="' + r.NewId + '">' + instanceName + '</option>');
+                            $("#instanceSelector, #goToCompany").removeClass('disabled').removeAttr('disabled');
                             closeNewCompanyForm();
                     }, null);
                 });
@@ -166,7 +166,7 @@
             
                 var html = $('<div id="instanceCreator"><h1>Новая компания</h1>');
                 html.append('<input type="text" name="InstanceName" id="InstanceName" value="" class="placeholder" placeholder="Введите имя компании" />');
-                html.append('<span id="saveCompany" class="login-btn" title="Сохранить компанию">Сохранить</span><span id="backCompany" class="login-btn" title="Отмена">Отмена</span></div>');
+                html.append('<span id="saveInstance" class="login-btn" title="Сохранить компанию">Сохранить</span><span id="backCompany" class="login-btn" title="Отмена">Отмена</span></div>');
                 return html;
             }
             
