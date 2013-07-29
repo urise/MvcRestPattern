@@ -145,7 +145,7 @@ function saveRoleHandler(callback) {
     window.ajaxCallSingleton(window.UpdateRolePath, 'post', getRoleData(), function (result) {
         if (result.IsPermissionsChanged) window.location.href = window.location.href;
         else {
-            var newRow = $($.parseHTML(result));
+            var newRow = $($.parseHTML(result.replace(/\s+<tr/g, '<tr')));
             var roleId = $("#RoleId").val();
             //add or update table row from result
             if (roleId && roleId * 1 > 0) {
