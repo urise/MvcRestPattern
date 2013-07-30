@@ -33,6 +33,15 @@
                 <span class="new iconed-button @accessClass" title="Добавить нового пользователя">Добавить нового пользователя</span>
             </th>
         </tr>
+        <tr class="prototypeRow" id="0">
+            <td class="ps-name">
+                <input type="text" value="" id="userName" placeholder = "Введите логин или адрес электронной почты"/>
+            </td>
+            <td class="ps-action">
+                <span class="save iconed-button" title="Сохранить">Сохранить</span>
+                <span class="close iconed-button" title="Закрыть">Закрыть</span>
+            </td>
+        </tr>
         @if (Model.Any())
         {
             var currentUser = Session[Constants.SESSION_USER_NAME].ToString().ToLower();
@@ -60,10 +69,10 @@
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/CommonDynamicTable.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/CompanyUser.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/UserInstance.js")" type="text/javascript"></script>
 <script type="text/javascript">
     window.ShowUser = '@Url.Action("UserInfo", "Users")';
     window.SaveUser = '@Url.Action("SaveUser", "Users")';
-    window.DeleteCompanyUser = '@Url.Action("RemoveUser", "Users")';
-    window.UpdateCompanyUser = '@Url.Action("AddUser", "Users")';
+    window.DeleteUserInstance = '@Url.Action("RemoveUser", "Users")';
+    window.UpdateUserInstance = '@Url.Action("AddUser", "Users")';
 </script>

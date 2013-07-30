@@ -7,10 +7,10 @@ $(document).ready(function () {
     });
 
     window.setupNewRow = function (button) {
-                var newLine = formDynamicCompanyUserTr();
-                button.closest('tr').after(newLine);
-                $("tr.active-row").addClass('dimmed');
-                $("#userName").focus();
+        var newRow = $('.prototypeRow').clone().removeClass('prototypeRow').addClass('editor-field');
+        button.closest('tr').after(newRow);
+        $("tr.active-row").addClass('dimmed');
+        $("#userName").focus();
     };
 
     window.closeEditorRow = closeEditorField;
@@ -18,7 +18,7 @@ $(document).ready(function () {
     
     window.deleteRow = function (row) {
         var userName = row.attr('data-login');
-        confirm('Вы уверены, что хотите лишить пользователя прав на компанию?', null, deleteCompanyUser, userName);
+        confirm('Вы уверены, что хотите лишить пользователя прав на компанию?', null, deleteUserInstance, userName);
     };
 
 
@@ -48,7 +48,7 @@ $(document).ready(function () {
                     div.remove();
                 },
                 create: function () {
-                    $(this).closest(".ui-dialog.ui-widget").addClass('companyUserDialog');
+                    $(this).closest(".ui-dialog.ui-widget").addClass('userInstanceDialog');
                 },
                 buttons: [
                     {
@@ -81,20 +81,13 @@ $(document).ready(function () {
         $('#SearchString').val("");
     }
 
-    function formDynamicCompanyUserTr() {
-        return $('<tr class="editor-field" id="0"><td class="ps-name"><input type="text" value="" id="userName" placeholder = "Введите логин или адрес электронной почты"/></td>'
-                    + '<td class="ps-action"><span class="save iconed-button" title="Сохранить">Сохранить</span>'
-                    + '<span class="close iconed-button" title="Закрыть">Закрыть</span></td></tr>');
-    }
-
     function closeEditorField() {
         $(".editor-field").remove();
-        $('.companyRow-under-edit').show().removeClass('companyRow-under-edit');
         $("tr.active-row").removeClass('dimmed');
     }
 
-    function deleteCompanyUser(userName) {
-        window.ajaxCallSingleton(window.DeleteCompanyUser, 'Post', { userName: userName }, function () { $('tr[data-login=' + userName + ']').remove(); }, null);
+    function deleteUserInstance(userName) {
+        window.ajaxCallSingleton(window.DeleteUserInstance, 'Post', { userName: userName }, function () { $('tr[data-login=' + userName + ']').remove(); }, null);
         return true;
     }
 
@@ -103,26 +96,18 @@ $(document).ready(function () {
 
         var user = { userName: $("#userName").val() };
 
-        window.ajaxCallSingleton(window.UpdateCompanyUser, 'Post', user, processSuccessOnCompanyUserSave, null);
+        window.ajaxCallSingleton(window.UpdateUserInstance, 'Post', user, processSuccessOnUserInstanceSave, null);
     }
 
-    function processSuccessOnCompanyUserSave(response) {
+    function processSuccessOnUserInstanceSave(response) {
         var newName = response.UserName;
-        
-        if ($('.companyRow-under-edit').length > 0) {
-            var rowUnderEdit = $('.companyRow-under-edit');
-            rowUnderEdit.find('.ps-name').text(newName);
-            closeEditorField();
-        }
-        else {
-            var newField = $(".editor-field");
-            newField.find('.ps-name').text(newName);
-            newField.find('.ps-action').html('<span class="edit iconed-button" title="Редактировать">Редактировать</span><span class="delete iconed-button" title="Удалить">Удалить</span>');
-            newField.removeClass('editor-field').addClass('active-row');
-            newField.attr("data-login", newName);
-            closeEditorField();
-            $('.emty-pseudo-row').hide();
-        }
+        var newField = $(".editor-field");
+        newField.find('.ps-name').text(newName);
+        newField.find('.ps-action').html('<span class="edit iconed-button" title="Редактировать">Редактировать</span><span class="delete iconed-button" title="Удалить">Удалить</span>');
+        newField.removeClass('editor-field').addClass('active-row');
+        newField.attr("data-login", newName);
+        closeEditorField();
+        $('.emty-pseudo-row').hide();
     }
 
     function saveHandler(callback) {

@@ -632,6 +632,8 @@ table .temp-errored.error-text td { text-align: center;color: red;background-col
 .ps-action { width: 80px;}
 .active-row.draggable { cursor: move;}
 .ps-action input { padding: 0;border: 0;margin: 0;display: inline-block;height: 16px;width: 16px;margin-right: 10px;}
+.prototypeRow { display: none;}
+.prototypeRow input[type=text] { width: 100px;}    
 
 #instanceCreator { display: none;}
 

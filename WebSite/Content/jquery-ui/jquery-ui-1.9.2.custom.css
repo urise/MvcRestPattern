@@ -519,10 +519,10 @@ body .ui-tooltip { border-width: 2px; }
 .ui-dialog .ui-dialog-title { font-size: 13px;font-weight: bold;}
 .ui-dialog.transactionTypeDialog .ui-dialog-titlebar ,
 .ui-dialog.roleDialog .ui-dialog-titlebar span,
-.ui-dialog.companyUserDialog .ui-dialog-titlebar span  {white-space: nowrap;}
+.ui-dialog.userInstanceDialog .ui-dialog-titlebar span  {white-space: nowrap;}
 .ui-dialog.transactionTypeDialog .ui-dialog-titlebar span:after,
 .ui-dialog.roleDialog .ui-dialog-titlebar span:after,
-.ui-dialog.companyUserDialog .ui-dialog-titlebar span:after {
+.ui-dialog.userInstanceDialog .ui-dialog-titlebar span:after {
     background: url("../images/h3_bg_line.png") repeat-x scroll 0 70% transparent;
     content: "";
     display: inline-block;
@@ -641,18 +641,18 @@ body .ui-tooltip { border-width: 2px; }
 .ui-dialog table.validationsList .ps-action{ width: 80px !important;max-width: 80px !important;overflow: hidden;padding: 5px 5px 5px 10px;}
 .ui-dialog table.validationsList td:last-child { border-right: none;}
 .ui-dialog.transactionTypeDialog .ui-dialog-buttonpane .ui-dialog-buttonset .save-btn:hover { background-color: #F37021;color: #fff;background-position: 10px -58px;border-color: #F37021;}
-.ui-dialog.companyUserDialog .ui-dialog-buttonpane .ui-dialog-buttonset .agreeBtn  {margin-left: 35%;  }
-.ui-dialog.companyUserDialog .ui-dialog-titlebar span:after { width: 200px;}
+.ui-dialog.userInstanceDialog .ui-dialog-buttonpane .ui-dialog-buttonset .agreeBtn  {margin-left: 35%;  }
+.ui-dialog.userInstanceDialog .ui-dialog-titlebar span:after { width: 200px;}
 
 .ui-dialog.roleDialog .ui-dialog-buttonpane .ui-dialog-buttonset,
-.ui-dialog.companyUserDialog .ui-dialog-buttonpane .ui-dialog-buttonset { float: none;}
+.ui-dialog.userInstanceDialog .ui-dialog-buttonpane .ui-dialog-buttonset { float: none;}
 .ui-dialog.roleDialog .ui-dialog-buttonpane button.agreeBtn { margin-left: 50%;}
 
 .currency-table .ps-active, .currency-table .ps-default { text-align: center;width: 33%;}
 #classes-bydefault { font-weight: bold; margin-left: 10px; }
 #CurrencyClassesByDefault {margin-left: 34%; margin-bottom: 20px;}
 
-.companyUserDialog .ui-widget-content,
+.userInstanceDialog .ui-widget-content,
 .ui-widget-content .userRoles-data td { border: none;}
 
 /************** Autocomplete **************/

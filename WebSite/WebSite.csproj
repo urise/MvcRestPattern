@@ -321,7 +321,7 @@
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\CommonDynamicTable.js" />
-    <Content Include="Scripts\CompanyUser.js" />
+    <Content Include="Scripts\UserInstance.js" />
     <Content Include="Scripts\GlobalSetup.js" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />

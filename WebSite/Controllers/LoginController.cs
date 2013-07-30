@@ -45,7 +45,7 @@ namespace WebSite.Controllers
             var result = ServiceProxySingleton.Instance.GetUserInstances();
             if (result.IsNotLoggedIn()) SessionHelper.ClearSession();
             if (result.IsSuccess())
-                ViewBag.UserCompanies = result.AttachedObject;
+                ViewBag.UserInstances = result.AttachedObject;
             else TempData["LoginErrors"] = result.ErrorMessage;
         }
 

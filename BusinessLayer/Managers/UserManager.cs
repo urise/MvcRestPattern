@@ -24,9 +24,9 @@ namespace BusinessLayer.Managers
             var isEmailEntered = loginOrEmail.Contains("@");
             var user = isEmailEntered ? Db.GetUserByEmail(loginOrEmail) : Db.GetUserByLogin(loginOrEmail);
             if (user == null)
-                return new MethodResult<Tuple<int, string>> { ErrorMessage = isEmailEntered ? Messages.UserNotFoundByEmail : Messages.UserNotFoundByLogin };
+                return new BaseResult { ErrorMessage = isEmailEntered ? Messages.UserNotFoundByEmail : Messages.UserNotFoundByLogin };
             if (Db.CheckIfUserLinkedToInstance(user.UserId))
-                return new MethodResult<Tuple<int, string>> { ErrorMessage = Messages.UserInstanceAlreadyExist };
+                return new BaseResult { ErrorMessage = Messages.UserInstanceAlreadyExist };
 
             var roleId = Db.GetSystemRoleId(SystemRoles.Guest);
             Db.AddUserInstance(user.UserId);

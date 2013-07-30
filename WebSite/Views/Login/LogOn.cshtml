@@ -8,7 +8,7 @@
 @{
     ViewBag.Title = "Форма входа";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var companies = ViewBag.UserCompanies as IList<Instance>;
+    var instances = ViewBag.UserInstances as IList<Instance>;
 }
 
 <div class="big_logo"></div>
@@ -62,12 +62,12 @@
         @Html.ValidationSummary(true)
         var lastInstance = @TempData["LastInstance"];
         
-        <div id="inputs" data-lastcompany="@lastInstance">
+        <div id="inputs" data-lastInstance="@lastInstance">
             <div class="add-btn-holder">
                 <select id="instanceSelector">
-                    @if (companies != null)
+                    @if (instances != null)
                     {
-                        foreach (var c in companies)
+                        foreach (var c in instances)
                         {
                             <option value="@c.InstanceId">@c.InstanceName</option>
                         }
@@ -77,7 +77,7 @@
             </div>
         </div>
     
-        <span id="goToCompany" class="login-btn" title="Войти в компанию">Войти</span>
+        <span id="goToInstance" class="login-btn" title="Войти в компанию">Войти</span>
         @Html.ActionLink("Выход", "LogOff", "Login", null, new { @title = "Выйти из системы", @class = "login-btn", id = "LogOut" }) 
         
         <script type="text/javascript">
@@ -89,13 +89,13 @@
             
             $(document).on('keydown', function (e) {
                 // key for "enter"
-                if (e.keyCode == 13 && !$("#instanceCreator").length) { $("#goToCompany").click(); }
+                if (e.keyCode == 13 && !$("#instanceCreator").length) { $("#goToInstance").click(); }
             });
 
             function setupInteractivity() {
-                var selectedCompanyInPropDown = "";
+                var selectedInstanceInPropDown = "";
                 if ($("#instanceSelector option").length == 0) {
-                    $("#instanceSelector, #goToCompany").addClass('disabled');
+                    $("#instanceSelector, #goToInstance").addClass('disabled');
                     $("#instanceSelector").attr('disabled', 'disabled');
                 }
                 
@@ -103,16 +103,16 @@
                 if (dataForLastInstance > 0) {
                     if (localStorage) {
                         localStorage.setItem('lastVisitedInstance', dataForLastInstance);
-                        selectedCompanyInPropDown = dataForLastInstance;
+                        selectedInstanceInPropDown = dataForLastInstance;
                     }
                 } else {
-                    if (localStorage && localStorage.getItem('lastVisitedInstance')) selectedCompanyInPropDown = localStorage.getItem('lastVisitedInstance');
+                    if (localStorage && localStorage.getItem('lastVisitedInstance')) selectedInstanceInPropDown = localStorage.getItem('lastVisitedInstance');
                 }
                 $('#instanceSelector :selected').removeAttr('selected');
-                $('#instanceSelector option[value="' + selectedCompanyInPropDown + '"]').attr('selected', 'selected');
+                $('#instanceSelector option[value="' + selectedInstanceInPropDown + '"]').attr('selected', 'selected');
             }
 
-            $("body").on('click', '#goToCompany',
+            $("body").on('click', '#goToInstance',
                 function () {
                     if ($(this).hasClass('disabled')) return;
                     $(document).off('ajaxStop');
@@ -129,14 +129,14 @@
 
                             $("#inputs").data("lastInstance", r.NewId);
                             $("#instanceSelector").prepend('<option class="" selected value="' + r.NewId + '">' + instanceName + '</option>');
-                            $("#instanceSelector, #goToCompany").removeClass('disabled').removeAttr('disabled');
-                            closeNewCompanyForm();
+                            $("#instanceSelector, #goToInstance").removeClass('disabled').removeAttr('disabled');
+                            closeNewInstanceForm();
                     }, null);
                 });
 
-            $("body").on('click', '#backCompany',
+            $("body").on('click', '#backInstance',
                 function () {
-                    closeNewCompanyForm();
+                    closeNewInstanceForm();
                 });
 
             $("body").on('click', '#addInstance',
@@ -144,9 +144,9 @@
 
                     var markup = generateAddInstanceMarkUp();
 
-                    if ($('#login #companySelector').length == 0) $('#login').wrapInner('<div id="companySelector"/>');
+                    if ($('#login #instanceSelector').length == 0) $('#login').wrapInner('<div id="instanceSelector"/>');
 
-                    $('#login #companySelector').hide();
+                    $('#login #instanceSelector').hide();
                     $("#instanceCreator").remove();
                     $('#login').append(markup);
 
@@ -156,9 +156,9 @@
                     detectBrowsers();
                 });
             
-            function closeNewCompanyForm() {
+            function closeNewInstanceForm() {
                 $("#instanceCreator").remove();
-                $('#login #companySelector').fadeIn('slow');
+                $('#login #instanceSelector').fadeIn('slow');
                 setupInteractivity();
             }
 
@@ -166,7 +166,7 @@
             
                 var html = $('<div id="instanceCreator"><h1>Новая компания</h1>');
                 html.append('<input type="text" name="InstanceName" id="InstanceName" value="" class="placeholder" placeholder="Введите имя компании" />');
-                html.append('<span id="saveInstance" class="login-btn" title="Сохранить компанию">Сохранить</span><span id="backCompany" class="login-btn" title="Отмена">Отмена</span></div>');
+                html.append('<span id="saveInstance" class="login-btn" title="Сохранить компанию">Сохранить</span><span id="backInstance" class="login-btn" title="Отмена">Отмена</span></div>');
                 return html;
             }
             
